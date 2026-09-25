@@ -3,6 +3,13 @@
   const recommendations = document.getElementById('recommendations');
   if (!form || !recommendations) return;
 
+  if (!document.querySelector('script[src="epn-links.js"]')) {
+    const epnScript = document.createElement('script');
+    epnScript.src = 'epn-links.js';
+    epnScript.async = false;
+    document.body.appendChild(epnScript);
+  }
+
   if (!document.querySelector('link[href="product-details.css"]')) {
     const link = document.createElement('link');
     link.rel = 'stylesheet';
