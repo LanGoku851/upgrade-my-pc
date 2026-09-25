@@ -103,11 +103,90 @@
           <label>Processeur
             <select id="cpu" required>
               <option value="">Choisir</option>
-              <option value="old4">Ancien 4 cœurs</option>
-              <option value="mid6">6 cœurs milieu de gamme</option>
-              <option value="modern6">6 cœurs récent</option>
-              <option value="high8">8 cœurs récent</option>
-              <option value="x3d">Ryzen X3D</option>
+
+              <optgroup label="AMD Ryzen 1000 / 2000">
+                <option value="r5-1600">Ryzen 5 1600 / 1600X</option>
+                <option value="r7-1700">Ryzen 7 1700 / 1700X / 1800X</option>
+                <option value="r5-2600">Ryzen 5 2600 / 2600X</option>
+                <option value="r7-2700">Ryzen 7 2700 / 2700X</option>
+              </optgroup>
+
+              <optgroup label="AMD Ryzen 3000">
+                <option value="r5-3600">Ryzen 5 3600 / 3600X</option>
+                <option value="r7-3700x">Ryzen 7 3700X / 3800X</option>
+                <option value="r9-3900x">Ryzen 9 3900X / 3950X</option>
+              </optgroup>
+
+              <optgroup label="AMD Ryzen 5000">
+                <option value="r5-5500">Ryzen 5 5500</option>
+                <option value="r5-5600">Ryzen 5 5600 / 5600X</option>
+                <option value="r7-5700x">Ryzen 7 5700X / 5800X</option>
+                <option value="r7-5700x3d">Ryzen 7 5700X3D</option>
+                <option value="r7-5800x3d">Ryzen 7 5800X3D</option>
+                <option value="r9-5900x">Ryzen 9 5900X / 5950X</option>
+              </optgroup>
+
+              <optgroup label="AMD Ryzen 7000">
+                <option value="r5-7500f">Ryzen 5 7500F</option>
+                <option value="r5-7600">Ryzen 5 7600 / 7600X</option>
+                <option value="r7-7700">Ryzen 7 7700 / 7700X</option>
+                <option value="r7-7800x3d">Ryzen 7 7800X3D</option>
+                <option value="r9-7900x">Ryzen 9 7900X / 7950X</option>
+                <option value="r9-7950x3d">Ryzen 9 7900X3D / 7950X3D</option>
+              </optgroup>
+
+              <optgroup label="AMD Ryzen 9000">
+                <option value="r5-9600x">Ryzen 5 9600X</option>
+                <option value="r7-9700x">Ryzen 7 9700X</option>
+                <option value="r7-9800x3d">Ryzen 7 9800X3D</option>
+                <option value="r9-9900x">Ryzen 9 9900X / 9950X</option>
+                <option value="r9-9950x3d">Ryzen 9 9900X3D / 9950X3D</option>
+              </optgroup>
+
+              <optgroup label="Intel 8e / 9e génération">
+                <option value="i5-8400">Core i5-8400 / 8500 / 8600K</option>
+                <option value="i7-8700k">Core i7-8700 / 8700K</option>
+                <option value="i5-9600k">Core i5-9400F / 9600K</option>
+                <option value="i7-9700k">Core i7-9700 / 9700K</option>
+                <option value="i9-9900k">Core i9-9900 / 9900K</option>
+              </optgroup>
+
+              <optgroup label="Intel 10e / 11e génération">
+                <option value="i5-10400">Core i5-10400 / 10600K</option>
+                <option value="i7-10700k">Core i7-10700 / 10700K</option>
+                <option value="i9-10900k">Core i9-10900 / 10900K</option>
+                <option value="i5-11400">Core i5-11400 / 11600K</option>
+                <option value="i7-11700k">Core i7-11700 / 11700K</option>
+                <option value="i9-11900k">Core i9-11900 / 11900K</option>
+              </optgroup>
+
+              <optgroup label="Intel 12e génération">
+                <option value="i5-12400">Core i5-12400 / 12400F</option>
+                <option value="i5-12600k">Core i5-12600K / KF</option>
+                <option value="i7-12700k">Core i7-12700 / 12700K</option>
+                <option value="i9-12900k">Core i9-12900 / 12900K</option>
+              </optgroup>
+
+              <optgroup label="Intel 13e génération">
+                <option value="i5-13400f">Core i5-13400 / 13400F</option>
+                <option value="i5-13600k">Core i5-13600K / KF</option>
+                <option value="i7-13700k">Core i7-13700 / 13700K</option>
+                <option value="i9-13900k">Core i9-13900 / 13900K</option>
+              </optgroup>
+
+              <optgroup label="Intel 14e génération">
+                <option value="i5-14400f">Core i5-14400 / 14400F</option>
+                <option value="i5-14600k">Core i5-14600K / KF</option>
+                <option value="i7-14700k">Core i7-14700 / 14700K</option>
+                <option value="i9-14900k">Core i9-14900 / 14900K</option>
+              </optgroup>
+
+              <optgroup label="Intel Core Ultra 200S">
+                <option value="ultra5-245k">Core Ultra 5 245K / KF</option>
+                <option value="ultra7-265k">Core Ultra 7 265K / KF</option>
+                <option value="ultra9-285k">Core Ultra 9 285K</option>
+              </optgroup>
+
               <option value="other">Autre / Je ne sais pas</option>
             </select>
           </label>
