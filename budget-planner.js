@@ -11,8 +11,6 @@
     document.head.appendChild(link);
   }
 
-  // Repli pour les produits qui ne portent pas encore leur propre estimation.
-  // Les montants servent uniquement à planifier ; le prix marchand fait foi.
   const fallbackEstimates = {
     'AMD Ryzen 7 5700X3D': { price: 220 },
     'AMD Ryzen 7 5800X3D': { price: 320 },
@@ -39,6 +37,10 @@
       currency: 'EUR',
       maximumFractionDigits: 0
     }).format(value);
+  }
+
+  function normalizeName(value) {
+    return (value || '').trim().toLocaleLowerCase('fr-FR');
   }
 
   function currentPsu() {
@@ -152,13 +154,19 @@
       recommendations.parentElement.insertBefore(panel, recommendations);
     }
 
-    const cheapestByTitle = new Map();
+    // Un même produit peut être issu de plusieurs règles de recommandation.
+    // Pour le visiteur, cela reste un seul scénario : on déduplique donc par nom exact.
+    const uniqueByProduct = new Map();
     scenarios.forEach(item => {
-      const current = cheapestByTitle.get(item.title);
-      if (!current || item.total < current.total) cheapestByTitle.set(item.title, item);
+      const key = normalizeName(item.name);
+      const current = uniqueByProduct.get(key);
+      if (!current || item.total < current.total) uniqueByProduct.set(key, item);
     });
 
-    const choices = [...cheapestByTitle.values()].sort((a, b) => a.total - b.total).slice(0, 3);
+    const choices = [...uniqueByProduct.values()]
+      .sort((a, b) => a.total - b.total)
+      .slice(0, 3);
+
     const remaining = choices.length && !budget.openEnded
       ? Math.max(0, budget.value - choices[0].total)
       : null;
