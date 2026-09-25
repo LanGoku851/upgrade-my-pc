@@ -64,7 +64,7 @@
     'asus-dual-rtx5060ti16-oc': {
       customId: 'umpgpuasus5060ti16',
       destination: 'https://www.ebay.fr/sch/i.html?_nkw=ASUS+Dual+GeForce+RTX+5060+Ti+OC+16GB',
-      url: ''
+      url: 'https://www.ebay.fr/sch/i.html?_nkw=ASUS+Dual+GeForce+RTX+5060+Ti+OC+16GB&mkcid=1&mkrid=709-53476-19255-0&siteid=71&campid=5339214367&customid=umpgpuasus5060ti16&toolid=10001&mkevt=1'
     },
     'sapphire-pure-rx9060xt16': {
       customId: 'umpgpupure9060xt16',
