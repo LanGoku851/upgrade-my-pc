@@ -99,7 +99,7 @@
     'asus-prime-rtx5070ti': {
       customId: 'umpgpuasusprime5070ti',
       destination: 'https://www.ebay.fr/sch/i.html?_nkw=ASUS+Prime+GeForce+RTX+5070+Ti+16GB',
-      url: ''
+      url: 'https://www.ebay.fr/sch/i.html?_nkw=ASUS+Prime+GeForce+RTX+5070+Ti+16GB&mkcid=1&mkrid=709-53476-19255-0&siteid=71&campid=5339214367&customid=umpgpuasusprime5070ti&toolid=10001&mkevt=1'
     },
 
     'ryzen9800x3d': {
