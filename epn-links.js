@@ -57,9 +57,9 @@
     },
 
     'sapphire-pulse-rx9060xt16': {
-      customId: 'umpgpupulse9060xt16',
+      customId: 'umprx9060xtsapphirepulse',
       destination: 'https://www.ebay.fr/sch/i.html?_nkw=Sapphire+PULSE+Radeon+RX+9060+XT+OC+16GB',
-      url: ''
+      url: 'https://www.ebay.fr/sch/i.html?_nkw=Sapphire+PULSE+Radeon+RX+9060+XT+OC+16GB&_sacat=0&_from=R40&_trksid=m570.l1313&mkcid=1&mkrid=709-53476-19255-0&siteid=71&campid=5339214367&customid=umprx9060xtsapphirepulse&toolid=10001&mkevt=1'
     },
     'asus-dual-rtx5060ti16-oc': {
       customId: 'umpgpuasus5060ti16',
@@ -72,9 +72,9 @@
       url: ''
     },
     'sapphire-pulse-rx9060xt16-high': {
-      customId: 'umpgpupulse9060xt16high',
+      customId: 'umprx9060xtsapphirepulse',
       destination: 'https://www.ebay.fr/sch/i.html?_nkw=Sapphire+PULSE+Radeon+RX+9060+XT+OC+16GB',
-      url: ''
+      url: 'https://www.ebay.fr/sch/i.html?_nkw=Sapphire+PULSE+Radeon+RX+9060+XT+OC+16GB&_sacat=0&_from=R40&_trksid=m570.l1313&mkcid=1&mkrid=709-53476-19255-0&siteid=71&campid=5339214367&customid=umprx9060xtsapphirepulse&toolid=10001&mkevt=1'
     },
     'powercolor-reaper-rx9070': {
       customId: 'umpgpureaper9070',
