@@ -69,7 +69,7 @@
     'sapphire-pure-rx9060xt16': {
       customId: 'umpgpupure9060xt16',
       destination: 'https://www.ebay.fr/sch/i.html?_nkw=Sapphire+PURE+Radeon+RX+9060+XT+OC+16GB',
-      url: ''
+      url: 'https://www.ebay.fr/sch/i.html?_nkw=Sapphire+PURE+Radeon+RX+9060+XT+OC+16GB&mkcid=1&mkrid=709-53476-19255-0&siteid=71&campid=5339214367&customid=umpgpupure9060xt16&toolid=10001&mkevt=1'
     },
     'sapphire-pulse-rx9060xt16-high': {
       customId: 'umprx9060xtsapphirepulse',
