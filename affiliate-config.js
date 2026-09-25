@@ -198,4 +198,5 @@ window.addEventListener('load', () => {
   loadScript('platform-compat.js');
   loadScript('case-compat.js');
   loadScript('performance-goals.js');
+  loadScript('budget-planner.js');
 });
