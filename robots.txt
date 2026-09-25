@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://langoku851.github.io/upgrade-my-pc/sitemap.xml
