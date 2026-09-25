@@ -94,7 +94,7 @@
     'msi-rtx5070ti-ventus3x': {
       customId: 'umpgpumsi5070tiventus',
       destination: 'https://www.ebay.fr/sch/i.html?_nkw=MSI+GeForce+RTX+5070+Ti+16G+VENTUS+3X+OC',
-      url: ''
+      url: 'https://www.ebay.fr/sch/i.html?_nkw=MSI+GeForce+RTX+5070+Ti+16G+VENTUS+3X+OC&mkcid=1&mkrid=709-53476-19255-0&siteid=71&campid=5339214367&customid=umpgpumsi5070tiventus&toolid=10001&mkevt=1'
     },
     'asus-prime-rtx5070ti': {
       customId: 'umpgpuasusprime5070ti',
