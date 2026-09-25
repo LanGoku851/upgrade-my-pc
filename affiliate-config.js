@@ -187,8 +187,14 @@ window.AFFILIATE_MERCHANTS = {
 };
 
 window.addEventListener('load', () => {
-  if (document.querySelector('script[src="platform-compat.js"]')) return;
-  const platformScript = document.createElement('script');
-  platformScript.src = 'platform-compat.js';
-  document.body.appendChild(platformScript);
+  const loadScript = (src) => {
+    if (document.querySelector(`script[src="${src}"]`)) return;
+    const script = document.createElement('script');
+    script.src = src;
+    script.async = false;
+    document.body.appendChild(script);
+  };
+
+  loadScript('platform-compat.js');
+  loadScript('case-compat.js');
 });
