@@ -4,7 +4,8 @@ const recommendations = document.getElementById('recommendations');
 const summaryText = document.getElementById('summaryText');
 const copyResult = document.getElementById('copyResult');
 
-const affiliateLinks = window.AFFILIATE_LINKS || {};
+const affiliateProducts = window.AFFILIATE_PRODUCTS || {};
+const affiliateMerchants = window.AFFILIATE_MERCHANTS || {};
 let latestShareText = '';
 
 const catalog = {
@@ -12,50 +13,43 @@ const catalog = {
     title: 'Passer à au moins 16 Go de RAM',
     price: 'Budget généralement accessible',
     impact: 'Priorité forte',
-    desc: 'À envisager avant un gros achat si la mémoire disponible provoque déjà des ralentissements ou des fermetures d’applications.',
-    search: 'kits mémoire compatibles'
+    desc: 'À envisager avant un gros achat si la mémoire disponible provoque déjà des ralentissements ou des fermetures d’applications.'
   },
   ram32: {
     title: 'Passer à 32 Go de RAM',
     price: 'Upgrade de confort',
     impact: 'Confort',
-    desc: 'Particulièrement utile avec Discord, navigateur, mods, streaming ou plusieurs applications ouvertes pendant le jeu.',
-    search: 'kits 32 Go compatibles'
+    desc: 'Particulièrement utile avec Discord, navigateur, mods, streaming ou plusieurs applications ouvertes pendant le jeu.'
   },
   nvme: {
     title: 'Ajouter ou remplacer par un SSD NVMe',
     price: 'Bon rapport confort / prix',
     impact: 'Chargements',
-    desc: 'Réduit surtout les temps de chargement, les installations et certaines attentes liées au stockage.',
-    search: 'SSD NVMe'
+    desc: 'Réduit surtout les temps de chargement, les installations et certaines attentes liées au stockage.'
   },
   gpuMid: {
-    title: 'Regarder un GPU de gamme supérieure',
+    title: 'Monter en gamme côté carte graphique',
     price: 'Investissement moyen',
     impact: 'FPS',
-    desc: 'La carte graphique est souvent le levier principal pour obtenir plus de FPS ou augmenter les réglages graphiques.',
-    search: 'cartes graphiques milieu de gamme'
+    desc: 'La carte graphique est souvent le levier principal pour obtenir plus de FPS ou augmenter les réglages graphiques.'
   },
   gpuHigh: {
-    title: 'Regarder un GPU haut de gamme',
+    title: 'Passer à une carte graphique plus puissante',
     price: 'Investissement important',
     impact: 'Gros gain potentiel',
-    desc: 'Pertinent lorsque la résolution et les réglages graphiques sollicitent fortement la carte graphique.',
-    search: 'cartes graphiques haut de gamme'
+    desc: 'Pertinent lorsque la résolution et les réglages graphiques sollicitent fortement la carte graphique.'
   },
   cpu: {
     title: 'Étudier un upgrade processeur / plateforme',
     price: 'Dépend de la carte mère',
     impact: 'FPS CPU',
-    desc: 'À regarder si le processeur limite les hauts FPS. Un changement de plateforme peut aussi imposer une nouvelle carte mère ou de la RAM.',
-    search: 'processeurs gaming'
+    desc: 'À regarder si le processeur limite les hauts FPS. Un changement de plateforme peut aussi imposer une nouvelle carte mère ou de la RAM.'
   },
   monitor: {
     title: 'Améliorer l’écran plutôt que le PC',
     price: 'Upgrade visible immédiatement',
     impact: 'Expérience',
-    desc: 'Si le PC atteint déjà beaucoup de FPS, un écran mieux adapté peut être plus perceptible qu’un petit remplacement de composant.',
-    search: 'écrans gaming 1440p haut rafraîchissement'
+    desc: 'Si le PC atteint déjà beaucoup de FPS, un écran mieux adapté peut être plus perceptible qu’un petit remplacement de composant.'
   }
 };
 
@@ -63,12 +57,55 @@ function pushUnique(arr, key, reason, score) {
   if (!arr.some(x => x.key === key)) arr.push({ key, reason, score });
 }
 
-function makeMerchantAction(key) {
-  const url = affiliateLinks[key];
-  if (url && /^https?:\/\//i.test(url)) {
-    return `<a class="buy-btn" href="${url}" target="_blank" rel="nofollow sponsored noopener" data-affiliate="${key}">Comparer les offres</a>`;
+function isValidUrl(url) {
+  return typeof url === 'string' && /^https?:\/\//i.test(url);
+}
+
+function productListFor(key, budget) {
+  const products = Array.isArray(affiliateProducts[key]) ? affiliateProducts[key] : [];
+  if (key === 'gpuHigh') {
+    if (budget < 700) return products.slice(0, 1);
+    if (budget < 1000) return products.slice(0, 2);
   }
-  return `<span class="buy-btn disabled" aria-disabled="true" title="Lien marchand à configurer après inscription à un programme partenaire">Comparer bientôt</span>`;
+  return products.slice(0, 3);
+}
+
+function merchantButtons(product) {
+  const merchants = product.merchants || {};
+  const entries = Object.entries(merchants);
+  const active = entries.filter(([, url]) => isValidUrl(url));
+
+  if (!entries.length) return '';
+
+  if (!active.length) {
+    return `<div class="merchant-pending">Liens marchands affiliés en cours d’activation.</div>`;
+  }
+
+  return `<div class="merchant-actions">${active.map(([merchantId, url]) => {
+    const merchantName = affiliateMerchants[merchantId] || merchantId;
+    return `<a class="merchant-btn" href="${url}" target="_blank" rel="nofollow sponsored noopener" data-affiliate="${product.id}" data-merchant="${merchantId}">Voir chez ${merchantName}</a>`;
+  }).join('')}</div>`;
+}
+
+function renderProducts(key, budget) {
+  const products = productListFor(key, budget);
+  if (!products.length) return '';
+
+  return `
+    <div class="product-suggestions">
+      <div class="product-suggestions-title">Matériel à comparer</div>
+      ${products.map(product => `
+        <div class="product-option">
+          <div class="product-option-head">
+            <strong>${product.name}</strong>
+            ${product.tag ? `<span class="product-tag">${product.tag}</span>` : ''}
+          </div>
+          ${product.note ? `<p>${product.note}</p>` : ''}
+          ${merchantButtons(product)}
+        </div>
+      `).join('')}
+    </div>
+  `;
 }
 
 function goalLabel() {
@@ -135,15 +172,18 @@ form.addEventListener('submit', (e) => {
         <p class="reason">${rec.reason}</p>
         <p>${item.desc}</p>
         <div class="price">${item.price}</div>
-        ${makeMerchantAction(rec.key)}
-        <small class="compatibility">Avant achat : vérifie compatibilité, alimentation, dimensions et connectique.</small>
+        ${renderProducts(rec.key, budget)}
+        <small class="compatibility">Avant achat : vérifie compatibilité, alimentation, dimensions et connectique. Les prix et stocks sont ceux du marchand au moment du clic.</small>
       </article>
     `;
   }).join('');
 
   const resolutionLabel = resolution === '4k' ? '4K' : `${resolution}p`;
   summaryText.textContent = `Budget : ${budget} € • Résolution : ${resolutionLabel} • Objectif : ${goalLabel()}`;
-  latestShareText = `Mon diagnostic UpgradeMyPC — ${summaryText.textContent}\n${top.map((rec, i) => `${i + 1}. ${catalog[rec.key].title}`).join('\n')}`;
+  latestShareText = `Mon diagnostic UpgradeMyPC — ${summaryText.textContent}\n${top.map((rec, i) => {
+    const productNames = productListFor(rec.key, budget).map(product => product.name).join(', ');
+    return `${i + 1}. ${catalog[rec.key].title}${productNames ? ` — ${productNames}` : ''}`;
+  }).join('\n')}`;
 
   results.classList.remove('hidden');
   results.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -164,6 +204,5 @@ copyResult.addEventListener('click', async () => {
 document.addEventListener('click', (event) => {
   const affiliate = event.target.closest('[data-affiliate]');
   if (!affiliate) return;
-  // Point d'accroche pour un futur outil d'analytics respectueux du consentement.
-  console.info('Outbound affiliate click:', affiliate.dataset.affiliate);
+  console.info('Outbound affiliate click:', affiliate.dataset.affiliate, affiliate.dataset.merchant);
 });
