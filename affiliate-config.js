@@ -7,6 +7,14 @@
   Chaque produit peut avoir plusieurs marchands. Dès qu'une URL est renseignée,
   le bouton du marchand devient cliquable et utilise rel="nofollow sponsored".
 */
+
+if (!document.querySelector('link[href="affiliate-products.css"]')) {
+  const affiliateStyle = document.createElement('link');
+  affiliateStyle.rel = 'stylesheet';
+  affiliateStyle.href = 'affiliate-products.css';
+  document.head.appendChild(affiliateStyle);
+}
+
 window.AFFILIATE_PRODUCTS = {
   ram16: [
     {
