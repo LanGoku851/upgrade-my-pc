@@ -21,11 +21,11 @@
     'WD Black SN850X 1 To': { price: 90 },
     'Crucial T500 2 To': { price: 145 },
 
-    'AMD Radeon RX 9060 XT 16 Go': { price: 410, psu: 650 },
-    'NVIDIA GeForce RTX 5060 Ti 16 Go': { price: 470, psu: 650 },
-    'AMD Radeon RX 9070 16 Go': { price: 620, psu: 750 },
-    'AMD Radeon RX 9070 XT 16 Go': { price: 740, psu: 850 },
-    'NVIDIA GeForce RTX 5070 Ti 16 Go': { price: 900, psu: 850 },
+    'AMD Radeon RX 9060 XT 16 Go': { price: 410, psu: 450 },
+    'NVIDIA GeForce RTX 5060 Ti 16 Go': { price: 470, psu: 600 },
+    'AMD Radeon RX 9070 16 Go': { price: 620, psu: 650 },
+    'AMD Radeon RX 9070 XT 16 Go': { price: 740, psu: 750 },
+    'NVIDIA GeForce RTX 5070 Ti 16 Go': { price: 900, psu: 750 },
 
     'AMD Ryzen 7 5700X3D': { price: 220 },
     'AMD Ryzen 7 5800X3D': { price: 320 },
@@ -41,7 +41,7 @@
     'Écran 27 pouces 1440p 180 Hz': { price: 250 }
   };
 
-  const psuUpgradeCost = (required) => required >= 850 ? 130 : 105;
+  const psuUpgradeCost = (required) => required >= 850 ? 130 : required >= 750 ? 105 : 90;
 
   function formatEuro(value) {
     return new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }).format(value);
