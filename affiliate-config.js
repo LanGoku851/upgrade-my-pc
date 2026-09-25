@@ -185,3 +185,10 @@ window.AFFILIATE_MERCHANTS = {
   fnac: "Fnac",
   amazon: "Amazon"
 };
+
+window.addEventListener('load', () => {
+  if (document.querySelector('script[src="platform-compat.js"]')) return;
+  const platformScript = document.createElement('script');
+  platformScript.src = 'platform-compat.js';
+  document.body.appendChild(platformScript);
+});
