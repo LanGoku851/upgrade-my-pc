@@ -84,7 +84,7 @@
     'powercolor-reaper-rx9070xt': {
       customId: 'umpgpureaper9070xt',
       destination: 'https://www.ebay.fr/sch/i.html?_nkw=PowerColor+Reaper+Radeon+RX+9070+XT+16GB',
-      url: ''
+      url: 'https://www.ebay.fr/sch/i.html?_nkw=PowerColor+Reaper+Radeon+RX+9070+XT+16GB&mkcid=1&mkrid=709-53476-19255-0&siteid=71&campid=5339214367&customid=umpgpureaper9070xt&toolid=10001&mkevt=1'
     },
     'powercolor-hellhound-rx9070xt': {
       customId: 'umpgpuhellhound9070xt',
