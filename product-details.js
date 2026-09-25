@@ -3,13 +3,6 @@
   const recommendations = document.getElementById('recommendations');
   if (!form || !recommendations) return;
 
-  if (!document.querySelector('script[src="epn-links.js"]')) {
-    const epnScript = document.createElement('script');
-    epnScript.src = 'epn-links.js';
-    epnScript.async = false;
-    document.body.appendChild(epnScript);
-  }
-
   if (!document.querySelector('link[href="product-details.css"]')) {
     const link = document.createElement('link');
     link.rel = 'stylesheet';
@@ -30,6 +23,42 @@
       currency: 'EUR',
       maximumFractionDigits: 0
     }).format(value);
+  }
+
+  function normalizeName(value) {
+    return (value || '').trim().toLocaleLowerCase('fr-FR');
+  }
+
+  function mergeDuplicateGpuRecommendations() {
+    const gpuCards = [...recommendations.querySelectorAll('.recommendation')].filter(card =>
+      /carte graphique|\bgpu\b/i.test(card.querySelector('h3')?.textContent || '')
+    );
+    if (gpuCards.length <= 1) return;
+
+    // On conserve la première carte affichée et on y rassemble les références uniques.
+    const primary = gpuCards[0];
+    const targetGroup = primary.querySelector('.product-suggestions');
+    const seenProducts = new Set(
+      [...primary.querySelectorAll('.product-option strong')].map(el => normalizeName(el.textContent))
+    );
+
+    gpuCards.slice(1).forEach(card => {
+      const sourceGroup = card.querySelector('.product-suggestions');
+      if (targetGroup && sourceGroup) {
+        [...sourceGroup.querySelectorAll('.product-option')].forEach(row => {
+          const name = normalizeName(row.querySelector('strong')?.textContent);
+          if (!name || seenProducts.has(name)) return;
+          seenProducts.add(name);
+          targetGroup.appendChild(row);
+        });
+      }
+      card.remove();
+    });
+
+    [...recommendations.querySelectorAll('.recommendation')].forEach((card, index) => {
+      const rank = card.querySelector('.rank');
+      if (rank) rank.textContent = String(index + 1);
+    });
   }
 
   function render() {
@@ -63,49 +92,17 @@
         row.classList.add('product-incompatible');
         const warning = document.createElement('div');
         warning.className = 'exact-product-warning';
-        warning.textContent = `Ce modèle fait ${product.gpuLengthMm} mm et dépasse la longueur maximale que tu as indiquée (≈ ${clearance} mm). Il est exclu des scénarios d’achat.`;
+        warning.textContent = `Ce modèle fait ${product.gpuLengthMm} mm et dépasse la longueur maximale que tu as indiquée (≈ ${clearance} mm). Il n’est pas retenu dans les scénarios compatibles.`;
         row.appendChild(warning);
       }
     });
   }
 
-  function normalizeName(value) {
-    return (value || '').trim().toLocaleLowerCase('fr-FR');
+  function finalizeProductCards() {
+    // Important : fusionner d'abord, puis recalculer les dimensions sur l'état final du DOM.
+    mergeDuplicateGpuRecommendations();
+    render();
   }
 
-  function mergeDuplicateGpuRecommendations() {
-    const gpuCards = [...recommendations.querySelectorAll('.recommendation')].filter(card =>
-      /carte graphique|\bgpu\b/i.test(card.querySelector('h3')?.textContent || '')
-    );
-    if (gpuCards.length <= 1) return;
-
-    const primary = gpuCards[0];
-    const targetGroup = primary.querySelector('.product-suggestions');
-    const seenProducts = new Set(
-      [...primary.querySelectorAll('.product-option strong')].map(el => normalizeName(el.textContent))
-    );
-
-    gpuCards.slice(1).forEach(card => {
-      const sourceGroup = card.querySelector('.product-suggestions');
-      if (targetGroup && sourceGroup) {
-        [...sourceGroup.querySelectorAll('.product-option')].forEach(row => {
-          const name = normalizeName(row.querySelector('strong')?.textContent);
-          if (!name || seenProducts.has(name)) return;
-          seenProducts.add(name);
-          targetGroup.appendChild(row);
-        });
-      }
-      card.remove();
-    });
-
-    [...recommendations.querySelectorAll('.recommendation')].forEach((card, index) => {
-      const rank = card.querySelector('.rank');
-      if (rank) rank.textContent = String(index + 1);
-    });
-  }
-
-  form.addEventListener('submit', () => {
-    setTimeout(render, 35);
-    setTimeout(mergeDuplicateGpuRecommendations, 90);
-  });
+  form.addEventListener('submit', () => setTimeout(finalizeProductCards, 55));
 })();
