@@ -4,183 +4,80 @@ const recommendations = document.getElementById('recommendations');
 const summaryText = document.getElementById('summaryText');
 const copyResult = document.getElementById('copyResult');
 const gpuSelect = document.getElementById('gpu');
+const cpuSelect = document.getElementById('cpu');
 
 const affiliateProducts = window.AFFILIATE_PRODUCTS || {};
 const affiliateMerchants = window.AFFILIATE_MERCHANTS || {};
 let latestShareText = '';
 
-// On remplace la liste GPU générique du HTML par de vrais modèles.
-gpuSelect.innerHTML = `
-  <option value="">Choisir</option>
+const GPU_GROUPS = [
+  ['NVIDIA GeForce GTX 10', [
+    ['gtx-1050ti','GTX 1050 Ti',1], ['gtx-1060','GTX 1060',1], ['gtx-1070','GTX 1070',2],
+    ['gtx-1070ti','GTX 1070 Ti',2], ['gtx-1080','GTX 1080',2], ['gtx-1080ti','GTX 1080 Ti',3]
+  ]],
+  ['NVIDIA GeForce GTX 16', [
+    ['gtx-1650','GTX 1650',1], ['gtx-1650s','GTX 1650 Super',1], ['gtx-1660','GTX 1660',2],
+    ['gtx-1660s','GTX 1660 Super',2], ['gtx-1660ti','GTX 1660 Ti',2]
+  ]],
+  ['NVIDIA GeForce RTX 20', [
+    ['rtx-2060','RTX 2060',2], ['rtx-2060s','RTX 2060 Super',3], ['rtx-2070','RTX 2070',3],
+    ['rtx-2070s','RTX 2070 Super',3], ['rtx-2080','RTX 2080',3], ['rtx-2080s','RTX 2080 Super',3],
+    ['rtx-2080ti','RTX 2080 Ti',4]
+  ]],
+  ['NVIDIA GeForce RTX 30', [
+    ['rtx-3050','RTX 3050',2], ['rtx-3060','RTX 3060',3], ['rtx-3060ti','RTX 3060 Ti',4],
+    ['rtx-3070','RTX 3070',4], ['rtx-3070ti','RTX 3070 Ti',4], ['rtx-3080','RTX 3080',5],
+    ['rtx-3080ti','RTX 3080 Ti',5], ['rtx-3090','RTX 3090',5], ['rtx-3090ti','RTX 3090 Ti',5]
+  ]],
+  ['NVIDIA GeForce RTX 40', [
+    ['rtx-4060','RTX 4060',3], ['rtx-4060ti','RTX 4060 Ti',4], ['rtx-4070','RTX 4070',5],
+    ['rtx-4070s','RTX 4070 Super',5], ['rtx-4070ti','RTX 4070 Ti',5], ['rtx-4070tis','RTX 4070 Ti Super',6],
+    ['rtx-4080','RTX 4080',6], ['rtx-4080s','RTX 4080 Super',6], ['rtx-4090','RTX 4090',7]
+  ]],
+  ['NVIDIA GeForce RTX 50', [
+    ['rtx-5050','RTX 5050',3], ['rtx-5060','RTX 5060',4], ['rtx-5060ti','RTX 5060 Ti',4],
+    ['rtx-5070','RTX 5070',5], ['rtx-5070ti','RTX 5070 Ti',6], ['rtx-5080','RTX 5080',6],
+    ['rtx-5090','RTX 5090',7]
+  ]],
+  ['AMD Radeon RX 500', [
+    ['rx-570','RX 570',1], ['rx-580','RX 580',1], ['rx-590','RX 590',1]
+  ]],
+  ['AMD Radeon RX 5000', [
+    ['rx-5500xt','RX 5500 XT',1], ['rx-5600xt','RX 5600 XT',2], ['rx-5700','RX 5700',2],
+    ['rx-5700xt','RX 5700 XT',3]
+  ]],
+  ['AMD Radeon RX 6000', [
+    ['rx-6400','RX 6400',1], ['rx-6500xt','RX 6500 XT',1], ['rx-6600','RX 6600',2],
+    ['rx-6600xt','RX 6600 XT',3], ['rx-6650xt','RX 6650 XT',3], ['rx-6700','RX 6700',3],
+    ['rx-6700xt','RX 6700 XT',4], ['rx-6750xt','RX 6750 XT',4], ['rx-6800','RX 6800',4],
+    ['rx-6800xt','RX 6800 XT',5], ['rx-6900xt','RX 6900 XT',5], ['rx-6950xt','RX 6950 XT',5]
+  ]],
+  ['AMD Radeon RX 7000', [
+    ['rx-7600','RX 7600',3], ['rx-7600xt','RX 7600 XT',3], ['rx-7700xt','RX 7700 XT',4],
+    ['rx-7800xt','RX 7800 XT',5], ['rx-7900gre','RX 7900 GRE',5], ['rx-7900xt','RX 7900 XT',6],
+    ['rx-7900xtx','RX 7900 XTX',6]
+  ]],
+  ['AMD Radeon RX 9000', [
+    ['rx-9050','RX 9050',2], ['rx-9060','RX 9060',3], ['rx-9060xt8','RX 9060 XT 8 Go',4],
+    ['rx-9060xt16','RX 9060 XT 16 Go',4], ['rx-9070gre','RX 9070 GRE',5], ['rx-9070','RX 9070',5],
+    ['rx-9070xt','RX 9070 XT',6]
+  ]],
+  ['Intel Arc A-Series', [
+    ['arc-a380','Arc A380',1], ['arc-a580','Arc A580',2], ['arc-a750','Arc A750',3], ['arc-a770','Arc A770',3]
+  ]],
+  ['Intel Arc B-Series', [
+    ['arc-b570','Arc B570',3], ['arc-b580','Arc B580',4]
+  ]]
+];
 
-  <optgroup label="NVIDIA GeForce GTX 10">
-    <option value="gtx-1050ti">GTX 1050 Ti</option>
-    <option value="gtx-1060">GTX 1060</option>
-    <option value="gtx-1070">GTX 1070</option>
-    <option value="gtx-1070ti">GTX 1070 Ti</option>
-    <option value="gtx-1080">GTX 1080</option>
-    <option value="gtx-1080ti">GTX 1080 Ti</option>
-  </optgroup>
+gpuSelect.innerHTML = '<option value="">Choisir</option>' +
+  GPU_GROUPS.map(([label, cards]) => `<optgroup label="${label}">${cards.map(([id, name]) => `<option value="${id}">${name}</option>`).join('')}</optgroup>`).join('') +
+  '<option value="other">Autre / Je ne sais pas</option>';
 
-  <optgroup label="NVIDIA GeForce GTX 16">
-    <option value="gtx-1650">GTX 1650</option>
-    <option value="gtx-1650s">GTX 1650 Super</option>
-    <option value="gtx-1660">GTX 1660</option>
-    <option value="gtx-1660s">GTX 1660 Super</option>
-    <option value="gtx-1660ti">GTX 1660 Ti</option>
-  </optgroup>
-
-  <optgroup label="NVIDIA GeForce RTX 20">
-    <option value="rtx-2060">RTX 2060</option>
-    <option value="rtx-2060s">RTX 2060 Super</option>
-    <option value="rtx-2070">RTX 2070</option>
-    <option value="rtx-2070s">RTX 2070 Super</option>
-    <option value="rtx-2080">RTX 2080</option>
-    <option value="rtx-2080s">RTX 2080 Super</option>
-    <option value="rtx-2080ti">RTX 2080 Ti</option>
-  </optgroup>
-
-  <optgroup label="NVIDIA GeForce RTX 30">
-    <option value="rtx-3050">RTX 3050</option>
-    <option value="rtx-3060">RTX 3060</option>
-    <option value="rtx-3060ti">RTX 3060 Ti</option>
-    <option value="rtx-3070">RTX 3070</option>
-    <option value="rtx-3070ti">RTX 3070 Ti</option>
-    <option value="rtx-3080">RTX 3080</option>
-    <option value="rtx-3080ti">RTX 3080 Ti</option>
-    <option value="rtx-3090">RTX 3090</option>
-    <option value="rtx-3090ti">RTX 3090 Ti</option>
-  </optgroup>
-
-  <optgroup label="NVIDIA GeForce RTX 40">
-    <option value="rtx-4060">RTX 4060</option>
-    <option value="rtx-4060ti">RTX 4060 Ti</option>
-    <option value="rtx-4070">RTX 4070</option>
-    <option value="rtx-4070s">RTX 4070 Super</option>
-    <option value="rtx-4070ti">RTX 4070 Ti</option>
-    <option value="rtx-4070tis">RTX 4070 Ti Super</option>
-    <option value="rtx-4080">RTX 4080</option>
-    <option value="rtx-4080s">RTX 4080 Super</option>
-    <option value="rtx-4090">RTX 4090</option>
-  </optgroup>
-
-  <optgroup label="NVIDIA GeForce RTX 50">
-    <option value="rtx-5050">RTX 5050</option>
-    <option value="rtx-5060">RTX 5060</option>
-    <option value="rtx-5060ti">RTX 5060 Ti</option>
-    <option value="rtx-5070">RTX 5070</option>
-    <option value="rtx-5070ti">RTX 5070 Ti</option>
-    <option value="rtx-5080">RTX 5080</option>
-    <option value="rtx-5090">RTX 5090</option>
-  </optgroup>
-
-  <optgroup label="AMD Radeon RX 500">
-    <option value="rx-570">RX 570</option>
-    <option value="rx-580">RX 580</option>
-    <option value="rx-590">RX 590</option>
-  </optgroup>
-
-  <optgroup label="AMD Radeon RX 5000">
-    <option value="rx-5500xt">RX 5500 XT</option>
-    <option value="rx-5600xt">RX 5600 XT</option>
-    <option value="rx-5700">RX 5700</option>
-    <option value="rx-5700xt">RX 5700 XT</option>
-  </optgroup>
-
-  <optgroup label="AMD Radeon RX 6000">
-    <option value="rx-6400">RX 6400</option>
-    <option value="rx-6500xt">RX 6500 XT</option>
-    <option value="rx-6600">RX 6600</option>
-    <option value="rx-6600xt">RX 6600 XT</option>
-    <option value="rx-6650xt">RX 6650 XT</option>
-    <option value="rx-6700">RX 6700</option>
-    <option value="rx-6700xt">RX 6700 XT</option>
-    <option value="rx-6750xt">RX 6750 XT</option>
-    <option value="rx-6800">RX 6800</option>
-    <option value="rx-6800xt">RX 6800 XT</option>
-    <option value="rx-6900xt">RX 6900 XT</option>
-    <option value="rx-6950xt">RX 6950 XT</option>
-  </optgroup>
-
-  <optgroup label="AMD Radeon RX 7000">
-    <option value="rx-7600">RX 7600</option>
-    <option value="rx-7600xt">RX 7600 XT</option>
-    <option value="rx-7700xt">RX 7700 XT</option>
-    <option value="rx-7800xt">RX 7800 XT</option>
-    <option value="rx-7900gre">RX 7900 GRE</option>
-    <option value="rx-7900xt">RX 7900 XT</option>
-    <option value="rx-7900xtx">RX 7900 XTX</option>
-  </optgroup>
-
-  <optgroup label="AMD Radeon RX 9000">
-    <option value="rx-9050">RX 9050</option>
-    <option value="rx-9060">RX 9060</option>
-    <option value="rx-9060xt8">RX 9060 XT 8 Go</option>
-    <option value="rx-9060xt16">RX 9060 XT 16 Go</option>
-    <option value="rx-9070gre">RX 9070 GRE</option>
-    <option value="rx-9070">RX 9070</option>
-    <option value="rx-9070xt">RX 9070 XT</option>
-  </optgroup>
-
-  <optgroup label="Intel Arc A-Series">
-    <option value="arc-a380">Arc A380</option>
-    <option value="arc-a580">Arc A580</option>
-    <option value="arc-a750">Arc A750</option>
-    <option value="arc-a770">Arc A770</option>
-  </optgroup>
-
-  <optgroup label="Intel Arc B-Series">
-    <option value="arc-b570">Arc B570</option>
-    <option value="arc-b580">Arc B580</option>
-  </optgroup>
-
-  <option value="other">Autre / Je ne sais pas</option>
-`;
-
-const catalog = {
-  ram16: {
-    title: 'Passer à au moins 16 Go de RAM',
-    price: 'Budget généralement accessible',
-    impact: 'Priorité forte',
-    desc: 'À envisager avant un gros achat si la mémoire disponible provoque déjà des ralentissements ou des fermetures d’applications.'
-  },
-  ram32: {
-    title: 'Passer à 32 Go de RAM',
-    price: 'Upgrade de confort',
-    impact: 'Confort',
-    desc: 'Particulièrement utile avec Discord, navigateur, mods, streaming ou plusieurs applications ouvertes pendant le jeu.'
-  },
-  nvme: {
-    title: 'Ajouter ou remplacer par un SSD NVMe',
-    price: 'Bon rapport confort / prix',
-    impact: 'Chargements',
-    desc: 'Réduit surtout les temps de chargement, les installations et certaines attentes liées au stockage.'
-  },
-  gpuMid: {
-    title: 'Monter en gamme côté carte graphique',
-    price: 'Investissement moyen',
-    impact: 'FPS',
-    desc: 'La carte graphique est souvent le levier principal pour obtenir plus de FPS ou augmenter les réglages graphiques.'
-  },
-  gpuHigh: {
-    title: 'Passer à une carte graphique plus puissante',
-    price: 'Investissement important',
-    impact: 'Gros gain potentiel',
-    desc: 'Pertinent lorsque la résolution et les réglages graphiques sollicitent fortement la carte graphique.'
-  },
-  cpu: {
-    title: 'Étudier un upgrade processeur / plateforme',
-    price: 'Dépend de la carte mère',
-    impact: 'FPS CPU',
-    desc: 'À regarder si le processeur limite les hauts FPS. Un changement de plateforme peut aussi imposer une nouvelle carte mère ou de la RAM.'
-  },
-  monitor: {
-    title: 'Améliorer l’écran plutôt que le PC',
-    price: 'Upgrade visible immédiatement',
-    impact: 'Expérience',
-    desc: 'Si le PC atteint déjà beaucoup de FPS, un écran mieux adapté peut être plus perceptible qu’un petit remplacement de composant.'
-  }
-};
+const gpuProfiles = Object.fromEntries(
+  GPU_GROUPS.flatMap(([, cards]) => cards.map(([id, , tier]) => [id, { tier }]))
+);
+gpuProfiles.other = { tier: 3 };
 
 const cpuProfiles = {
   'r5-1600': { tier: 1 }, 'r7-1700': { tier: 1 }, 'r5-2600': { tier: 1 }, 'r7-2700': { tier: 1 },
@@ -201,33 +98,89 @@ const cpuProfiles = {
   other: { tier: 3 }
 };
 
-// Tiers internes volontairement larges : ils servent à comparer les grandes classes de GPU,
-// pas à prétendre remplacer des benchmarks jeu par jeu.
-const gpuProfiles = {
-  'gtx-1050ti': { tier: 1 }, 'gtx-1060': { tier: 1 }, 'gtx-1070': { tier: 2 }, 'gtx-1070ti': { tier: 2 }, 'gtx-1080': { tier: 2 }, 'gtx-1080ti': { tier: 3 },
-  'gtx-1650': { tier: 1 }, 'gtx-1650s': { tier: 1 }, 'gtx-1660': { tier: 2 }, 'gtx-1660s': { tier: 2 }, 'gtx-1660ti': { tier: 2 },
-  'rtx-2060': { tier: 2 }, 'rtx-2060s': { tier: 3 }, 'rtx-2070': { tier: 3 }, 'rtx-2070s': { tier: 3 }, 'rtx-2080': { tier: 3 }, 'rtx-2080s': { tier: 3 }, 'rtx-2080ti': { tier: 4 },
-  'rtx-3050': { tier: 2 }, 'rtx-3060': { tier: 3 }, 'rtx-3060ti': { tier: 4 }, 'rtx-3070': { tier: 4 }, 'rtx-3070ti': { tier: 4 },
-  'rtx-3080': { tier: 5 }, 'rtx-3080ti': { tier: 5 }, 'rtx-3090': { tier: 5 }, 'rtx-3090ti': { tier: 5 },
-  'rtx-4060': { tier: 3 }, 'rtx-4060ti': { tier: 4 }, 'rtx-4070': { tier: 5 }, 'rtx-4070s': { tier: 5 },
-  'rtx-4070ti': { tier: 5 }, 'rtx-4070tis': { tier: 6 }, 'rtx-4080': { tier: 6 }, 'rtx-4080s': { tier: 6 }, 'rtx-4090': { tier: 7 },
-  'rtx-5050': { tier: 3 }, 'rtx-5060': { tier: 4 }, 'rtx-5060ti': { tier: 4 }, 'rtx-5070': { tier: 5 },
-  'rtx-5070ti': { tier: 6 }, 'rtx-5080': { tier: 6 }, 'rtx-5090': { tier: 7 },
-
-  'rx-570': { tier: 1 }, 'rx-580': { tier: 1 }, 'rx-590': { tier: 1 },
-  'rx-5500xt': { tier: 1 }, 'rx-5600xt': { tier: 2 }, 'rx-5700': { tier: 3 }, 'rx-5700xt': { tier: 3 },
-  'rx-6400': { tier: 1 }, 'rx-6500xt': { tier: 1 }, 'rx-6600': { tier: 2 }, 'rx-6600xt': { tier: 3 }, 'rx-6650xt': { tier: 3 },
-  'rx-6700': { tier: 3 }, 'rx-6700xt': { tier: 4 }, 'rx-6750xt': { tier: 4 }, 'rx-6800': { tier: 4 },
-  'rx-6800xt': { tier: 5 }, 'rx-6900xt': { tier: 5 }, 'rx-6950xt': { tier: 5 },
-  'rx-7600': { tier: 3 }, 'rx-7600xt': { tier: 3 }, 'rx-7700xt': { tier: 4 }, 'rx-7800xt': { tier: 5 },
-  'rx-7900gre': { tier: 5 }, 'rx-7900xt': { tier: 6 }, 'rx-7900xtx': { tier: 6 },
-  'rx-9050': { tier: 2 }, 'rx-9060': { tier: 3 }, 'rx-9060xt8': { tier: 4 }, 'rx-9060xt16': { tier: 4 },
-  'rx-9070gre': { tier: 5 }, 'rx-9070': { tier: 5 }, 'rx-9070xt': { tier: 6 },
-
-  'arc-a380': { tier: 1 }, 'arc-a580': { tier: 2 }, 'arc-a750': { tier: 3 }, 'arc-a770': { tier: 3 },
-  'arc-b570': { tier: 3 }, 'arc-b580': { tier: 4 },
-  other: { tier: 3 }
+const catalog = {
+  ram16: { title: 'Passer à au moins 16 Go de RAM', price: 'Budget généralement accessible', impact: 'Priorité forte', desc: 'Une quantité de mémoire insuffisante peut provoquer des ralentissements, des saccades ou des fermetures d’applications.' },
+  ram32: { title: 'Passer à 32 Go de RAM', price: 'Upgrade de confort', impact: 'Confort', desc: 'Utile avec Discord, navigateur, mods, streaming ou plusieurs applications ouvertes pendant le jeu.' },
+  nvme: { title: 'Passer à un SSD NVMe', price: 'Bon rapport confort / prix', impact: 'Chargements', desc: 'Réduit surtout les temps de chargement, les installations et les attentes liées au stockage.' },
+  storageCapacity: { title: 'Augmenter la capacité de stockage', price: 'Selon la capacité', impact: 'Espace', desc: 'Un SSD plus grand évite de désinstaller constamment des jeux et permet de garder davantage de titres rapides à lancer.' },
+  gpuMid: { title: 'Monter en gamme côté carte graphique', price: 'Investissement moyen', impact: 'FPS', desc: 'La carte graphique est souvent le levier principal pour gagner des FPS ou augmenter les réglages graphiques.' },
+  gpuHigh: { title: 'Passer à une carte graphique plus puissante', price: 'Investissement important', impact: 'Gros gain potentiel', desc: 'Pertinent lorsque la résolution et les réglages graphiques sollicitent fortement la carte graphique.' },
+  cpu: { title: 'Étudier un upgrade processeur / plateforme', price: 'Dépend de la carte mère', impact: 'FPS CPU', desc: 'À regarder si le processeur limite les hauts FPS. Un changement de plateforme peut aussi imposer une nouvelle carte mère ou de la RAM.' },
+  psu: { title: 'Prévoir une alimentation adaptée', price: 'Sécurité et marge', impact: 'Compatibilité', desc: 'Une carte graphique plus puissante peut demander davantage de puissance et de connecteurs. Le modèle exact de l’alimentation reste à vérifier.' },
+  monitor: { title: 'Améliorer l’écran plutôt que le PC', price: 'Upgrade visible immédiatement', impact: 'Expérience', desc: 'Si le PC atteint déjà beaucoup de FPS, un écran mieux adapté peut être plus perceptible qu’un petit remplacement de composant.' }
 };
+
+function injectExtraFields() {
+  const ramSelect = document.getElementById('ram');
+  ramSelect.closest('label').insertAdjacentHTML('afterend', `
+    <label>Type de RAM
+      <select id="ramType" required>
+        <option value="unknown">Je ne sais pas</option>
+        <option value="ddr3">DDR3</option>
+        <option value="ddr4">DDR4</option>
+        <option value="ddr5">DDR5</option>
+      </select>
+    </label>
+  `);
+
+  const storage = document.getElementById('storage');
+  storage.innerHTML = `
+    <option value="hdd">Disque dur HDD</option>
+    <option value="sata">SSD SATA 2,5"</option>
+    <option value="nvme3">SSD NVMe PCIe 3.0</option>
+    <option value="nvme4" selected>SSD NVMe PCIe 4.0</option>
+    <option value="nvme5">SSD NVMe PCIe 5.0</option>
+    <option value="unknown">Je ne sais pas</option>
+  `;
+  storage.closest('label').insertAdjacentHTML('afterend', `
+    <label>Capacité du stockage principal
+      <select id="storageCapacity" required>
+        <option value="256">256 Go ou moins</option>
+        <option value="500">500 Go</option>
+        <option value="1000" selected>1 To</option>
+        <option value="2000">2 To</option>
+        <option value="4000">4 To ou plus</option>
+      </select>
+    </label>
+  `);
+
+  document.getElementById('budget').closest('label').insertAdjacentHTML('beforebegin', `
+    <label>Puissance de l’alimentation
+      <select id="psu" required>
+        <option value="0" selected>Je ne sais pas</option>
+        <option value="450">450 W ou moins</option>
+        <option value="500">500 W</option>
+        <option value="550">550 W</option>
+        <option value="600">600 W</option>
+        <option value="650">650 W</option>
+        <option value="750">750 W</option>
+        <option value="850">850 W</option>
+        <option value="1000">1000 W ou plus</option>
+      </select>
+    </label>
+  `);
+}
+
+injectExtraFields();
+
+const ramTypeSelect = document.getElementById('ramType');
+
+function inferRamType(cpu) {
+  if (/^r[579]-(1|2|3|5)/.test(cpu)) return 'ddr4';
+  if (/^r[579]-(7|9)/.test(cpu)) return 'ddr5';
+  if (/^i[579]-(8|9|10|11)/.test(cpu)) return 'ddr4';
+  if (/^ultra/.test(cpu)) return 'ddr5';
+  return 'unknown';
+}
+
+function syncRamTypeFromCpu() {
+  if (ramTypeSelect.dataset.manual === '1') return;
+  const inferred = inferRamType(cpuSelect.value);
+  if (inferred !== 'unknown') ramTypeSelect.value = inferred;
+}
+
+ramTypeSelect.addEventListener('change', () => { ramTypeSelect.dataset.manual = '1'; });
+cpuSelect.addEventListener('change', syncRamTypeFromCpu);
 
 function pushUnique(arr, key, reason, score) {
   if (!arr.some(x => x.key === key)) arr.push({ key, reason, score });
@@ -237,8 +190,22 @@ function isValidUrl(url) {
   return typeof url === 'string' && /^https?:\/\//i.test(url);
 }
 
-function productListFor(key, budget) {
-  const products = Array.isArray(affiliateProducts[key]) ? affiliateProducts[key] : [];
+function productListFor(key, budget, context = {}) {
+  let products = Array.isArray(affiliateProducts[key]) ? [...affiliateProducts[key]] : [];
+
+  if ((key === 'ram16' || key === 'ram32') && context.ramType && context.ramType !== 'unknown') {
+    products = products.filter(product => product.ramType === context.ramType);
+  }
+
+  if ((key === 'gpuMid' || key === 'gpuHigh') && Number.isFinite(context.gpuTier)) {
+    products = products.filter(product => !product.tier || product.tier > context.gpuTier);
+  }
+
+  if (key === 'nvme' || key === 'storageCapacity') {
+    if (context.storageCapacity >= 1000) products.sort((a, b) => (b.capacityGb || 0) - (a.capacityGb || 0));
+    else products.sort((a, b) => (a.capacityGb || 0) - (b.capacityGb || 0));
+  }
+
   if (key === 'gpuHigh') {
     if (budget < 700) return products.slice(0, 1);
     if (budget < 1000) return products.slice(0, 2);
@@ -247,12 +214,9 @@ function productListFor(key, budget) {
 }
 
 function merchantButtons(product) {
-  const merchants = product.merchants || {};
-  const entries = Object.entries(merchants);
-  const active = entries.filter(([, url]) => isValidUrl(url));
-
-  if (!entries.length) return '';
-  if (!active.length) return `<div class="merchant-pending">Liens marchands affiliés en cours d’activation.</div>`;
+  const active = Object.entries(product.merchants || {}).filter(([, url]) => isValidUrl(url));
+  if (!Object.keys(product.merchants || {}).length) return '';
+  if (!active.length) return '<div class="merchant-pending">Liens marchands affiliés en cours d’activation.</div>';
 
   return `<div class="merchant-actions">${active.map(([merchantId, url]) => {
     const merchantName = affiliateMerchants[merchantId] || merchantId;
@@ -260,9 +224,14 @@ function merchantButtons(product) {
   }).join('')}</div>`;
 }
 
-function renderProducts(key, budget) {
-  const products = productListFor(key, budget);
-  if (!products.length) return '';
+function renderProducts(key, budget, context) {
+  const products = productListFor(key, budget, context);
+  if (!products.length) {
+    if (key === 'ram16' || key === 'ram32') {
+      return '<div class="merchant-pending">Indique le type de RAM compatible pour afficher des kits adaptés.</div>';
+    }
+    return '';
+  }
 
   return `
     <div class="product-suggestions">
@@ -281,37 +250,36 @@ function renderProducts(key, budget) {
   `;
 }
 
-function goalLabel() {
-  return document.getElementById('goal').selectedOptions[0].text;
-}
-
-function cpuLabel() {
-  return document.getElementById('cpu').selectedOptions[0].text;
-}
-
-function gpuLabel() {
-  return document.getElementById('gpu').selectedOptions[0].text;
-}
+function goalLabel() { return document.getElementById('goal').selectedOptions[0].text; }
+function cpuLabel() { return cpuSelect.selectedOptions[0].text; }
+function gpuLabel() { return gpuSelect.selectedOptions[0].text; }
+function ramTypeLabel() { return ramTypeSelect.selectedOptions[0].text; }
 
 form.addEventListener('submit', (e) => {
   e.preventDefault();
 
-  const gpu = document.getElementById('gpu').value;
-  const cpu = document.getElementById('cpu').value;
+  const gpu = gpuSelect.value;
+  const cpu = cpuSelect.value;
   const ram = Number(document.getElementById('ram').value);
+  const ramType = ramTypeSelect.value;
   const storage = document.getElementById('storage').value;
+  const storageCapacity = Number(document.getElementById('storageCapacity').value);
+  const psu = Number(document.getElementById('psu').value);
   const resolution = document.getElementById('resolution').value;
   const budget = Number(document.getElementById('budget').value);
   const goal = document.getElementById('goal').value;
   const cpuInfo = cpuProfiles[cpu] || cpuProfiles.other;
   const gpuInfo = gpuProfiles[gpu] || gpuProfiles.other;
+  const context = { ramType, storageCapacity, psu, gpuTier: gpuInfo.tier };
 
   let recs = [];
 
-  if (ram < 16) pushUnique(recs, 'ram16', 'La quantité de RAM est le premier point à corriger avant d’envisager une grosse dépense.', 100);
-  if (ram >= 16 && ram < 32 && goal === 'smooth') pushUnique(recs, 'ram32', 'Ton objectif privilégie la fluidité et le multitâche.', 82);
-  if (storage === 'hdd') pushUnique(recs, 'nvme', 'Le stockage mécanique est le point faible le plus évident pour la réactivité et les chargements.', 97);
-  if (storage === 'sata' && goal === 'loading') pushUnique(recs, 'nvme', 'Ton objectif concerne surtout les temps de chargement et la réactivité du stockage.', 86);
+  if (ram < 16) pushUnique(recs, 'ram16', `Avec ${ram} Go de RAM, la mémoire est un point à corriger avant une grosse dépense.`, 100);
+  else if (ram < 32 && goal === 'smooth') pushUnique(recs, 'ram32', 'Ton objectif privilégie la fluidité et le multitâche : 32 Go peuvent apporter davantage de confort.', 82);
+
+  if (storage === 'hdd') pushUnique(recs, 'nvme', 'Le disque dur mécanique est le point faible le plus évident pour la réactivité et les chargements.', 97);
+  else if (storage === 'sata' && goal === 'loading') pushUnique(recs, 'nvme', 'Pour réduire les temps de chargement, un SSD NVMe compatible est la piste la plus logique.', 86);
+  else if (storageCapacity <= 500 && budget >= 100) pushUnique(recs, 'storageCapacity', `Ton stockage principal ne fait que ${storageCapacity} Go : un SSD plus grand peut être plus utile qu’un petit gain de performances.`, 62);
 
   if (goal === 'fps' || goal === 'quality') {
     if (gpuInfo.tier <= 2 && budget >= 300) {
@@ -326,7 +294,7 @@ form.addEventListener('submit', (e) => {
   if (goal === 'fps' && budget >= 200) {
     if (cpuInfo.tier <= 2) {
       const cpuScore = gpuInfo.tier >= 4 ? 96 : 86;
-      pushUnique(recs, 'cpu', `${cpuLabel()} peut aujourd’hui devenir limitant si tu recherches des FPS élevés${gpuInfo.tier >= 4 ? ` avec une ${gpuLabel()}` : ''}.`, cpuScore);
+      pushUnique(recs, 'cpu', `${cpuLabel()} peut devenir limitant si tu recherches des FPS élevés${gpuInfo.tier >= 4 ? ` avec une ${gpuLabel()}` : ''}.`, cpuScore);
     } else if (cpuInfo.tier === 3 && resolution === '1080' && gpuInfo.tier >= 4 && budget >= 350) {
       pushUnique(recs, 'cpu', `${cpuLabel()} reste utilisable, mais un processeur plus rapide peut améliorer les hauts FPS en 1080p avec ${gpuLabel()}.`, 78);
     }
@@ -336,6 +304,14 @@ form.addEventListener('submit', (e) => {
     pushUnique(recs, 'gpuMid', `${cpuLabel()} est déjà très performant en jeu : avec ${gpuLabel()}, la carte graphique est nettement plus logique à améliorer en premier.`, 100);
   } else if (cpuInfo.tier >= 4 && gpuInfo.tier <= 2) {
     pushUnique(recs, 'gpuMid', `${cpuLabel()} est encore solide pour jouer : avec ${gpuLabel()}, le GPU est la priorité la plus logique.`, 98);
+  }
+
+  const gpuRec = recs.find(rec => rec.key === 'gpuHigh' || rec.key === 'gpuMid');
+  if (gpuRec && psu > 0) {
+    const targetPsu = gpuRec.key === 'gpuHigh' ? 750 : 650;
+    if (psu < targetPsu) {
+      pushUnique(recs, 'psu', `Ton alimentation de ${psu} W peut manquer de marge avec certaines cartes proposées. Vérifie la puissance et les connecteurs exigés par le modèle choisi.`, gpuRec.key === 'gpuHigh' ? 94 : 88);
+    }
   }
 
   if (cpuInfo.tier >= 4 && gpuInfo.tier >= 5 && resolution === '1080' && budget >= 200) {
@@ -362,16 +338,18 @@ form.addEventListener('submit', (e) => {
         <p class="reason">${rec.reason}</p>
         <p>${item.desc}</p>
         <div class="price">${item.price}</div>
-        ${renderProducts(rec.key, budget)}
-        <small class="compatibility">Avant achat : vérifie compatibilité, alimentation, dimensions et connectique. Les prix et stocks sont ceux du marchand au moment du clic.</small>
+        ${renderProducts(rec.key, budget, context)}
+        <small class="compatibility">Avant achat : vérifie la carte mère, l’alimentation, les dimensions et la connectique. Les prix et stocks sont ceux du marchand au moment du clic.</small>
       </article>
     `;
   }).join('');
 
   const resolutionLabel = resolution === '4k' ? '4K' : `${resolution}p`;
-  summaryText.textContent = `${cpuLabel()} + ${gpuLabel()} • Budget : ${budget} € • Résolution : ${resolutionLabel} • Objectif : ${goalLabel()}`;
+  const psuLabel = psu ? `${psu} W` : 'alimentation inconnue';
+  summaryText.textContent = `${cpuLabel()} + ${gpuLabel()} • ${ram} Go ${ramTypeLabel()} • ${psuLabel} • ${resolutionLabel} • Budget : ${budget} € • ${goalLabel()}`;
+
   latestShareText = `Mon diagnostic UpgradeMyPC — ${summaryText.textContent}\n${top.map((rec, i) => {
-    const productNames = productListFor(rec.key, budget).map(product => product.name).join(', ');
+    const productNames = productListFor(rec.key, budget, context).map(product => product.name).join(', ');
     return `${i + 1}. ${catalog[rec.key].title}${productNames ? ` — ${productNames}` : ''}`;
   }).join('\n')}`;
 
@@ -385,7 +363,7 @@ copyResult.addEventListener('click', async () => {
     await navigator.clipboard.writeText(latestShareText);
     const original = copyResult.textContent;
     copyResult.textContent = 'Diagnostic copié ✓';
-    setTimeout(() => copyResult.textContent = original, 1800);
+    setTimeout(() => { copyResult.textContent = original; }, 1800);
   } catch {
     window.prompt('Copie ton diagnostic :', latestShareText);
   }
