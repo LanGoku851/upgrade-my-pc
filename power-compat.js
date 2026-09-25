@@ -3,16 +3,12 @@
   const recommendations = document.getElementById('recommendations');
   if (!form || !recommendations) return;
 
-  // Valeurs de puissance système minimale issues des fiches constructeur des GPU
-  // proposés par le site. Les modèles partenaires peuvent avoir des exigences
-  // différentes : la fiche du fabricant de la carte reste prioritaire.
-  const minimumPsu = {
-    'AMD Radeon RX 9060 XT 16 Go': 450,
-    'NVIDIA GeForce RTX 5060 Ti 16 Go': 600,
-    'AMD Radeon RX 9070 16 Go': 650,
-    'AMD Radeon RX 9070 XT 16 Go': 750,
-    'NVIDIA GeForce RTX 5070 Ti 16 Go': 750
-  };
+  const allProducts = () => Object.values(window.AFFILIATE_PRODUCTS || {})
+    .flatMap(items => Array.isArray(items) ? items : []);
+
+  function byName(name) {
+    return allProducts().find(product => product.name === name);
+  }
 
   function renumberCards() {
     [...recommendations.querySelectorAll('.recommendation')].forEach((card, index) => {
@@ -29,18 +25,21 @@
     const gpuCard = cards.find(card => /carte graphique|gpu/i.test(card.querySelector('h3')?.textContent || ''));
     if (!gpuCard) return;
 
-    const productRows = [...gpuCard.querySelectorAll('.product-option')];
+    const productRows = [...gpuCard.querySelectorAll('.product-option')]
+      .filter(row => !row.classList.contains('product-incompatible'));
     const knownProducts = [];
 
     productRows.forEach(row => {
       const name = row.querySelector('strong')?.textContent?.trim();
-      const required = minimumPsu[name];
-      if (!name || !required) return;
-      knownProducts.push({ name, required });
+      const product = byName(name);
+      if (!product?.recommendedPsu) return;
+
+      const required = Number(product.recommendedPsu);
+      knownProducts.push({ name, required, connector: product.powerConnector || '' });
 
       const note = document.createElement('div');
       note.className = 'platform-inline-note power-inline-note';
-      note.textContent = `Alimentation système minimale indiquée par le constructeur du GPU de référence : ${required} W. Vérifie aussi la fiche du modèle exact vendu.`;
+      note.textContent = `${product.specSource || product.brand || 'Le fabricant'} recommande au moins ${required} W pour ce modèle${product.powerConnector ? ` avec ${product.powerConnector}` : ''}.`;
       row.appendChild(note);
     });
 
@@ -53,7 +52,7 @@
       const names = fitting.map(product => product.name).join(' ou ');
       const note = document.createElement('div');
       note.className = 'platform-inline-note power-inline-note';
-      note.textContent = `Avec ${psu} W, au moins une option affichée respecte la puissance système minimale annoncée pour le GPU de référence (${names}). Le modèle exact de carte et les connecteurs de ton bloc restent à vérifier.`;
+      note.textContent = `Avec ${psu} W, au moins une option affichée respecte la puissance recommandée par son fabricant (${names}). Vérifie encore les connecteurs et la qualité du bloc.`;
       gpuCard.appendChild(note);
 
       if (psuCard) {
@@ -66,9 +65,9 @@
     if (psuCard) {
       const reason = psuCard.querySelector('.reason');
       const lowest = Math.min(...knownProducts.map(product => product.required));
-      if (reason) reason.textContent = `Ton alimentation indiquée (${psu} W) est sous la puissance système minimale du GPU de référence pour les modèles affichés. La première cible à vérifier est au moins ${lowest} W, puis les connecteurs et les exigences du modèle exact.`;
+      if (reason) reason.textContent = `Ton alimentation indiquée (${psu} W) est sous la recommandation fabricant des modèles compatibles affichés. La première cible à vérifier est au moins ${lowest} W, puis les connecteurs requis.`;
     }
   }
 
-  form.addEventListener('submit', () => setTimeout(renderPowerCompatibility, 55));
+  form.addEventListener('submit', () => setTimeout(renderPowerCompatibility, 60));
 })();
