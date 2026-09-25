@@ -53,6 +53,60 @@ const catalog = {
   }
 };
 
+const cpuProfiles = {
+  'r5-1600': { tier: 1 },
+  'r7-1700': { tier: 1 },
+  'r5-2600': { tier: 1 },
+  'r7-2700': { tier: 1 },
+  'r5-3600': { tier: 2 },
+  'r7-3700x': { tier: 2 },
+  'r9-3900x': { tier: 2 },
+  'r5-5500': { tier: 2 },
+  'r5-5600': { tier: 3 },
+  'r7-5700x': { tier: 3 },
+  'r7-5700x3d': { tier: 4, x3d: true },
+  'r7-5800x3d': { tier: 5, x3d: true },
+  'r9-5900x': { tier: 3 },
+  'r5-7500f': { tier: 4 },
+  'r5-7600': { tier: 4 },
+  'r7-7700': { tier: 4 },
+  'r7-7800x3d': { tier: 5, x3d: true },
+  'r9-7900x': { tier: 4 },
+  'r9-7950x3d': { tier: 5, x3d: true },
+  'r5-9600x': { tier: 4 },
+  'r7-9700x': { tier: 4 },
+  'r7-9800x3d': { tier: 5, x3d: true },
+  'r9-9900x': { tier: 4 },
+  'r9-9950x3d': { tier: 5, x3d: true },
+  'i5-8400': { tier: 1 },
+  'i7-8700k': { tier: 2 },
+  'i5-9600k': { tier: 2 },
+  'i7-9700k': { tier: 2 },
+  'i9-9900k': { tier: 2 },
+  'i5-10400': { tier: 2 },
+  'i7-10700k': { tier: 2 },
+  'i9-10900k': { tier: 3 },
+  'i5-11400': { tier: 2 },
+  'i7-11700k': { tier: 2 },
+  'i9-11900k': { tier: 3 },
+  'i5-12400': { tier: 3 },
+  'i5-12600k': { tier: 4 },
+  'i7-12700k': { tier: 4 },
+  'i9-12900k': { tier: 4 },
+  'i5-13400f': { tier: 3 },
+  'i5-13600k': { tier: 4 },
+  'i7-13700k': { tier: 4 },
+  'i9-13900k': { tier: 4 },
+  'i5-14400f': { tier: 3 },
+  'i5-14600k': { tier: 4 },
+  'i7-14700k': { tier: 4 },
+  'i9-14900k': { tier: 4 },
+  'ultra5-245k': { tier: 4 },
+  'ultra7-265k': { tier: 4 },
+  'ultra9-285k': { tier: 4 },
+  other: { tier: 3 }
+};
+
 function pushUnique(arr, key, reason, score) {
   if (!arr.some(x => x.key === key)) arr.push({ key, reason, score });
 }
@@ -112,6 +166,10 @@ function goalLabel() {
   return document.getElementById('goal').selectedOptions[0].text;
 }
 
+function cpuLabel() {
+  return document.getElementById('cpu').selectedOptions[0].text;
+}
+
 form.addEventListener('submit', (e) => {
   e.preventDefault();
 
@@ -122,6 +180,7 @@ form.addEventListener('submit', (e) => {
   const resolution = document.getElementById('resolution').value;
   const budget = Number(document.getElementById('budget').value);
   const goal = document.getElementById('goal').value;
+  const cpuInfo = cpuProfiles[cpu] || cpuProfiles.other;
 
   let recs = [];
 
@@ -140,15 +199,21 @@ form.addEventListener('submit', (e) => {
     if (strongGpu && resolution === '4k' && budget >= 800) pushUnique(recs, 'gpuHigh', 'La 4K reste très exigeante : un GPU supérieur peut encore améliorer les réglages ou les FPS, mais le rapport coût/gain doit être vérifié.', 70);
   }
 
-  if ((cpu === 'old4' || cpu === 'mid6') && goal === 'fps' && budget >= 200) {
-    pushUnique(recs, 'cpu', 'Ton processeur peut devenir limitant si tu recherches des FPS très élevés.', 84);
+  if (goal === 'fps' && budget >= 200) {
+    if (cpuInfo.tier <= 2) {
+      pushUnique(recs, 'cpu', `${cpuLabel()} peut aujourd’hui devenir limitant si tu recherches des FPS élevés, surtout avec une carte graphique récente.`, 92);
+    } else if (cpuInfo.tier === 3 && resolution === '1080' && budget >= 350) {
+      pushUnique(recs, 'cpu', `${cpuLabel()} reste utilisable, mais un processeur plus rapide peut améliorer les hauts FPS en 1080p dans les jeux très dépendants du CPU.`, 76);
+    }
   }
 
-  if (cpu === 'x3d' && lowGpu) {
-    pushUnique(recs, 'gpuMid', 'Ton processeur est déjà très orienté gaming : la carte graphique est la piste la plus logique.', 99);
+  if (cpuInfo.x3d && lowGpu) {
+    pushUnique(recs, 'gpuMid', `${cpuLabel()} est déjà très performant en jeu : la carte graphique est nettement plus logique à améliorer en premier.`, 100);
+  } else if (cpuInfo.tier >= 4 && lowGpu) {
+    pushUnique(recs, 'gpuMid', `${cpuLabel()} est encore solide pour jouer : avec cette carte graphique, le GPU est la priorité la plus logique.`, 98);
   }
 
-  if ((cpu === 'high8' || cpu === 'x3d') && strongGpu && resolution === '1080' && budget >= 200) {
+  if (cpuInfo.tier >= 4 && strongGpu && resolution === '1080' && budget >= 200) {
     pushUnique(recs, 'monitor', 'Ta configuration est déjà solide en 1080p : l’écran peut apporter un changement plus perceptible qu’un petit upgrade interne.', 76);
   }
 
@@ -179,7 +244,7 @@ form.addEventListener('submit', (e) => {
   }).join('');
 
   const resolutionLabel = resolution === '4k' ? '4K' : `${resolution}p`;
-  summaryText.textContent = `Budget : ${budget} € • Résolution : ${resolutionLabel} • Objectif : ${goalLabel()}`;
+  summaryText.textContent = `${cpuLabel()} • Budget : ${budget} € • Résolution : ${resolutionLabel} • Objectif : ${goalLabel()}`;
   latestShareText = `Mon diagnostic UpgradeMyPC — ${summaryText.textContent}\n${top.map((rec, i) => {
     const productNames = productListFor(rec.key, budget).map(product => product.name).join(', ');
     return `${i + 1}. ${catalog[rec.key].title}${productNames ? ` — ${productNames}` : ''}`;
