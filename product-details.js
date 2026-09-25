@@ -69,5 +69,43 @@
     });
   }
 
-  form.addEventListener('submit', () => setTimeout(render, 35));
+  function normalizeName(value) {
+    return (value || '').trim().toLocaleLowerCase('fr-FR');
+  }
+
+  function mergeDuplicateGpuRecommendations() {
+    const gpuCards = [...recommendations.querySelectorAll('.recommendation')].filter(card =>
+      /carte graphique|\bgpu\b/i.test(card.querySelector('h3')?.textContent || '')
+    );
+    if (gpuCards.length <= 1) return;
+
+    const primary = gpuCards[0];
+    const targetGroup = primary.querySelector('.product-suggestions');
+    const seenProducts = new Set(
+      [...primary.querySelectorAll('.product-option strong')].map(el => normalizeName(el.textContent))
+    );
+
+    gpuCards.slice(1).forEach(card => {
+      const sourceGroup = card.querySelector('.product-suggestions');
+      if (targetGroup && sourceGroup) {
+        [...sourceGroup.querySelectorAll('.product-option')].forEach(row => {
+          const name = normalizeName(row.querySelector('strong')?.textContent);
+          if (!name || seenProducts.has(name)) return;
+          seenProducts.add(name);
+          targetGroup.appendChild(row);
+        });
+      }
+      card.remove();
+    });
+
+    [...recommendations.querySelectorAll('.recommendation')].forEach((card, index) => {
+      const rank = card.querySelector('.rank');
+      if (rank) rank.textContent = String(index + 1);
+    });
+  }
+
+  form.addEventListener('submit', () => {
+    setTimeout(render, 35);
+    setTimeout(mergeDuplicateGpuRecommendations, 90);
+  });
 })();
