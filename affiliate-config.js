@@ -94,7 +94,7 @@ window.AFFILIATE_PRODUCTS = {
       name: "AMD Radeon RX 9060 XT 16 Go",
       tag: "1440p",
       tier: 4,
-      recommendedPsu: 650,
+      recommendedPsu: 450,
       note: "Option à comparer pour une montée en gamme raisonnable.",
       merchants: { ebay: "", fnac: "", amazon: "" }
     },
@@ -103,7 +103,7 @@ window.AFFILIATE_PRODUCTS = {
       name: "NVIDIA GeForce RTX 5060 Ti 16 Go",
       tag: "NVIDIA",
       tier: 4,
-      recommendedPsu: 650,
+      recommendedPsu: 600,
       note: "Alternative NVIDIA à comparer selon les jeux et les prix.",
       merchants: { ebay: "", fnac: "", amazon: "" }
     }
@@ -114,7 +114,7 @@ window.AFFILIATE_PRODUCTS = {
       name: "AMD Radeon RX 9070 16 Go",
       tag: "Équilibré",
       tier: 5,
-      recommendedPsu: 750,
+      recommendedPsu: 650,
       note: "À comparer pour jouer en 1440p avec davantage de marge.",
       merchants: { ebay: "", fnac: "", amazon: "" }
     },
@@ -123,7 +123,7 @@ window.AFFILIATE_PRODUCTS = {
       name: "AMD Radeon RX 9070 XT 16 Go",
       tag: "Performances",
       tier: 6,
-      recommendedPsu: 850,
+      recommendedPsu: 750,
       note: "À considérer pour un gros saut de performances, notamment en haute résolution.",
       merchants: { ebay: "", fnac: "", amazon: "" }
     },
@@ -132,7 +132,7 @@ window.AFFILIATE_PRODUCTS = {
       name: "NVIDIA GeForce RTX 5070 Ti 16 Go",
       tag: "NVIDIA",
       tier: 6,
-      recommendedPsu: 850,
+      recommendedPsu: 750,
       note: "Option NVIDIA haut de gamme à comparer selon le budget et les fonctions recherchées.",
       merchants: { ebay: "", fnac: "", amazon: "" }
     }
@@ -198,5 +198,6 @@ window.addEventListener('load', () => {
   loadScript('platform-compat.js');
   loadScript('case-compat.js');
   loadScript('performance-goals.js');
+  loadScript('power-compat.js');
   loadScript('budget-planner.js');
 });
