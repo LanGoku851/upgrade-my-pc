@@ -110,6 +110,24 @@ window.AFFILIATE_PRODUCTS = {
   ],
   gpuHigh: [
     {
+      id: "rx9060xt16-high",
+      name: "AMD Radeon RX 9060 XT 16 Go",
+      tag: "Budget maîtrisé",
+      tier: 4,
+      recommendedPsu: 450,
+      note: "Premier palier à regarder si le budget ne permet pas encore une RX 9070.",
+      merchants: { ebay: "", fnac: "", amazon: "" }
+    },
+    {
+      id: "rtx5060ti16-high",
+      name: "NVIDIA GeForce RTX 5060 Ti 16 Go",
+      tag: "Alternative NVIDIA",
+      tier: 4,
+      recommendedPsu: 600,
+      note: "Option NVIDIA à considérer avant de dépasser le budget prévu.",
+      merchants: { ebay: "", fnac: "", amazon: "" }
+    },
+    {
       id: "rx9070",
       name: "AMD Radeon RX 9070 16 Go",
       tag: "Équilibré",
