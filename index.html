@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>UpgradeMyPC — Quel composant améliorer en premier ?</title>
+  <meta name="description" content="Analyse gratuitement ta configuration gaming et découvre quels upgrades privilégier selon ton budget, ta résolution et ton objectif." />
+  <meta name="robots" content="index,follow" />
+  <meta property="og:title" content="UpgradeMyPC — Trouve ton prochain upgrade gaming" />
+  <meta property="og:description" content="Un diagnostic simple pour savoir quoi améliorer en priorité sur ton PC gaming." />
+  <meta property="og:type" content="website" />
+  <meta name="theme-color" content="#0b1020" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="hero">
+    <nav class="nav container">
+      <a class="logo" href="index.html" aria-label="UpgradeMyPC accueil">Upgrade<span>MyPC</span></a>
+      <div class="nav-links">
+        <a href="#guide">Guide</a>
+        <a href="#faq">FAQ</a>
+        <a href="#configurateur" class="nav-cta">Analyser mon PC</a>
+      </div>
+    </nav>
+
+    <div class="hero-content container">
+      <div>
+        <p class="eyebrow">Diagnostic PC gaming gratuit</p>
+        <h1>Améliore ce qui compte vraiment.</h1>
+        <p class="subtitle">Renseigne ta configuration, ton budget et ton objectif. UpgradeMyPC classe les améliorations les plus pertinentes au lieu de te pousser à tout remplacer.</p>
+        <div class="hero-actions">
+          <a href="#configurateur" class="primary-btn">Analyser ma config</a>
+          <a href="#guide" class="secondary-btn">Comprendre les upgrades</a>
+        </div>
+        <p class="trust-line">✓ Gratuit &nbsp; ✓ Sans inscription &nbsp; ✓ Pas de téléchargement</p>
+      </div>
+
+      <div class="hero-card" aria-label="Aperçu du diagnostic">
+        <div class="score-ring"><strong>3</strong><span>priorités</span></div>
+        <div class="mini-kpi"><span>🎯</span><strong>Ton objectif</strong><small>FPS, qualité, fluidité ou chargements</small></div>
+        <div class="mini-kpi"><span>💶</span><strong>Ton budget</strong><small>On écarte les upgrades hors budget</small></div>
+        <div class="mini-kpi"><span>⚙️</span><strong>Ta configuration</strong><small>GPU, CPU, RAM, stockage et résolution</small></div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section id="configurateur" class="section container">
+      <div class="section-heading narrow">
+        <p class="eyebrow">Configurateur</p>
+        <h2>Décris ton PC</h2>
+        <p>Les informations principales suffisent pour obtenir un premier diagnostic. Les recommandations restent indicatives : vérifie toujours la compatibilité avant achat.</p>
+      </div>
+
+      <form id="pcForm" class="config-card">
+        <div class="form-grid">
+          <label>Carte graphique
+            <select id="gpu" required>
+              <option value="">Choisir</option>
+              <optgroup label="NVIDIA">
+                <option value="gtx1650">GTX 1650 / 1650 Ti</option>
+                <option value="rtx2060">RTX 2060 / 2060 Super</option>
+                <option value="rtx3060">RTX 3060 / 3060 Ti</option>
+                <option value="rtx3070">RTX 3070 / 3070 Ti</option>
+                <option value="rtx4060">RTX 4060 / 4060 Ti</option>
+                <option value="rtx4070">RTX 4070 / 4070 Super</option>
+                <option value="rtx50">RTX série 50</option>
+              </optgroup>
+              <optgroup label="AMD">
+                <option value="rx6600">RX 6600 / 6650 XT</option>
+                <option value="rx6700">RX 6700 XT / 6750 XT</option>
+                <option value="rx7800">RX 7800 XT / 7900 GRE</option>
+                <option value="rx9000">RX série 9000</option>
+              </optgroup>
+              <option value="other">Autre / Je ne sais pas</option>
+            </select>
+          </label>
+
+          <label>Processeur
+            <select id="cpu" required>
+              <option value="">Choisir</option>
+              <option value="old4">Ancien 4 cœurs</option>
+              <option value="mid6">6 cœurs milieu de gamme</option>
+              <option value="modern6">6 cœurs récent</option>
+              <option value="high8">8 cœurs récent</option>
+              <option value="x3d">Ryzen X3D</option>
+              <option value="other">Autre / Je ne sais pas</option>
+            </select>
+          </label>
+
+          <label>Mémoire RAM
+            <select id="ram" required>
+              <option value="8">8 Go</option>
+              <option value="12">12 Go</option>
+              <option value="16" selected>16 Go</option>
+              <option value="32">32 Go</option>
+              <option value="64">64 Go</option>
+            </select>
+          </label>
+
+          <label>Stockage principal
+            <select id="storage" required>
+              <option value="hdd">Disque dur HDD</option>
+              <option value="sata">SSD SATA</option>
+              <option value="nvme" selected>SSD NVMe</option>
+            </select>
+          </label>
+
+          <label>Résolution de jeu
+            <select id="resolution" required>
+              <option value="1080">1080p</option>
+              <option value="1440" selected>1440p</option>
+              <option value="4k">4K</option>
+            </select>
+          </label>
+
+          <label>Budget maximum
+            <select id="budget" required>
+              <option value="100">100 €</option>
+              <option value="200">200 €</option>
+              <option value="350">350 €</option>
+              <option value="500" selected>500 €</option>
+              <option value="800">800 €</option>
+              <option value="1200">1 200 €+</option>
+            </select>
+          </label>
+        </div>
+
+        <label class="full-label">Ton objectif principal
+          <select id="goal" required>
+            <option value="fps">Plus de FPS</option>
+            <option value="quality">Meilleurs graphismes</option>
+            <option value="smooth">Plus de fluidité / multitâche</option>
+            <option value="loading">Chargements plus rapides</option>
+          </select>
+        </label>
+
+        <button type="submit" class="primary-btn full-btn">Voir mes recommandations</button>
+      </form>
+    </section>
+
+    <section id="results" class="section results-section hidden" aria-live="polite">
+      <div class="container">
+        <div class="section-heading narrow">
+          <p class="eyebrow">Ton diagnostic</p>
+          <h2>Les upgrades à regarder en priorité</h2>
+          <p id="summaryText"></p>
+        </div>
+        <div id="recommendations" class="recommendations-grid"></div>
+        <div class="result-tools">
+          <button id="copyResult" class="secondary-btn button-reset" type="button">Copier mon diagnostic</button>
+          <a href="#configurateur" class="text-link">Modifier ma configuration</a>
+        </div>
+        <p class="affiliate-note">Transparence : certains boutons pourront être des liens affiliés. Une commission peut alors être versée à UpgradeMyPC sans augmenter le prix payé par l’utilisateur. <a href="affiliation.html">En savoir plus</a>.</p>
+      </div>
+    </section>
+
+    <section id="guide" class="section container">
+      <div class="section-heading narrow">
+        <p class="eyebrow">Guide express</p>
+        <h2>Quel composant change vraiment l’expérience ?</h2>
+        <p>Un bon upgrade dépend du problème à résoudre. Remplacer une pièce récente simplement parce qu’une nouvelle génération existe n’est pas toujours utile.</p>
+      </div>
+      <div class="guide-grid">
+        <article class="info-card"><span class="icon">🎮</span><h3>Carte graphique</h3><p>Souvent prioritaire pour augmenter les FPS ou les détails graphiques, surtout en 1440p et en 4K.</p></article>
+        <article class="info-card"><span class="icon">🧠</span><h3>Processeur</h3><p>Important lorsque tu vises beaucoup d’images par seconde, notamment dans les jeux compétitifs et les simulations.</p></article>
+        <article class="info-card"><span class="icon">⚡</span><h3>RAM</h3><p>Une quantité insuffisante peut provoquer des ralentissements. Plus de RAM améliore surtout le confort quand plusieurs applications tournent.</p></article>
+        <article class="info-card"><span class="icon">💾</span><h3>SSD</h3><p>Un SSD améliore surtout les chargements et la réactivité. Il n’apporte généralement pas un gros gain de FPS à lui seul.</p></article>
+      </div>
+    </section>
+
+    <section class="section subtle-section">
+      <div class="container how">
+        <div class="section-heading narrow">
+          <p class="eyebrow">Le principe</p>
+          <h2>Pas besoin de vendre ni de stocker du matériel</h2>
+        </div>
+        <div class="steps">
+          <article><span>1</span><h3>Un visiteur analyse son PC</h3><p>Le service gratuit attire les personnes qui envisagent déjà un achat.</p></article>
+          <article><span>2</span><h3>Le site propose une direction</h3><p>Le diagnostic apporte une vraie valeur avant de présenter des offres marchandes.</p></article>
+          <article><span>3</span><h3>Le visiteur choisit un marchand</h3><p>Après acceptation par un programme partenaire, certains clics et achats peuvent générer une commission.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section id="faq" class="section container">
+      <div class="section-heading narrow">
+        <p class="eyebrow">FAQ</p>
+        <h2>Avant d’acheter</h2>
+      </div>
+      <div class="faq-list">
+        <details><summary>Le diagnostic garantit-il la compatibilité ?</summary><p>Non. Il indique une priorité d’upgrade. Pour un achat précis, il faut encore vérifier la carte mère, l’alimentation, le boîtier, la génération de RAM et les dimensions du composant.</p></details>
+        <details><summary>Pourquoi le site ne recommande-t-il pas toujours le composant le plus récent ?</summary><p>Parce que l’objectif est de résoudre le point faible de la configuration dans le budget choisi, pas de remplacer systématiquement du matériel encore adapté.</p></details>
+        <details><summary>Les liens marchands influencent-ils le classement ?</summary><p>Non. La logique de classement fonctionne indépendamment des liens marchands. Une future relation d’affiliation sera signalée clairement.</p></details>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container footer-inner">
+      <div>
+        <a class="logo" href="index.html">Upgrade<span>MyPC</span></a>
+        <p class="footer-copy">Un outil indépendant d’aide à la décision pour les joueurs PC.</p>
+      </div>
+      <div class="footer-links">
+        <a href="mentions-legales.html">Mentions légales</a>
+        <a href="confidentialite.html">Confidentialité</a>
+        <a href="affiliation.html">Affiliation</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="affiliate-config.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
