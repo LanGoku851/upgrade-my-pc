@@ -47,6 +47,10 @@
     return Number(document.getElementById('psu')?.value || 0);
   }
 
+  function currentClearance() {
+    return Number(document.getElementById('gpuClearance')?.value || 0);
+  }
+
   function budgetInfo() {
     const value = Number(budgetSelect.value);
     const label = budgetSelect.selectedOptions[0]?.textContent?.trim() || `${value} €`;
@@ -96,6 +100,13 @@
     return row.closest('.recommendation')?.querySelector('h3')?.textContent?.trim() || 'Upgrade';
   }
 
+  function directCompatibility(estimate) {
+    const clearance = currentClearance();
+    const length = Number(estimate?.product?.gpuLengthMm || 0);
+    const tooLong = Boolean(clearance > 0 && length > 0 && length > clearance);
+    return { tooLong, clearance, length };
+  }
+
   function renderBudgetPlan() {
     cleanPrevious();
 
@@ -110,19 +121,33 @@
       const estimate = estimateProduct(name);
       if (!estimate) return;
 
+      const compatibility = directCompatibility(estimate);
+      const overBudget = !budget.openEnded && estimate.total > budget.value;
+      const excluded = compatibility.tooLong || overBudget;
+
+      // Le budget recalcule lui-même la compatibilité longueur afin de ne pas dépendre
+      // d'un état intermédiaire laissé par un autre module.
+      if (compatibility.tooLong) row.classList.add('product-incompatible');
+      else row.classList.remove('product-incompatible');
+
+      const reasons = [];
+      if (overBudget) reasons.push(`hors budget (${formatEuro(estimate.total)} pour un budget de ${budget.label})`);
+      if (compatibility.tooLong) reasons.push(`trop longue (${compatibility.length} mm pour ~${compatibility.clearance} mm indiqués)`);
+
       const meta = document.createElement('div');
       meta.className = 'budget-meta';
-      meta.innerHTML = `<strong>Budget indicatif : ${formatEuro(estimate.total)}</strong>${estimate.bundle ? `<span>${estimate.bundle}</span>` : ''}${estimate.addonLabel ? `<span>${estimate.addonLabel}</span>` : ''}${estimate.psuUnknown ? '<span>Alimentation inconnue : éventuel remplacement non inclus.</span>' : ''}`;
+      meta.innerHTML = `
+        <strong>Budget indicatif : ${formatEuro(estimate.total)}</strong>
+        ${estimate.bundle ? `<span>${estimate.bundle}</span>` : ''}
+        ${estimate.addonLabel ? `<span>${estimate.addonLabel}</span>` : ''}
+        ${estimate.psuUnknown ? '<span>Alimentation inconnue : éventuel remplacement non inclus.</span>' : ''}
+        ${reasons.length ? `<span>Non retenu dans le scénario : ${reasons.join(' • ')}.</span>` : '<span>Compatible avec les contraintes renseignées.</span>'}
+      `;
       row.appendChild(meta);
       row.dataset.budgetTotal = String(estimate.total);
 
-      const incompatible = row.classList.contains('product-incompatible');
-      const overBudget = !budget.openEnded && estimate.total > budget.value;
-
-      if (incompatible || overBudget) {
-        row.classList.add('budget-hidden');
-        return;
-      }
+      // On garde toujours la fiche visible : même hors budget, l'utilisateur voit pourquoi.
+      if (excluded) return;
 
       row.classList.add('budget-fit');
       scenarios.push({
@@ -136,12 +161,14 @@
 
     [...recommendations.querySelectorAll('.product-suggestions')].forEach(group => {
       const options = [...group.querySelectorAll('.product-option')];
-      if (options.length && options.every(option => option.classList.contains('budget-hidden'))) {
+      if (!options.length) return;
+      const anyFit = options.some(option => option.classList.contains('budget-fit'));
+      if (!anyFit) {
         const message = document.createElement('div');
         message.className = 'budget-empty';
         message.textContent = budget.openEnded
-          ? 'Les modèles affichés ont été écartés par les contraintes de compatibilité indiquées. Modifie le boîtier ou les contraintes pour voir d’autres options.'
-          : `Aucun des modèles actuellement proposés dans cette gamme ne rentre dans ton budget de ${budget.label} avec les contraintes indiquées.`;
+          ? 'Aucun des modèles affichés ne respecte toutes les contraintes renseignées. Les références restent visibles pour comprendre ce qui bloque.'
+          : `Aucun des modèles affichés ne respecte à la fois ton budget de ${budget.label} et les contraintes renseignées. Les références restent visibles avec la raison.`;
         group.appendChild(message);
       }
     });
@@ -154,8 +181,6 @@
       recommendations.parentElement.insertBefore(panel, recommendations);
     }
 
-    // Un même produit peut être issu de plusieurs règles de recommandation.
-    // Pour le visiteur, cela reste un seul scénario : on déduplique donc par nom exact.
     const uniqueByProduct = new Map();
     scenarios.forEach(item => {
       const key = normalizeName(item.name);
@@ -194,10 +219,11 @@
         </div>
         <p class="budget-foot">Option la moins chère : environ ${formatEuro(choices[0].total)}${remaining !== null ? ` • marge indicative restante : ${formatEuro(remaining)}` : ''}. Les prix sont des repères et le prix marchand au moment du clic fait foi.</p>
       ` : `
-        <p class="budget-intro">Aucune référence concrète actuellement affichée ne respecte à la fois ton budget et les contraintes de compatibilité renseignées. La recommandation générale reste utile pour identifier le prochain composant à viser.</p>
+        <p class="budget-intro">Aucune référence affichée ne respecte actuellement toutes les contraintes. Regarde les fiches ci-dessous : elles indiquent maintenant précisément si le blocage vient du budget, de l’alimentation ou des dimensions.</p>
       `}
     `;
   }
 
-  form.addEventListener('submit', () => setTimeout(renderBudgetPlan, 100));
+  // Les fiches produits sont finalisées avant le calcul budget.
+  form.addEventListener('submit', () => setTimeout(renderBudgetPlan, 140));
 })();
