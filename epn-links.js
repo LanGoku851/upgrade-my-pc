@@ -71,6 +71,11 @@
       destination: 'https://www.ebay.fr/sch/i.html?_nkw=ASUS+Dual+GeForce+RTX+5060+Ti+OC+8GB',
       url: 'https://www.ebay.fr/sch/i.html?_nkw=ASUS+Dual+GeForce+RTX+5060+Ti+OC+8GB&mkcid=1&mkrid=709-53476-19255-0&siteid=71&campid=5339214367&customid=umpgpuasus5060ti8&toolid=10001&mkevt=1'
     },
+    'asrock-arc-b580-challenger12': {
+      customId: 'umpgpuasrockb58012',
+      destination: 'https://www.ebay.fr/sch/i.html?_nkw=ASRock+Intel+Arc+B580+Challenger+12GB+OC',
+      url: 'https://www.ebay.fr/sch/i.html?_nkw=ASRock+Intel+Arc+B580+Challenger+12GB+OC&mkcid=1&mkrid=709-53476-19255-0&siteid=71&campid=5339214367&customid=umpgpuasrockb58012&toolid=10001&mkevt=1'
+    },
     'sapphire-pulse-rx9060xt16': {
       customId: 'umprx9060xtsapphirepulse',
       destination: 'https://www.ebay.fr/sch/i.html?_nkw=Sapphire+PULSE+Radeon+RX+9060+XT+OC+16GB',
