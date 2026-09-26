@@ -45,6 +45,11 @@
       destination: 'https://www.ebay.fr/sch/i.html?_nkw=Crucial+T500+2TB',
       url: 'https://www.ebay.fr/sch/i.html?_nkw=Crucial+T500+2TB&mkcid=1&mkrid=709-53476-19255-0&siteid=71&campid=5339214616&customid=umpt5002tb&toolid=10001&mkevt=1'
     },
+    'crucial-p3plus-2to': {
+      customId: 'umpp3plus2tb',
+      destination: 'https://www.ebay.fr/sch/i.html?_nkw=Crucial+P3+Plus+2TB',
+      url: 'https://www.ebay.fr/sch/i.html?_nkw=Crucial+P3+Plus+2TB&mkcid=1&mkrid=709-53476-19255-0&siteid=71&campid=5339214616&customid=umpp3plus2tb&toolid=10001&mkevt=1'
+    },
     'sn850x-1to-capacity': {
       customId: 'umpsn850x1tbcapacity',
       destination: 'https://www.ebay.fr/sch/i.html?_nkw=WD+Black+SN850X+1TB',
