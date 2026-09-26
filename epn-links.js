@@ -218,6 +218,11 @@
       destination: 'https://www.ebay.fr/sch/i.html?_nkw=750W+80+Gold+ATX+3.1+power+supply',
       url: 'https://www.ebay.fr/sch/i.html?_nkw=750W+80+Gold+ATX+3.1+power+supply&mkcid=1&mkrid=709-53476-19255-0&siteid=71&campid=5339214608&customid=umppsu750gold&toolid=10001&mkevt=1'
     },
+    'corsair-rm750e-750w-atx31': {
+      customId: 'umppsucorsairrm750e',
+      destination: 'https://www.ebay.fr/sch/i.html?_nkw=Corsair+RM750e+750W+ATX+3.1+CP-9020262-EU',
+      url: 'https://www.ebay.fr/sch/i.html?_nkw=Corsair+RM750e+750W+ATX+3.1+CP-9020262-EU&mkcid=1&mkrid=709-53476-19255-0&siteid=71&campid=5339214608&customid=umppsucorsairrm750e&toolid=10001&mkevt=1'
+    },
     'psu-850-gold': {
       customId: 'umppsu850gold',
       destination: 'https://www.ebay.fr/sch/i.html?_nkw=850W+80+Gold+ATX+3.1+power+supply',
