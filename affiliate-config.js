@@ -101,6 +101,24 @@ window.AFFILIATE_PRODUCTS = {
   // Les prix sont des repères de planification et ne remplacent jamais le prix marchand.
   gpuMid: [
     {
+      id: "asus-dual-rtx5060-oc8",
+      name: "ASUS Dual GeForce RTX 5060 OC Edition 8GB",
+      family: "RTX 5060 8 Go",
+      brand: "ASUS",
+      tag: "Compacte • NVIDIA",
+      tier: 4,
+      estimatePrice: 435,
+      gpuLengthMm: 228,
+      gpuWidthMm: 123,
+      gpuThicknessMm: 50,
+      slots: "2.5",
+      recommendedPsu: 550,
+      powerConnector: "1 × 8-pin",
+      specSource: "ASUS",
+      note: "Option compacte et plus accessible pour un upgrade GPU milieu de gamme.",
+      merchants: { ebay: "", fnac: "", amazon: "" }
+    },
+    {
       id: "sapphire-pulse-rx9060xt16",
       name: "Sapphire PULSE Radeon RX 9060 XT OC 16GB",
       family: "RX 9060 XT 16 Go",
