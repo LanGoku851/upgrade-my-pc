@@ -146,7 +146,7 @@
     'psu-750-gold': {
       customId: 'umppsu750gold',
       destination: 'https://www.ebay.fr/sch/i.html?_nkw=750W+80+Gold+ATX+3.1+power+supply',
-      url: ''
+      url: 'https://www.ebay.fr/sch/i.html?_nkw=750W+80+Gold+ATX+3.1+power+supply&mkcid=1&mkrid=709-53476-19255-0&siteid=71&campid=5339214608&customid=umppsu750gold&toolid=10001&mkevt=1'
     },
     'psu-850-gold': {
       customId: 'umppsu850gold',
