@@ -19,6 +19,11 @@
       destination: 'https://www.ebay.fr/sch/i.html?_nkw=16GB+DDR4+3200+CL16+kit',
       url: 'https://www.ebay.fr/sch/i.html?_nkw=16GB+DDR4+3200+CL16+kit&mkcid=1&mkrid=709-53476-19255-0&siteid=71&campid=5339214611&customid=umpram16ddr4&toolid=10001&mkevt=1'
     },
+    'corsair-vengeance-lpx-16-ddr4-3200-cl16': {
+      customId: 'umpramcorsair16ddr4',
+      destination: 'https://www.ebay.fr/sch/i.html?_nkw=Corsair+Vengeance+LPX+16GB+DDR4+3200+CL16+CMK16GX4M2B3200C16',
+      url: 'https://www.ebay.fr/sch/i.html?_nkw=Corsair+Vengeance+LPX+16GB+DDR4+3200+CL16+CMK16GX4M2B3200C16&mkcid=1&mkrid=709-53476-19255-0&siteid=71&campid=5339214611&customid=umpramcorsair16ddr4&toolid=10001&mkevt=1'
+    },
     'ram16-ddr5': {
       customId: 'umpram16ddr5',
       destination: 'https://www.ebay.fr/sch/i.html?_nkw=16GB+DDR5+6000+kit',
