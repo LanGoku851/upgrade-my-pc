@@ -95,6 +95,36 @@
     window.applyEpnLinks?.();
   }
 
+  const lg27gr93uId = 'lg-ultragear-27gr93u-b';
+  if (Array.isArray(monitorProducts) && !monitorProducts.some(product => product.id === lg27gr93uId)) {
+    const product = {
+      id: lg27gr93uId,
+      name: "LG UltraGear 27GR93U-B 27 pouces 4K 144 Hz",
+      brand: "LG",
+      tag: "4K • IPS • 144 Hz",
+      estimatePrice: 690,
+      resolution: "3840 × 2160",
+      panel: "IPS",
+      refreshRateHz: 144,
+      specSource: "LG",
+      note: "27 pouces UHD 4K IPS, 144 Hz, 1 ms GtG, HDMI 2.1, G-SYNC Compatible, AMD FreeSync Premium et VESA DisplayHDR 400.",
+      merchants: { ebay: "", fnac: "", amazon: "" }
+    };
+
+    const generic4kIndex = monitorProducts.findIndex(item => item.id === 'monitor-4k-144');
+    if (generic4kIndex >= 0) monitorProducts.splice(generic4kIndex + 1, 0, product);
+    else monitorProducts.push(product);
+  }
+
+  if (window.EPN_LINKS && !window.EPN_LINKS[lg27gr93uId]) {
+    window.EPN_LINKS[lg27gr93uId] = {
+      customId: 'umpmonitorlg27gr93u',
+      destination: 'https://www.ebay.fr/sch/i.html?_nkw=LG+UltraGear+27GR93U-B+27+4K+144Hz',
+      url: 'https://www.ebay.fr/sch/i.html?_nkw=LG+UltraGear+27GR93U-B+27+4K+144Hz&mkcid=1&mkrid=709-53476-19255-0&siteid=71&campid=5339214610&customid=umpmonitorlg27gr93u&toolid=10001&mkevt=1'
+    };
+    window.applyEpnLinks?.();
+  }
+
   const form = document.getElementById('pcForm');
   const recommendations = document.getElementById('recommendations');
   if (!form || !recommendations) return;
