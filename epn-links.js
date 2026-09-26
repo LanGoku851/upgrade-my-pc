@@ -140,7 +140,7 @@
     'coreultra7-265k-platform': {
       customId: 'umpplatformultra7265k',
       destination: 'https://www.ebay.fr/sch/i.html?_nkw=Core+Ultra+7+265K+Z890+32GB+DDR5',
-      url: ''
+      url: 'https://www.ebay.fr/sch/i.html?_nkw=Core+Ultra+7+265K+Z890+32GB+DDR5&mkcid=1&mkrid=709-53476-19255-0&siteid=71&campid=5339214604&customid=umpplatformultra7265k&toolid=10001&mkevt=1'
     },
 
     'psu-750-gold': {
