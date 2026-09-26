@@ -1,4 +1,37 @@
 (() => {
+  const rm850eId = 'corsair-rm850e-850w-atx31';
+  const psuProducts = window.AFFILIATE_PRODUCTS?.psu;
+
+  if (Array.isArray(psuProducts) && !psuProducts.some(product => product.id === rm850eId)) {
+    const product = {
+      id: rm850eId,
+      name: "Corsair RM850e 850 W ATX 3.1",
+      brand: "Corsair",
+      tag: "850 W • ATX 3.1",
+      wattage: 850,
+      estimatePrice: 200,
+      efficiency: "80 PLUS Gold",
+      atxVersion: "ATX 3.1",
+      powerConnector: "12V-2x6",
+      specSource: "Corsair",
+      note: "Référence CP-9020263-EU : 850 W, entièrement modulaire, ATX 3.1, câble 12V-2x6 inclus, mode Zero RPM et garantie constructeur de 7 ans.",
+      merchants: { ebay: "", fnac: "", amazon: "" }
+    };
+
+    const generic850Index = psuProducts.findIndex(item => item.id === 'psu-850-gold');
+    if (generic850Index >= 0) psuProducts.splice(generic850Index + 1, 0, product);
+    else psuProducts.push(product);
+  }
+
+  if (window.EPN_LINKS && !window.EPN_LINKS[rm850eId]) {
+    window.EPN_LINKS[rm850eId] = {
+      customId: 'umppsucorsairrm850e',
+      destination: 'https://www.ebay.fr/sch/i.html?_nkw=Corsair+RM850e+850W+ATX+3.1+CP-9020263-EU',
+      url: 'https://www.ebay.fr/sch/i.html?_nkw=Corsair+RM850e+850W+ATX+3.1+CP-9020263-EU&mkcid=1&mkrid=709-53476-19255-0&siteid=71&campid=5339214608&customid=umppsucorsairrm850e&toolid=10001&mkevt=1'
+    };
+    window.applyEpnLinks?.();
+  }
+
   const form = document.getElementById('pcForm');
   const recommendations = document.getElementById('recommendations');
   if (!form || !recommendations) return;
