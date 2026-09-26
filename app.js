@@ -183,7 +183,13 @@ ramTypeSelect.addEventListener('change', () => { ramTypeSelect.dataset.manual = 
 cpuSelect.addEventListener('change', syncRamTypeFromCpu);
 
 function pushUnique(arr, key, reason, score) {
-  if (!arr.some(x => x.key === key)) arr.push({ key, reason, score });
+  const existing = arr.find(x => x.key === key);
+  if (!existing) {
+    arr.push({ key, reason, score });
+  } else if (score > existing.score) {
+    existing.reason = reason;
+    existing.score = score;
+  }
 }
 
 function isValidUrl(url) {
@@ -268,6 +274,10 @@ form.addEventListener('submit', (e) => {
   const resolution = document.getElementById('resolution').value;
   const budget = Number(document.getElementById('budget').value);
   const goal = document.getElementById('goal').value;
+  const targetFpsSelect = document.getElementById('targetFps');
+  const gameTypeSelect = document.getElementById('gameType');
+  const targetFps = Number(targetFpsSelect?.value || 0);
+  const gameType = gameTypeSelect?.value || 'mixed';
   const cpuInfo = cpuProfiles[cpu] || cpuProfiles.other;
   const gpuInfo = gpuProfiles[gpu] || gpuProfiles.other;
   const context = { ramType, storageCapacity, psu, gpuTier: gpuInfo.tier };
@@ -297,6 +307,30 @@ form.addEventListener('submit', (e) => {
       pushUnique(recs, 'cpu', `${cpuLabel()} peut devenir limitant si tu recherches des FPS élevés${gpuInfo.tier >= 4 ? ` avec une ${gpuLabel()}` : ''}.`, cpuScore);
     } else if (cpuInfo.tier === 3 && resolution === '1080' && gpuInfo.tier >= 4 && budget >= 350) {
       pushUnique(recs, 'cpu', `${cpuLabel()} reste utilisable, mais un processeur plus rapide peut améliorer les hauts FPS en 1080p avec ${gpuLabel()}.`, 78);
+    }
+  }
+
+  if (goal !== 'loading' && budget >= 200 && targetFps) {
+    if (gameType === 'competitive' && targetFps >= 144) {
+      if (cpuInfo.tier <= 2) {
+        pushUnique(recs, 'cpu', `${targetFps} FPS en compétitif demande beaucoup au processeur : ${cpuLabel()} devient une priorité à étudier.`, targetFps >= 240 ? 99 : 93);
+      } else if (targetFps >= 240 && cpuInfo.tier === 3 && gpuInfo.tier >= 4) {
+        pushUnique(recs, 'cpu', `Pour viser ${targetFps} FPS en compétitif avec ${gpuLabel()}, un processeur plus rapide peut améliorer les hauts FPS et les 1% low.`, 88);
+      }
+
+      if (gpuInfo.tier <= 2 && budget >= 300) {
+        pushUnique(recs, 'gpuMid', `${gpuLabel()} peut aussi limiter une cible de ${targetFps} FPS en compétitif.`, 90);
+      } else if (gpuInfo.tier <= 3 && targetFps >= 165 && budget >= 500) {
+        pushUnique(recs, 'gpuHigh', `${gpuLabel()} peut devenir le prochain frein pour viser ${targetFps} FPS, surtout si les réglages graphiques restent élevés.`, 84);
+      }
+    } else if (gameType === 'simulation' && cpuInfo.tier <= 2) {
+      pushUnique(recs, 'cpu', `Les jeux de simulation et de stratégie sollicitent fortement le processeur : ${cpuLabel()} mérite d’être étudié en priorité pour cette cible.`, 90);
+    } else if (gameType === 'aaa' && resolution !== '1080' && targetFps >= 90) {
+      if (gpuInfo.tier <= 2 && budget >= 300) {
+        pushUnique(recs, 'gpuMid', `Pour viser ${targetFps} FPS en ${resolution === '4k' ? '4K' : '1440p'} sur des jeux AAA, ${gpuLabel()} risque d’être le principal frein.`, 94);
+      } else if (gpuInfo.tier <= 4 && budget >= 500) {
+        pushUnique(recs, 'gpuHigh', `Une cible de ${targetFps} FPS en ${resolution === '4k' ? '4K' : '1440p'} sur des jeux AAA demande une carte graphique plus rapide que ${gpuLabel()}.`, 90);
+      }
     }
   }
 
@@ -346,7 +380,10 @@ form.addEventListener('submit', (e) => {
 
   const resolutionLabel = resolution === '4k' ? '4K' : `${resolution}p`;
   const psuLabel = psu ? `${psu} W` : 'alimentation inconnue';
-  summaryText.textContent = `${cpuLabel()} + ${gpuLabel()} • ${ram} Go ${ramTypeLabel()} • ${psuLabel} • ${resolutionLabel} • Budget : ${budget} € • ${goalLabel()}`;
+  const performanceLabel = targetFps
+    ? ` • cible ${targetFps} FPS${gameTypeSelect?.selectedOptions?.[0]?.textContent ? ` • ${gameTypeSelect.selectedOptions[0].textContent}` : ''}`
+    : '';
+  summaryText.textContent = `${cpuLabel()} + ${gpuLabel()} • ${ram} Go ${ramTypeLabel()} • ${psuLabel} • ${resolutionLabel} • Budget : ${budget} € • ${goalLabel()}${performanceLabel}`;
 
   latestShareText = `Mon diagnostic UpgradeMyPC — ${summaryText.textContent}\n${top.map((rec, i) => {
     const productNames = productListFor(rec.key, budget, context).map(product => product.name).join(', ');
