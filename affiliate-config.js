@@ -121,6 +121,15 @@ window.AFFILIATE_PRODUCTS = {
       estimatePrice: 255,
       note: "Alternative 2 To orientée capacité pour agrandir une bibliothèque de jeux.",
       merchants: { ebay: "", fnac: "", amazon: "" }
+    },
+    {
+      id: "crucial-p3plus-4to-capacity",
+      name: "Crucial P3 Plus 4 To",
+      tag: "4 To • capacité",
+      capacityGb: 4000,
+      estimatePrice: 460,
+      note: "Option 4 To pour les très grandes bibliothèques de jeux ou quand 2 To ne suffisent plus.",
+      merchants: { ebay: "", fnac: "", amazon: "" }
     }
   ],
 
