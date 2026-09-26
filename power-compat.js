@@ -185,6 +185,37 @@
     window.applyEpnLinks?.();
   }
 
+  const ryzen9900x3dId = 'ryzen9900x3d';
+  if (Array.isArray(cpuProducts) && !cpuProducts.some(product => product.id === ryzen9900x3dId)) {
+    cpuProducts.push({
+      id: ryzen9900x3dId,
+      name: "AMD Ryzen 9 9900X3D",
+      brand: "AMD",
+      tag: "Gaming / création • AM5",
+      estimatePrice: 500,
+      socket: "AM5",
+      cores: 12,
+      threads: 24,
+      baseClockGHz: 4.4,
+      boostClockGHz: 5.5,
+      cacheL3Mb: 128,
+      tdpW: 120,
+      memoryType: "DDR5",
+      specSource: "AMD",
+      note: "Ryzen 9000 Zen 5 avec 12 cœurs / 24 threads, jusqu’à 5,5 GHz, 128 Mo de cache L3, TDP 120 W et technologie 3D V-Cache de 2e génération. Refroidissement liquide recommandé par AMD pour des performances optimales.",
+      merchants: { ebay: "", fnac: "", amazon: "" }
+    });
+  }
+
+  if (window.EPN_LINKS && !window.EPN_LINKS[ryzen9900x3dId]) {
+    window.EPN_LINKS[ryzen9900x3dId] = {
+      customId: 'umpcpu9900x3d',
+      destination: 'https://www.ebay.fr/sch/i.html?_nkw=AMD+Ryzen+9+9900X3D',
+      url: 'https://www.ebay.fr/sch/i.html?_nkw=AMD+Ryzen+9+9900X3D&mkcid=1&mkrid=709-53476-19255-0&siteid=71&campid=5339214600&customid=umpcpu9900x3d&toolid=10001&mkevt=1'
+    };
+    window.applyEpnLinks?.();
+  }
+
   const monitorProducts = window.AFFILIATE_PRODUCTS?.monitor;
   const lg27gs75qId = 'lg-ultragear-27gs75q-b';
   if (Array.isArray(monitorProducts) && !monitorProducts.some(product => product.id === lg27gs75qId)) {
