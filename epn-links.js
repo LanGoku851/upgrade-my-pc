@@ -120,7 +120,7 @@
     'ryzen5800x3d': {
       customId: 'umpcpu5800x3d',
       destination: 'https://www.ebay.fr/sch/i.html?_nkw=AMD+Ryzen+7+5800X3D',
-      url: ''
+      url: 'https://www.ebay.fr/sch/i.html?_nkw=AMD+Ryzen+7+5800X3D&mkcid=1&mkrid=709-53476-19255-0&siteid=71&campid=5339214600&customid=umpcpu5800x3d&toolid=10001&mkevt=1'
     },
     'i5-14600k': {
       customId: 'umpcpui514600k',
