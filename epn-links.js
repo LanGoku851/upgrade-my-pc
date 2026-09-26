@@ -101,6 +101,11 @@
       destination: 'https://www.ebay.fr/sch/i.html?_nkw=PowerColor+Reaper+Radeon+RX+9070+16GB',
       url: 'https://www.ebay.fr/sch/i.html?_nkw=PowerColor+Reaper+Radeon+RX+9070+16GB&mkcid=1&mkrid=709-53476-19255-0&siteid=71&campid=5339214367&customid=umpgpureaper9070&toolid=10001&mkevt=1'
     },
+    'asus-prime-rtx5070': {
+      customId: 'umpgpuasusprime5070',
+      destination: 'https://www.ebay.fr/sch/i.html?_nkw=ASUS+Prime+GeForce+RTX+5070+12GB',
+      url: 'https://www.ebay.fr/sch/i.html?_nkw=ASUS+Prime+GeForce+RTX+5070+12GB&mkcid=1&mkrid=709-53476-19255-0&siteid=71&campid=5339214367&customid=umpgpuasusprime5070&toolid=10001&mkevt=1'
+    },
     'powercolor-reaper-rx9070xt': {
       customId: 'umpgpureaper9070xt',
       destination: 'https://www.ebay.fr/sch/i.html?_nkw=PowerColor+Reaper+Radeon+RX+9070+XT+16GB',
