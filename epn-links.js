@@ -60,6 +60,11 @@
       destination: 'https://www.ebay.fr/sch/i.html?_nkw=Crucial+T500+2TB',
       url: 'https://www.ebay.fr/sch/i.html?_nkw=Crucial+T500+2TB&mkcid=1&mkrid=709-53476-19255-0&siteid=71&campid=5339214616&customid=umpt5002tbcapacity&toolid=10001&mkevt=1'
     },
+    'crucial-p3plus-2to-capacity': {
+      customId: 'umpp3plus2tbcapacity',
+      destination: 'https://www.ebay.fr/sch/i.html?_nkw=Crucial+P3+Plus+2TB',
+      url: 'https://www.ebay.fr/sch/i.html?_nkw=Crucial+P3+Plus+2TB&mkcid=1&mkrid=709-53476-19255-0&siteid=71&campid=5339214616&customid=umpp3plus2tbcapacity&toolid=10001&mkevt=1'
+    },
 
     'asus-dual-rtx5060-oc8': {
       customId: 'umpgpuasus50608gb',
