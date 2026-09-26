@@ -74,6 +74,15 @@ window.AFFILIATE_PRODUCTS = {
       estimatePrice: 145,
       note: "Option intéressante pour une grosse bibliothèque de jeux.",
       merchants: { ebay: "", fnac: "", amazon: "" }
+    },
+    {
+      id: "crucial-p3plus-2to",
+      name: "Crucial P3 Plus 2 To",
+      tag: "2 To • PCIe 4.0",
+      capacityGb: 2000,
+      estimatePrice: 255,
+      note: "Option 2 To orientée capacité, avec jusqu’à 5 000 Mo/s en lecture et 4 200 Mo/s en écriture selon Crucial.",
+      merchants: { ebay: "", fnac: "", amazon: "" }
     }
   ],
   storageCapacity: [
