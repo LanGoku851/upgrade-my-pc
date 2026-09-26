@@ -83,6 +83,15 @@ window.AFFILIATE_PRODUCTS = {
       estimatePrice: 255,
       note: "Option 2 To orientée capacité, avec jusqu’à 5 000 Mo/s en lecture et 4 200 Mo/s en écriture selon Crucial.",
       merchants: { ebay: "", fnac: "", amazon: "" }
+    },
+    {
+      id: "crucial-p3plus-4to",
+      name: "Crucial P3 Plus 4 To",
+      tag: "4 To • PCIe 4.0",
+      capacityGb: 4000,
+      estimatePrice: 460,
+      note: "Option grosse capacité pour une très grande bibliothèque de jeux ; jusqu’à 4 800 Mo/s en lecture et 4 100 Mo/s en écriture selon Crucial.",
+      merchants: { ebay: "", fnac: "", amazon: "" }
     }
   ],
   storageCapacity: [
