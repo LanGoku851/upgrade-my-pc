@@ -54,6 +54,16 @@ window.AFFILIATE_PRODUCTS = {
       estimatePrice: 105,
       note: "À privilégier uniquement si la carte mère accepte la DDR5.",
       merchants: { ebay: "", fnac: "", amazon: "" }
+    },
+    {
+      id: "corsair-vengeance-32-ddr5-6000-cl30",
+      name: "Corsair Vengeance 32 Go (2×16 Go) DDR5-6000 CL30",
+      brand: "Corsair",
+      tag: "DDR5 • EXPO/XMP",
+      ramType: "ddr5",
+      estimatePrice: 530,
+      note: "Kit CMK32GX5M2B6000Z30 : 6000 MT/s, CL30-36-36-76, compatible AMD EXPO et Intel XMP.",
+      merchants: { ebay: "", fnac: "", amazon: "" }
     }
   ],
   nvme: [
