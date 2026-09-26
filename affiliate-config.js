@@ -266,6 +266,24 @@ window.AFFILIATE_PRODUCTS = {
       merchants: { ebay: "", fnac: "", amazon: "" }
     },
     {
+      id: "asus-prime-rtx5070",
+      name: "ASUS Prime GeForce RTX 5070 12GB",
+      family: "RTX 5070 12 Go",
+      brand: "ASUS",
+      tag: "1440p • NVIDIA",
+      tier: 5,
+      estimatePrice: 800,
+      gpuLengthMm: 304,
+      gpuWidthMm: 126,
+      gpuThicknessMm: 50,
+      slots: "2.5",
+      recommendedPsu: 750,
+      powerConnector: "1 × 16-pin",
+      specSource: "ASUS",
+      note: "Option NVIDIA 12 Go SFF Ready ; vérifie surtout la longueur de 304 mm et la présence d’un connecteur 16 broches adapté.",
+      merchants: { ebay: "", fnac: "", amazon: "" }
+    },
+    {
       id: "powercolor-reaper-rx9070xt",
       name: "PowerColor Reaper Radeon RX 9070 XT 16GB",
       family: "RX 9070 XT 16 Go",
