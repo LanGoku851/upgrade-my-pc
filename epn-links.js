@@ -135,7 +135,7 @@
     'ryzen9800x3d-platform': {
       customId: 'umpplatform9800x3d',
       destination: 'https://www.ebay.fr/sch/i.html?_nkw=Ryzen+7+9800X3D+B650+32GB+DDR5',
-      url: ''
+      url: 'https://www.ebay.fr/sch/i.html?_nkw=Ryzen+7+9800X3D+B650+32GB+DDR5&mkcid=1&mkrid=709-53476-19255-0&siteid=71&campid=5339214604&customid=umpplatform9800x3d&toolid=10001&mkevt=1'
     },
     'coreultra7-265k-platform': {
       customId: 'umpplatformultra7265k',
