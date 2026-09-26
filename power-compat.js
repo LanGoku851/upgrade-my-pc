@@ -342,6 +342,37 @@
     window.applyEpnLinks?.();
   }
 
+  const ryzen7800x3dId = 'ryzen7-7800x3d';
+  if (Array.isArray(cpuProducts) && !cpuProducts.some(product => product.id === ryzen7800x3dId)) {
+    cpuProducts.push({
+      id: ryzen7800x3dId,
+      name: "AMD Ryzen 7 7800X3D",
+      brand: "AMD",
+      tag: "Gaming X3D • AM5",
+      estimatePrice: 300,
+      socket: "AM5",
+      cores: 8,
+      threads: 16,
+      baseClockGHz: 4.2,
+      boostClockGHz: 5.0,
+      cacheL3Mb: 96,
+      tdpW: 120,
+      memoryType: "DDR5",
+      specSource: "AMD",
+      note: "Ryzen 7000 Zen 4 avec 8 cœurs / 16 threads, 4,2 GHz de base, jusqu’à 5,0 GHz, 96 Mo de cache L3, TDP 120 W et technologie AMD 3D V-Cache. Refroidissement non inclus ; AMD recommande un refroidissement liquide pour des performances optimales.",
+      merchants: { ebay: "", fnac: "", amazon: "" }
+    });
+  }
+
+  if (window.EPN_LINKS && !window.EPN_LINKS[ryzen7800x3dId]) {
+    window.EPN_LINKS[ryzen7800x3dId] = {
+      customId: 'umpcpu7800x3d',
+      destination: 'https://www.ebay.fr/sch/i.html?_nkw=AMD+Ryzen+7+7800X3D',
+      url: 'https://www.ebay.fr/sch/i.html?_nkw=AMD+Ryzen+7+7800X3D&mkcid=1&mkrid=709-53476-19255-0&siteid=71&campid=5339214600&customid=umpcpu7800x3d&toolid=10001&mkevt=1'
+    };
+    window.applyEpnLinks?.();
+  }
+
   const monitorProducts = window.AFFILIATE_PRODUCTS?.monitor;
   const lg27gs75qId = 'lg-ultragear-27gs75q-b';
   if (Array.isArray(monitorProducts) && !monitorProducts.some(product => product.id === lg27gs75qId)) {
