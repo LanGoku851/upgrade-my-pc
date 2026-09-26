@@ -155,6 +155,24 @@ window.AFFILIATE_PRODUCTS = {
       merchants: { ebay: "", fnac: "", amazon: "" }
     },
     {
+      id: "asrock-arc-b580-challenger12",
+      name: "ASRock Intel Arc B580 Challenger 12GB OC",
+      family: "Intel Arc B580 12 Go",
+      brand: "ASRock",
+      tag: "12 Go • Intel",
+      tier: 4,
+      estimatePrice: 390,
+      gpuLengthMm: 249,
+      gpuWidthMm: 132,
+      gpuThicknessMm: 41,
+      slots: "2",
+      recommendedPsu: 650,
+      powerConnector: "1 × 8-pin",
+      specSource: "ASRock",
+      note: "Option 12 Go compacte ; pour de bonnes performances, vérifie que Resizable BAR / Smart Access Memory est pris en charge et activé.",
+      merchants: { ebay: "", fnac: "", amazon: "" }
+    },
+    {
       id: "sapphire-pulse-rx9060xt16",
       name: "Sapphire PULSE Radeon RX 9060 XT OC 16GB",
       family: "RX 9060 XT 16 Go",
