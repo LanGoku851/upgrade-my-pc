@@ -90,6 +90,38 @@
     window.applyEpnLinks?.();
   }
 
+  const gpuHighProducts = window.AFFILIATE_PRODUCTS?.gpuHigh;
+  const asusPrimeRtx5080Id = 'asus-prime-rtx5080';
+  if (Array.isArray(gpuHighProducts) && !gpuHighProducts.some(product => product.id === asusPrimeRtx5080Id)) {
+    gpuHighProducts.push({
+      id: asusPrimeRtx5080Id,
+      name: "ASUS Prime GeForce RTX 5080 16GB",
+      family: "RTX 5080 16 Go",
+      brand: "ASUS",
+      tag: "4K • NVIDIA",
+      tier: 7,
+      estimatePrice: 1670,
+      gpuLengthMm: 304,
+      gpuWidthMm: 126,
+      gpuThicknessMm: 50,
+      slots: "2.5",
+      recommendedPsu: 850,
+      powerConnector: "1 × 16-pin",
+      specSource: "ASUS",
+      note: "Référence PRIME-RTX5080-16G : 16 Go GDDR7, format 304 × 126 × 50 mm, 2,5 slots, SFF Ready et alimentation recommandée de 850 W.",
+      merchants: { ebay: "", fnac: "", amazon: "" }
+    });
+  }
+
+  if (window.EPN_LINKS && !window.EPN_LINKS[asusPrimeRtx5080Id]) {
+    window.EPN_LINKS[asusPrimeRtx5080Id] = {
+      customId: 'umpgpuasusprime5080',
+      destination: 'https://www.ebay.fr/sch/i.html?_nkw=ASUS+Prime+GeForce+RTX+5080+16GB+PRIME-RTX5080-16G',
+      url: 'https://www.ebay.fr/sch/i.html?_nkw=ASUS+Prime+GeForce+RTX+5080+16GB+PRIME-RTX5080-16G&mkcid=1&mkrid=709-53476-19255-0&siteid=71&campid=5339214367&customid=umpgpuasusprime5080&toolid=10001&mkevt=1'
+    };
+    window.applyEpnLinks?.();
+  }
+
   const monitorProducts = window.AFFILIATE_PRODUCTS?.monitor;
   const lg27gs75qId = 'lg-ultragear-27gs75q-b';
   if (Array.isArray(monitorProducts) && !monitorProducts.some(product => product.id === lg27gs75qId)) {
