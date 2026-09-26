@@ -125,7 +125,7 @@
     'i5-14600k': {
       customId: 'umpcpui514600k',
       destination: 'https://www.ebay.fr/sch/i.html?_nkw=Intel+Core+i5+14600K',
-      url: ''
+      url: 'https://www.ebay.fr/sch/i.html?_nkw=Intel+Core+i5+14600K&mkcid=1&mkrid=709-53476-19255-0&siteid=71&campid=5339214600&customid=umpcpui514600k&toolid=10001&mkevt=1'
     },
     'i7-14700k': {
       customId: 'umpcpui714700k',
