@@ -66,6 +66,11 @@
       destination: 'https://www.ebay.fr/sch/i.html?_nkw=Sapphire+PULSE+Radeon+RX+9060+XT+8GB',
       url: 'https://www.ebay.fr/sch/i.html?_nkw=Sapphire+PULSE+Radeon+RX+9060+XT+8GB&mkcid=1&mkrid=709-53476-19255-0&siteid=71&campid=5339214367&customid=umpgpupulse9060xt8&toolid=10001&mkevt=1'
     },
+    'asus-dual-rtx5060ti8-oc': {
+      customId: 'umpgpuasus5060ti8',
+      destination: 'https://www.ebay.fr/sch/i.html?_nkw=ASUS+Dual+GeForce+RTX+5060+Ti+OC+8GB',
+      url: 'https://www.ebay.fr/sch/i.html?_nkw=ASUS+Dual+GeForce+RTX+5060+Ti+OC+8GB&mkcid=1&mkrid=709-53476-19255-0&siteid=71&campid=5339214367&customid=umpgpuasus5060ti8&toolid=10001&mkevt=1'
+    },
     'sapphire-pulse-rx9060xt16': {
       customId: 'umprx9060xtsapphirepulse',
       destination: 'https://www.ebay.fr/sch/i.html?_nkw=Sapphire+PULSE+Radeon+RX+9060+XT+OC+16GB',
