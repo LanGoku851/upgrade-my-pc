@@ -63,6 +63,33 @@
     window.applyEpnLinks?.();
   }
 
+  const rm1000eId = 'corsair-rm1000e-1000w-atx31';
+  if (Array.isArray(psuProducts) && !psuProducts.some(product => product.id === rm1000eId)) {
+    psuProducts.push({
+      id: rm1000eId,
+      name: "Corsair RM1000e 1000 W ATX 3.1",
+      brand: "Corsair",
+      tag: "1000 W • ATX 3.1",
+      wattage: 1000,
+      estimatePrice: 175,
+      efficiency: "Cybenetics Gold",
+      atxVersion: "ATX 3.1",
+      powerConnector: "12V-2x6 600 W",
+      specSource: "Corsair",
+      note: "Référence CP-9020297-EU : 1000 W, entièrement modulaire, ATX 3.1 / PCIe 5.1, câble 12V-2x6 natif jusqu’à 600 W, mode Zero RPM et garantie constructeur de 7 ans.",
+      merchants: { ebay: "", fnac: "", amazon: "" }
+    });
+  }
+
+  if (window.EPN_LINKS && !window.EPN_LINKS[rm1000eId]) {
+    window.EPN_LINKS[rm1000eId] = {
+      customId: 'umppsucorsairrm1000e',
+      destination: 'https://www.ebay.fr/sch/i.html?_nkw=Corsair+RM1000e+1000W+ATX+3.1+CP-9020297-EU',
+      url: 'https://www.ebay.fr/sch/i.html?_nkw=Corsair+RM1000e+1000W+ATX+3.1+CP-9020297-EU&mkcid=1&mkrid=709-53476-19255-0&siteid=71&campid=5339214608&customid=umppsucorsairrm1000e&toolid=10001&mkevt=1'
+    };
+    window.applyEpnLinks?.();
+  }
+
   const monitorProducts = window.AFFILIATE_PRODUCTS?.monitor;
   const lg27gs75qId = 'lg-ultragear-27gs75q-b';
   if (Array.isArray(monitorProducts) && !monitorProducts.some(product => product.id === lg27gs75qId)) {
