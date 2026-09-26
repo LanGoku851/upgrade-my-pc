@@ -300,6 +300,34 @@
     window.applyEpnLinks?.();
   }
 
+  const sn850x4toCapacityId = 'sn850x-4to-capacity';
+  if (Array.isArray(storageCapacityProducts) && !storageCapacityProducts.some(product => product.id === sn850x4toCapacityId)) {
+    const product = {
+      id: sn850x4toCapacityId,
+      name: "WD Black SN850X 4 To",
+      brand: "Western Digital",
+      tag: "4 To • capacité",
+      capacityGb: 4000,
+      estimatePrice: 575,
+      specSource: "Western Digital",
+      note: "Option 4 To hautes performances pour augmenter fortement la capacité de stockage sans quitter le PCIe 4.0.",
+      merchants: { ebay: "", fnac: "", amazon: "" }
+    };
+
+    const sn850x2toCapacityIndex = storageCapacityProducts.findIndex(item => item.id === sn850x2toCapacityId);
+    if (sn850x2toCapacityIndex >= 0) storageCapacityProducts.splice(sn850x2toCapacityIndex + 1, 0, product);
+    else storageCapacityProducts.push(product);
+  }
+
+  if (window.EPN_LINKS && !window.EPN_LINKS[sn850x4toCapacityId]) {
+    window.EPN_LINKS[sn850x4toCapacityId] = {
+      customId: 'umpsn850x4tbcapacity',
+      destination: 'https://www.ebay.fr/sch/i.html?_nkw=WD+Black+SN850X+4TB',
+      url: 'https://www.ebay.fr/sch/i.html?_nkw=WD+Black+SN850X+4TB&mkcid=1&mkrid=709-53476-19255-0&siteid=71&campid=5339214616&customid=umpsn850x4tbcapacity&toolid=10001&mkevt=1'
+    };
+    window.applyEpnLinks?.();
+  }
+
   const form = document.getElementById('pcForm');
   const recommendations = document.getElementById('recommendations');
   if (!form || !recommendations) return;
