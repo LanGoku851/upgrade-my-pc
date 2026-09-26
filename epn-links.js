@@ -105,7 +105,7 @@
     'ryzen9800x3d': {
       customId: 'umpcpu9800x3d',
       destination: 'https://www.ebay.fr/sch/i.html?_nkw=AMD+Ryzen+7+9800X3D',
-      url: ''
+      url: 'https://www.ebay.fr/sch/i.html?_nkw=AMD+Ryzen+7+9800X3D&mkcid=1&mkrid=709-53476-19255-0&siteid=71&campid=5339214600&customid=umpcpu9800x3d&toolid=10001&mkevt=1'
     },
     'coreultra7-265k': {
       customId: 'umpcpuultra7265k',
