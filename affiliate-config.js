@@ -429,6 +429,14 @@ window.AFFILIATE_PRODUCTS = {
       merchants: { ebay: "", fnac: "", amazon: "" }
     },
     {
+      id: "monitor-4k-144",
+      name: "Écran 27 pouces 4K 144 Hz",
+      tag: "4K • 144 Hz",
+      estimatePrice: 500,
+      note: "Option pour une configuration haut de gamme capable de viser la 4K à fréquence élevée.",
+      merchants: { ebay: "", fnac: "", amazon: "" }
+    },
+    {
       id: "monitor-1440p-180",
       name: "Écran 27 pouces 1440p 180 Hz",
       tag: "Fluidité",
