@@ -130,7 +130,7 @@
     'i7-14700k': {
       customId: 'umpcpui714700k',
       destination: 'https://www.ebay.fr/sch/i.html?_nkw=Intel+Core+i7+14700K',
-      url: ''
+      url: 'https://www.ebay.fr/sch/i.html?_nkw=Intel+Core+i7+14700K&mkcid=1&mkrid=709-53476-19255-0&siteid=71&campid=5339214600&customid=umpcpui714700k&toolid=10001&mkevt=1'
     },
     'ryzen9800x3d-platform': {
       customId: 'umpplatform9800x3d',
