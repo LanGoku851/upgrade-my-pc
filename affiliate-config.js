@@ -44,6 +44,16 @@ window.AFFILIATE_PRODUCTS = {
       estimatePrice: 65,
       note: "Pour une plateforme DDR5 compatible.",
       merchants: { ebay: "", fnac: "", amazon: "" }
+    },
+    {
+      id: "kingston-fury-beast-16-ddr5-6000-cl36",
+      name: "Kingston FURY Beast 16 Go (2×8 Go) DDR5-6000 CL36",
+      brand: "Kingston",
+      tag: "DDR5 • EXPO",
+      ramType: "ddr5",
+      estimatePrice: 290,
+      note: "Kit KF560C36BBEK2-16 : 6000 MT/s, CL36-38-38, 1,35 V et profil AMD EXPO.",
+      merchants: { ebay: "", fnac: "", amazon: "" }
     }
   ],
   ram32: [
