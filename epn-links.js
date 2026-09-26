@@ -34,6 +34,11 @@
       destination: 'https://www.ebay.fr/sch/i.html?_nkw=32GB+DDR5+6000+CL30+kit',
       url: 'https://www.ebay.fr/sch/i.html?_nkw=32GB+DDR5+6000+CL30+kit&mkcid=1&mkrid=709-53476-19255-0&siteid=71&campid=5339214611&customid=umpram32ddr5&toolid=10001&mkevt=1'
     },
+    'corsair-vengeance-32-ddr5-6000-cl30': {
+      customId: 'umpramcorsair32ddr5',
+      destination: 'https://www.ebay.fr/sch/i.html?_nkw=Corsair+Vengeance+32GB+DDR5+6000+CL30+CMK32GX5M2B6000Z30',
+      url: 'https://www.ebay.fr/sch/i.html?_nkw=Corsair+Vengeance+32GB+DDR5+6000+CL30+CMK32GX5M2B6000Z30&mkcid=1&mkrid=709-53476-19255-0&siteid=71&campid=5339214611&customid=umpramcorsair32ddr5&toolid=10001&mkevt=1'
+    },
 
     'sn850x-1to': {
       customId: 'umpsn850x1tb',
