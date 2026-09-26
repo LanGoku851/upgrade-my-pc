@@ -198,6 +198,11 @@
       destination: 'https://www.ebay.fr/sch/i.html?_nkw=24.5+1080p+240Hz+gaming+monitor',
       url: 'https://www.ebay.fr/sch/i.html?_nkw=24.5+1080p+240Hz+gaming+monitor&mkcid=1&mkrid=709-53476-19255-0&siteid=71&campid=5339214610&customid=umpmonitor1080p240&toolid=10001&mkevt=1'
     },
+    'monitor-4k-144': {
+      customId: 'umpmonitor4k144',
+      destination: 'https://www.ebay.fr/sch/i.html?_nkw=27+4K+144Hz+gaming+monitor',
+      url: 'https://www.ebay.fr/sch/i.html?_nkw=27+4K+144Hz+gaming+monitor&mkcid=1&mkrid=709-53476-19255-0&siteid=71&campid=5339214610&customid=umpmonitor4k144&toolid=10001&mkevt=1'
+    },
     'monitor-1440p-180': {
       customId: 'umpmonitor1440p180',
       destination: 'https://www.ebay.fr/sch/i.html?_nkw=27+1440p+180Hz+gaming+monitor',
