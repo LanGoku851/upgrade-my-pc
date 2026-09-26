@@ -216,6 +216,38 @@
     window.applyEpnLinks?.();
   }
 
+  const coreUltra9285kId = 'coreultra9-285k';
+  if (Array.isArray(cpuProducts) && !cpuProducts.some(product => product.id === coreUltra9285kId)) {
+    cpuProducts.push({
+      id: coreUltra9285kId,
+      name: "Intel Core Ultra 9 285K",
+      brand: "Intel",
+      tag: "Haut de gamme • LGA1851",
+      estimatePrice: 550,
+      socket: "LGA1851",
+      cores: 24,
+      threads: 24,
+      baseClockGHz: 3.7,
+      boostClockGHz: 5.7,
+      cacheL3Mb: 36,
+      tdpW: 125,
+      maxTurboPowerW: 250,
+      memoryType: "DDR5-6400",
+      specSource: "Intel",
+      note: "Core Ultra 200S avec 24 cœurs (8 P-cores + 16 E-cores), 24 threads, jusqu’à 5,7 GHz, 36 Mo de Smart Cache, puissance de base 125 W et puissance turbo maximale 250 W.",
+      merchants: { ebay: "", fnac: "", amazon: "" }
+    });
+  }
+
+  if (window.EPN_LINKS && !window.EPN_LINKS[coreUltra9285kId]) {
+    window.EPN_LINKS[coreUltra9285kId] = {
+      customId: 'umpcpuultra9285k',
+      destination: 'https://www.ebay.fr/sch/i.html?_nkw=Intel+Core+Ultra+9+285K',
+      url: 'https://www.ebay.fr/sch/i.html?_nkw=Intel+Core+Ultra+9+285K&mkcid=1&mkrid=709-53476-19255-0&siteid=71&campid=5339214600&customid=umpcpuultra9285k&toolid=10001&mkevt=1'
+    };
+    window.applyEpnLinks?.();
+  }
+
   const monitorProducts = window.AFFILIATE_PRODUCTS?.monitor;
   const lg27gs75qId = 'lg-ultragear-27gs75q-b';
   if (Array.isArray(monitorProducts) && !monitorProducts.some(product => product.id === lg27gs75qId)) {
