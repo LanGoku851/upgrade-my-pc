@@ -248,6 +248,38 @@
     window.applyEpnLinks?.();
   }
 
+  const coreUltra5245kId = 'coreultra5-245k';
+  if (Array.isArray(cpuProducts) && !cpuProducts.some(product => product.id === coreUltra5245kId)) {
+    cpuProducts.push({
+      id: coreUltra5245kId,
+      name: "Intel Core Ultra 5 245K",
+      brand: "Intel",
+      tag: "Milieu / haut de gamme • LGA1851",
+      estimatePrice: 196,
+      socket: "LGA1851",
+      cores: 14,
+      threads: 14,
+      baseClockGHz: 4.2,
+      boostClockGHz: 5.2,
+      cacheL3Mb: 24,
+      tdpW: 125,
+      maxTurboPowerW: 159,
+      memoryType: "DDR5-6400",
+      specSource: "Intel",
+      note: "Core Ultra 200S avec 14 cœurs (6 P-cores + 8 E-cores), 14 threads, jusqu’à 5,2 GHz, 24 Mo de Smart Cache, puissance de base 125 W et puissance turbo maximale 159 W.",
+      merchants: { ebay: "", fnac: "", amazon: "" }
+    });
+  }
+
+  if (window.EPN_LINKS && !window.EPN_LINKS[coreUltra5245kId]) {
+    window.EPN_LINKS[coreUltra5245kId] = {
+      customId: 'umpcpuultra5245k',
+      destination: 'https://www.ebay.fr/sch/i.html?_nkw=Intel+Core+Ultra+5+245K',
+      url: 'https://www.ebay.fr/sch/i.html?_nkw=Intel+Core+Ultra+5+245K&mkcid=1&mkrid=709-53476-19255-0&siteid=71&campid=5339214600&customid=umpcpuultra5245k&toolid=10001&mkevt=1'
+    };
+    window.applyEpnLinks?.();
+  }
+
   const monitorProducts = window.AFFILIATE_PRODUCTS?.monitor;
   const lg27gs75qId = 'lg-ultragear-27gs75q-b';
   if (Array.isArray(monitorProducts) && !monitorProducts.some(product => product.id === lg27gs75qId)) {
