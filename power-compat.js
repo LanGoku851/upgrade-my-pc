@@ -156,6 +156,37 @@
     window.applyEpnLinks?.();
   }
 
+  const aoc25g3zmId = 'aoc-25g3zm';
+  if (Array.isArray(monitorProducts) && !monitorProducts.some(product => product.id === aoc25g3zmId)) {
+    const product = {
+      id: aoc25g3zmId,
+      name: "AOC 25G3ZM 24,5 pouces FHD 240 Hz",
+      brand: "AOC",
+      tag: "FHD • VA • 240 Hz",
+      estimatePrice: 105,
+      resolution: "1920 × 1080",
+      panel: "VA",
+      refreshRateHz: 240,
+      responseTimeMs: 1,
+      specSource: "AOC",
+      note: "24,5 pouces Full HD VA, 240 Hz, 1 ms GtG / 0,5 ms MPRT, Adaptive Sync / FreeSync Premium, 2 × HDMI 2.0 et DisplayPort 1.2.",
+      merchants: { ebay: "", fnac: "", amazon: "" }
+    };
+
+    const generic1080Index = monitorProducts.findIndex(item => item.id === 'monitor-1080p-240');
+    if (generic1080Index >= 0) monitorProducts.splice(generic1080Index + 1, 0, product);
+    else monitorProducts.push(product);
+  }
+
+  if (window.EPN_LINKS && !window.EPN_LINKS[aoc25g3zmId]) {
+    window.EPN_LINKS[aoc25g3zmId] = {
+      customId: 'umpmonitoraoc25g3zm',
+      destination: 'https://www.ebay.fr/sch/i.html?_nkw=AOC+25G3ZM+24.5+FHD+240Hz',
+      url: 'https://www.ebay.fr/sch/i.html?_nkw=AOC+25G3ZM+24.5+FHD+240Hz&mkcid=1&mkrid=709-53476-19255-0&siteid=71&campid=5339214610&customid=umpmonitoraoc25g3zm&toolid=10001&mkevt=1'
+    };
+    window.applyEpnLinks?.();
+  }
+
   const form = document.getElementById('pcForm');
   const recommendations = document.getElementById('recommendations');
   if (!form || !recommendations) return;
