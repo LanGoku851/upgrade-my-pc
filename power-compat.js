@@ -125,6 +125,37 @@
     window.applyEpnLinks?.();
   }
 
+  const lg27gs95qeId = 'lg-ultragear-27gs95qe-b';
+  if (Array.isArray(monitorProducts) && !monitorProducts.some(product => product.id === lg27gs95qeId)) {
+    const product = {
+      id: lg27gs95qeId,
+      name: "LG UltraGear 27GS95QE-B 27 pouces QHD OLED 240 Hz",
+      brand: "LG",
+      tag: "QHD • OLED • 240 Hz",
+      estimatePrice: 570,
+      resolution: "2560 × 1440",
+      panel: "OLED",
+      refreshRateHz: 240,
+      responseTimeMs: 0.03,
+      specSource: "LG",
+      note: "27 pouces QHD OLED, 240 Hz, 0,03 ms GtG, G-SYNC Compatible, AMD FreeSync Premium Pro et VESA DisplayHDR True Black 400.",
+      merchants: { ebay: "", fnac: "", amazon: "" }
+    };
+
+    const generic1440Index = monitorProducts.findIndex(item => item.id === 'monitor-1440p-180');
+    if (generic1440Index >= 0) monitorProducts.splice(generic1440Index + 1, 0, product);
+    else monitorProducts.push(product);
+  }
+
+  if (window.EPN_LINKS && !window.EPN_LINKS[lg27gs95qeId]) {
+    window.EPN_LINKS[lg27gs95qeId] = {
+      customId: 'umpmonitorlg27gs95qe',
+      destination: 'https://www.ebay.fr/sch/i.html?_nkw=LG+UltraGear+27GS95QE-B+27+QHD+240Hz',
+      url: 'https://www.ebay.fr/sch/i.html?_nkw=LG+UltraGear+27GS95QE-B+27+QHD+240Hz&mkcid=1&mkrid=709-53476-19255-0&siteid=71&campid=5339214610&customid=umpmonitorlg27gs95qe&toolid=10001&mkevt=1'
+    };
+    window.applyEpnLinks?.();
+  }
+
   const form = document.getElementById('pcForm');
   const recommendations = document.getElementById('recommendations');
   if (!form || !recommendations) return;
