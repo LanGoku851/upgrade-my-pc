@@ -57,6 +57,16 @@ window.AFFILIATE_PRODUCTS = {
       merchants: { ebay: "", fnac: "", amazon: "" }
     },
     {
+      id: "kingston-fury-beast-32-ddr4-3200-cl16",
+      name: "Kingston FURY Beast 32 Go (2×16 Go) DDR4-3200 CL16",
+      brand: "Kingston",
+      tag: "DDR4 • XMP 2.0",
+      ramType: "ddr4",
+      estimatePrice: 268,
+      note: "Kit KF432C16BBK2/32 : 3200 MT/s, CL16-20-20, 1,35 V et profil Intel XMP 2.0.",
+      merchants: { ebay: "", fnac: "", amazon: "" }
+    },
+    {
       id: "ram32-ddr5",
       name: "Kit 32 Go DDR5-6000 CL30",
       tag: "DDR5",
