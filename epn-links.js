@@ -34,6 +34,11 @@
       destination: 'https://www.ebay.fr/sch/i.html?_nkw=32GB+DDR4+3200+CL16+kit',
       url: 'https://www.ebay.fr/sch/i.html?_nkw=32GB+DDR4+3200+CL16+kit&mkcid=1&mkrid=709-53476-19255-0&siteid=71&campid=5339214611&customid=umpram32ddr4&toolid=10001&mkevt=1'
     },
+    'kingston-fury-beast-32-ddr4-3200-cl16': {
+      customId: 'umpramkingston32ddr4',
+      destination: 'https://www.ebay.fr/sch/i.html?_nkw=Kingston+FURY+Beast+32GB+DDR4+3200+CL16+KF432C16BBK2%2F32',
+      url: 'https://www.ebay.fr/sch/i.html?_nkw=Kingston+FURY+Beast+32GB+DDR4+3200+CL16+KF432C16BBK2%2F32&mkcid=1&mkrid=709-53476-19255-0&siteid=71&campid=5339214611&customid=umpramkingston32ddr4&toolid=10001&mkevt=1'
+    },
     'ram32-ddr5': {
       customId: 'umpram32ddr5',
       destination: 'https://www.ebay.fr/sch/i.html?_nkw=32GB+DDR5+6000+CL30+kit',
