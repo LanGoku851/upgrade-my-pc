@@ -554,6 +554,30 @@
     window.applyEpnLinks?.();
   }
 
+  const samsung990pro2toId = 'samsung-990pro-2to';
+  if (Array.isArray(nvmeProducts) && !nvmeProducts.some(product => product.id === samsung990pro2toId)) {
+    nvmeProducts.push({
+      id: samsung990pro2toId,
+      name: "Samsung 990 PRO 2 To",
+      brand: "Samsung",
+      tag: "2 To • PCIe 4.0",
+      capacityGb: 2000,
+      estimatePrice: 340,
+      specSource: "Samsung",
+      note: "Référence MZ-V9P2T0BW : SSD NVMe M.2 2280 PCIe 4.0 x4 / NVMe 2.0, mémoire Samsung V-NAND TLC, cache DRAM 2 Go LPDDR4, jusqu’à 7 450 Mo/s en lecture et 6 900 Mo/s en écriture.",
+      merchants: { ebay: "", fnac: "", amazon: "" }
+    });
+  }
+
+  if (window.EPN_LINKS && !window.EPN_LINKS[samsung990pro2toId]) {
+    window.EPN_LINKS[samsung990pro2toId] = {
+      customId: 'umpsamsung990pro2tb',
+      destination: 'https://www.ebay.fr/sch/i.html?_nkw=Samsung+990+PRO+2TB+MZ-V9P2T0BW',
+      url: 'https://www.ebay.fr/sch/i.html?_nkw=Samsung+990+PRO+2TB+MZ-V9P2T0BW&mkcid=1&mkrid=709-53476-19255-0&siteid=71&campid=5339214616&customid=umpsamsung990pro2tb&toolid=10001&mkevt=1'
+    };
+    window.applyEpnLinks?.();
+  }
+
   const storageCapacityProducts = window.AFFILIATE_PRODUCTS?.storageCapacity;
   const sn850x2toCapacityId = 'sn850x-2to-capacity';
   if (Array.isArray(storageCapacityProducts) && !storageCapacityProducts.some(product => product.id === sn850x2toCapacityId)) {
