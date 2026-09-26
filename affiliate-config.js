@@ -119,6 +119,24 @@ window.AFFILIATE_PRODUCTS = {
       merchants: { ebay: "", fnac: "", amazon: "" }
     },
     {
+      id: "sapphire-pulse-rx9060xt8",
+      name: "Sapphire PULSE Radeon RX 9060 XT OC 8GB",
+      family: "RX 9060 XT 8 Go",
+      brand: "Sapphire",
+      tag: "1080p • AMD",
+      tier: 4,
+      estimatePrice: 435,
+      gpuLengthMm: 244,
+      gpuWidthMm: 111.25,
+      gpuThicknessMm: 46.1,
+      slots: "2.3",
+      recommendedPsu: 450,
+      powerConnector: "1 × 8-pin",
+      specSource: "Sapphire",
+      note: "Alternative AMD 8 Go plus accessible pour un upgrade orienté 1080p.",
+      merchants: { ebay: "", fnac: "", amazon: "" }
+    },
+    {
       id: "sapphire-pulse-rx9060xt16",
       name: "Sapphire PULSE Radeon RX 9060 XT OC 16GB",
       family: "RX 9060 XT 16 Go",
