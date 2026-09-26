@@ -635,6 +635,30 @@
     window.applyEpnLinks?.();
   }
 
+  const samsung990pro2toCapacityId = 'samsung-990pro-2to-capacity';
+  if (Array.isArray(storageCapacityProducts) && !storageCapacityProducts.some(product => product.id === samsung990pro2toCapacityId)) {
+    storageCapacityProducts.push({
+      id: samsung990pro2toCapacityId,
+      name: "Samsung 990 PRO 2 To",
+      brand: "Samsung",
+      tag: "2 To • capacité",
+      capacityGb: 2000,
+      estimatePrice: 340,
+      specSource: "Samsung",
+      note: "Option 2 To hautes performances pour augmenter la capacité de stockage avec un SSD NVMe PCIe 4.0 rapide.",
+      merchants: { ebay: "", fnac: "", amazon: "" }
+    });
+  }
+
+  if (window.EPN_LINKS && !window.EPN_LINKS[samsung990pro2toCapacityId]) {
+    window.EPN_LINKS[samsung990pro2toCapacityId] = {
+      customId: 'umpsamsung990pro2tbcapacity',
+      destination: 'https://www.ebay.fr/sch/i.html?_nkw=Samsung+990+PRO+2TB+MZ-V9P2T0BW',
+      url: 'https://www.ebay.fr/sch/i.html?_nkw=Samsung+990+PRO+2TB+MZ-V9P2T0BW&mkcid=1&mkrid=709-53476-19255-0&siteid=71&campid=5339214616&customid=umpsamsung990pro2tbcapacity&toolid=10001&mkevt=1'
+    };
+    window.applyEpnLinks?.();
+  }
+
   const form = document.getElementById('pcForm');
   const recommendations = document.getElementById('recommendations');
   if (!form || !recommendations) return;
