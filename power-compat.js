@@ -187,6 +187,35 @@
     window.applyEpnLinks?.();
   }
 
+  const nvmeProducts = window.AFFILIATE_PRODUCTS?.nvme;
+  const sn850x2toId = 'sn850x-2to';
+  if (Array.isArray(nvmeProducts) && !nvmeProducts.some(product => product.id === sn850x2toId)) {
+    const product = {
+      id: sn850x2toId,
+      name: "WD Black SN850X 2 To",
+      brand: "Western Digital",
+      tag: "2 To • PCIe 4.0",
+      capacityGb: 2000,
+      estimatePrice: 325,
+      specSource: "Western Digital",
+      note: "SSD NVMe M.2 2280 PCIe 4.0, jusqu’à 7 300 Mo/s en lecture et 6 600 Mo/s en écriture sur la version 2 To, avec endurance annoncée à 1 200 TBW.",
+      merchants: { ebay: "", fnac: "", amazon: "" }
+    };
+
+    const sn850x1toIndex = nvmeProducts.findIndex(item => item.id === 'sn850x-1to');
+    if (sn850x1toIndex >= 0) nvmeProducts.splice(sn850x1toIndex + 1, 0, product);
+    else nvmeProducts.push(product);
+  }
+
+  if (window.EPN_LINKS && !window.EPN_LINKS[sn850x2toId]) {
+    window.EPN_LINKS[sn850x2toId] = {
+      customId: 'umpsn850x2tb',
+      destination: 'https://www.ebay.fr/sch/i.html?_nkw=WD+Black+SN850X+2TB',
+      url: 'https://www.ebay.fr/sch/i.html?_nkw=WD+Black+SN850X+2TB&mkcid=1&mkrid=709-53476-19255-0&siteid=71&campid=5339214616&customid=umpsn850x2tb&toolid=10001&mkevt=1'
+    };
+    window.applyEpnLinks?.();
+  }
+
   const form = document.getElementById('pcForm');
   const recommendations = document.getElementById('recommendations');
   if (!form || !recommendations) return;
