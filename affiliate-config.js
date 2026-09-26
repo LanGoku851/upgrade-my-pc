@@ -469,6 +469,20 @@ window.AFFILIATE_PRODUCTS = {
       merchants: { ebay: "", fnac: "", amazon: "" }
     },
     {
+      id: "corsair-rm750e-750w-atx31",
+      name: "Corsair RM750e 750 W ATX 3.1",
+      brand: "Corsair",
+      tag: "750 W • ATX 3.1",
+      wattage: 750,
+      estimatePrice: 120,
+      efficiency: "80 PLUS Gold",
+      atxVersion: "ATX 3.1",
+      powerConnector: "12V-2x6",
+      specSource: "Corsair",
+      note: "Référence CP-9020262-EU : 750 W, entièrement modulaire, ATX 3.1 / PCIe 5.1, câble 12V-2x6 inclus et mode Zero RPM.",
+      merchants: { ebay: "", fnac: "", amazon: "" }
+    },
+    {
       id: "psu-850-gold",
       name: "Alimentation 850 W 80+ Gold",
       tag: "850 W",
