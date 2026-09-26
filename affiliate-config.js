@@ -403,6 +403,14 @@ window.AFFILIATE_PRODUCTS = {
   ],
   monitor: [
     {
+      id: "monitor-1080p-240",
+      name: "Écran 24,5 pouces 1080p 240 Hz",
+      tag: "Compétitif • 240 Hz",
+      estimatePrice: 220,
+      note: "Option orientée jeux compétitifs si le PC peut maintenir un nombre d’images par seconde élevé en 1080p.",
+      merchants: { ebay: "", fnac: "", amazon: "" }
+    },
+    {
       id: "monitor-1440p-180",
       name: "Écran 27 pouces 1440p 180 Hz",
       tag: "Fluidité",
