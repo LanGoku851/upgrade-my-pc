@@ -122,6 +122,37 @@
     window.applyEpnLinks?.();
   }
 
+  const asusTufRtx5090Id = 'asus-tuf-rtx5090';
+  if (Array.isArray(gpuHighProducts) && !gpuHighProducts.some(product => product.id === asusTufRtx5090Id)) {
+    gpuHighProducts.push({
+      id: asusTufRtx5090Id,
+      name: "ASUS TUF Gaming GeForce RTX 5090 32GB",
+      family: "RTX 5090 32 Go",
+      brand: "ASUS",
+      tag: "4K extrême • NVIDIA",
+      tier: 8,
+      estimatePrice: 5800,
+      gpuLengthMm: 348,
+      gpuWidthMm: 146,
+      gpuThicknessMm: 72,
+      slots: "3.6",
+      recommendedPsu: 1000,
+      powerConnector: "1 × 16-pin",
+      specSource: "ASUS",
+      note: "Référence TUF-RTX5090-32G-GAMING : 32 Go GDDR7, format 348 × 146 × 72 mm, 3,6 slots et alimentation recommandée de 1000 W.",
+      merchants: { ebay: "", fnac: "", amazon: "" }
+    });
+  }
+
+  if (window.EPN_LINKS && !window.EPN_LINKS[asusTufRtx5090Id]) {
+    window.EPN_LINKS[asusTufRtx5090Id] = {
+      customId: 'umpgpuasustuf5090',
+      destination: 'https://www.ebay.fr/sch/i.html?_nkw=ASUS+TUF+Gaming+GeForce+RTX+5090+32GB+TUF-RTX5090-32G-GAMING',
+      url: 'https://www.ebay.fr/sch/i.html?_nkw=ASUS+TUF+Gaming+GeForce+RTX+5090+32GB+TUF-RTX5090-32G-GAMING&mkcid=1&mkrid=709-53476-19255-0&siteid=71&campid=5339214367&customid=umpgpuasustuf5090&toolid=10001&mkevt=1'
+    };
+    window.applyEpnLinks?.();
+  }
+
   const monitorProducts = window.AFFILIATE_PRODUCTS?.monitor;
   const lg27gs75qId = 'lg-ultragear-27gs75q-b';
   if (Array.isArray(monitorProducts) && !monitorProducts.some(product => product.id === lg27gs75qId)) {
