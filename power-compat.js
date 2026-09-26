@@ -216,6 +216,35 @@
     window.applyEpnLinks?.();
   }
 
+  const storageCapacityProducts = window.AFFILIATE_PRODUCTS?.storageCapacity;
+  const sn850x2toCapacityId = 'sn850x-2to-capacity';
+  if (Array.isArray(storageCapacityProducts) && !storageCapacityProducts.some(product => product.id === sn850x2toCapacityId)) {
+    const product = {
+      id: sn850x2toCapacityId,
+      name: "WD Black SN850X 2 To",
+      brand: "Western Digital",
+      tag: "2 To • capacité",
+      capacityGb: 2000,
+      estimatePrice: 325,
+      specSource: "Western Digital",
+      note: "Option 2 To rapide pour augmenter la capacité de stockage tout en restant sur un SSD NVMe PCIe 4.0 hautes performances.",
+      merchants: { ebay: "", fnac: "", amazon: "" }
+    };
+
+    const sn850x1toCapacityIndex = storageCapacityProducts.findIndex(item => item.id === 'sn850x-1to-capacity');
+    if (sn850x1toCapacityIndex >= 0) storageCapacityProducts.splice(sn850x1toCapacityIndex + 1, 0, product);
+    else storageCapacityProducts.push(product);
+  }
+
+  if (window.EPN_LINKS && !window.EPN_LINKS[sn850x2toCapacityId]) {
+    window.EPN_LINKS[sn850x2toCapacityId] = {
+      customId: 'umpsn850x2tbcapacity',
+      destination: 'https://www.ebay.fr/sch/i.html?_nkw=WD+Black+SN850X+2TB',
+      url: 'https://www.ebay.fr/sch/i.html?_nkw=WD+Black+SN850X+2TB&mkcid=1&mkrid=709-53476-19255-0&siteid=71&campid=5339214616&customid=umpsn850x2tbcapacity&toolid=10001&mkevt=1'
+    };
+    window.applyEpnLinks?.();
+  }
+
   const form = document.getElementById('pcForm');
   const recommendations = document.getElementById('recommendations');
   if (!form || !recommendations) return;
