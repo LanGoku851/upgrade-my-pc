@@ -63,6 +63,38 @@
     window.applyEpnLinks?.();
   }
 
+  const monitorProducts = window.AFFILIATE_PRODUCTS?.monitor;
+  const lg27gs75qId = 'lg-ultragear-27gs75q-b';
+  if (Array.isArray(monitorProducts) && !monitorProducts.some(product => product.id === lg27gs75qId)) {
+    const product = {
+      id: lg27gs75qId,
+      name: "LG UltraGear 27GS75Q-B 27 pouces QHD 180 Hz",
+      brand: "LG",
+      tag: "QHD • IPS • 180 Hz",
+      estimatePrice: 180,
+      resolution: "2560 × 1440",
+      panel: "IPS",
+      refreshRateHz: 180,
+      overclockRefreshRateHz: 200,
+      specSource: "LG",
+      note: "27 pouces QHD IPS, 180 Hz natifs (jusqu’à 200 Hz en overclock via DisplayPort 1.4), 1 ms GtG, G-SYNC Compatible et AMD FreeSync.",
+      merchants: { ebay: "", fnac: "", amazon: "" }
+    };
+
+    const generic1440Index = monitorProducts.findIndex(item => item.id === 'monitor-1440p-180');
+    if (generic1440Index >= 0) monitorProducts.splice(generic1440Index + 1, 0, product);
+    else monitorProducts.push(product);
+  }
+
+  if (window.EPN_LINKS && !window.EPN_LINKS[lg27gs75qId]) {
+    window.EPN_LINKS[lg27gs75qId] = {
+      customId: 'umpmonitorlg27gs75q',
+      destination: 'https://www.ebay.fr/sch/i.html?_nkw=LG+UltraGear+27GS75Q-B+27+QHD+180Hz',
+      url: 'https://www.ebay.fr/sch/i.html?_nkw=LG+UltraGear+27GS75Q-B+27+QHD+180Hz&mkcid=1&mkrid=709-53476-19255-0&siteid=71&campid=5339214610&customid=umpmonitorlg27gs75q&toolid=10001&mkevt=1'
+    };
+    window.applyEpnLinks?.();
+  }
+
   const form = document.getElementById('pcForm');
   const recommendations = document.getElementById('recommendations');
   if (!form || !recommendations) return;
