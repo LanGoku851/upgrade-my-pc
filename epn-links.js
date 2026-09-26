@@ -27,7 +27,7 @@
     'ram32-ddr4': {
       customId: 'umpram32ddr4',
       destination: 'https://www.ebay.fr/sch/i.html?_nkw=32GB+DDR4+3200+CL16+kit',
-      url: ''
+      url: 'https://www.ebay.fr/sch/i.html?_nkw=32GB+DDR4+3200+CL16+kit&mkcid=1&mkrid=709-53476-19255-0&siteid=71&campid=5339214611&customid=umpram32ddr4&toolid=10001&mkevt=1'
     },
     'ram32-ddr5': {
       customId: 'umpram32ddr5',
