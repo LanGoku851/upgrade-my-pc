@@ -280,6 +280,37 @@
     window.applyEpnLinks?.();
   }
 
+  const ryzen9600xId = 'ryzen5-9600x';
+  if (Array.isArray(cpuProducts) && !cpuProducts.some(product => product.id === ryzen9600xId)) {
+    cpuProducts.push({
+      id: ryzen9600xId,
+      name: "AMD Ryzen 5 9600X",
+      brand: "AMD",
+      tag: "Gaming • AM5",
+      estimatePrice: 156,
+      socket: "AM5",
+      cores: 6,
+      threads: 12,
+      baseClockGHz: 3.9,
+      boostClockGHz: 5.4,
+      cacheL3Mb: 32,
+      tdpW: 65,
+      memoryType: "DDR5",
+      specSource: "AMD",
+      note: "Ryzen 9000 Zen 5 avec 6 cœurs / 12 threads, 3,9 GHz de base, jusqu’à 5,4 GHz, 32 Mo de cache L3 et TDP 65 W. Ventirad non fourni ; AMD recommande un refroidissement à air haut de gamme pour des performances optimales.",
+      merchants: { ebay: "", fnac: "", amazon: "" }
+    });
+  }
+
+  if (window.EPN_LINKS && !window.EPN_LINKS[ryzen9600xId]) {
+    window.EPN_LINKS[ryzen9600xId] = {
+      customId: 'umpcpu9600x',
+      destination: 'https://www.ebay.fr/sch/i.html?_nkw=AMD+Ryzen+5+9600X',
+      url: 'https://www.ebay.fr/sch/i.html?_nkw=AMD+Ryzen+5+9600X&mkcid=1&mkrid=709-53476-19255-0&siteid=71&campid=5339214600&customid=umpcpu9600x&toolid=10001&mkevt=1'
+    };
+    window.applyEpnLinks?.();
+  }
+
   const monitorProducts = window.AFFILIATE_PRODUCTS?.monitor;
   const lg27gs75qId = 'lg-ultragear-27gs75q-b';
   if (Array.isArray(monitorProducts) && !monitorProducts.some(product => product.id === lg27gs75qId)) {
