@@ -27,6 +27,16 @@ window.AFFILIATE_PRODUCTS = {
       merchants: { ebay: "", fnac: "", amazon: "" }
     },
     {
+      id: "corsair-vengeance-lpx-16-ddr4-3200-cl16",
+      name: "Corsair Vengeance LPX 16 Go (2×8 Go) DDR4-3200 CL16",
+      brand: "Corsair",
+      tag: "DDR4 • XMP 2.0",
+      ramType: "ddr4",
+      estimatePrice: 210,
+      note: "Kit CMK16GX4M2B3200C16 : 3200 MT/s, CL16, 1,35 V et profil XMP 2.0.",
+      merchants: { ebay: "", fnac: "", amazon: "" }
+    },
+    {
       id: "ram16-ddr5",
       name: "Kit 16 Go DDR5-6000",
       tag: "DDR5",
