@@ -53,7 +53,7 @@
     'crucial-t500-2to-capacity': {
       customId: 'umpt5002tbcapacity',
       destination: 'https://www.ebay.fr/sch/i.html?_nkw=Crucial+T500+2TB',
-      url: ''
+      url: 'https://www.ebay.fr/sch/i.html?_nkw=Crucial+T500+2TB&mkcid=1&mkrid=709-53476-19255-0&siteid=71&campid=5339214616&customid=umpt5002tbcapacity&toolid=10001&mkevt=1'
     },
 
     'sapphire-pulse-rx9060xt16': {
