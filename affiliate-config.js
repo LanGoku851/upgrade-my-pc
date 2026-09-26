@@ -137,6 +137,24 @@ window.AFFILIATE_PRODUCTS = {
       merchants: { ebay: "", fnac: "", amazon: "" }
     },
     {
+      id: "asus-dual-rtx5060ti8-oc",
+      name: "ASUS Dual GeForce RTX 5060 Ti OC Edition 8GB",
+      family: "RTX 5060 Ti 8 Go",
+      brand: "ASUS",
+      tag: "Compacte • NVIDIA",
+      tier: 4,
+      estimatePrice: 485,
+      gpuLengthMm: 229,
+      gpuWidthMm: 120,
+      gpuThicknessMm: 50,
+      slots: "2.5",
+      recommendedPsu: 550,
+      powerConnector: "1 × 8-pin",
+      specSource: "ASUS",
+      note: "Palier intermédiaire entre la RTX 5060 et les modèles 16 Go, dans un format compact.",
+      merchants: { ebay: "", fnac: "", amazon: "" }
+    },
+    {
       id: "sapphire-pulse-rx9060xt16",
       name: "Sapphire PULSE Radeon RX 9060 XT OC 16GB",
       family: "RX 9060 XT 16 Go",
