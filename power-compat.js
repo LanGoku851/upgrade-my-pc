@@ -1,7 +1,38 @@
 (() => {
-  const rm850eId = 'corsair-rm850e-850w-atx31';
   const psuProducts = window.AFFILIATE_PRODUCTS?.psu;
 
+  const rm650eId = 'corsair-rm650e-650w-atx31';
+  if (Array.isArray(psuProducts) && !psuProducts.some(product => product.id === rm650eId)) {
+    const product = {
+      id: rm650eId,
+      name: "Corsair RM650e 650 W ATX 3.1",
+      brand: "Corsair",
+      tag: "650 W • ATX 3.1",
+      wattage: 650,
+      estimatePrice: 85,
+      efficiency: "Cybenetics Gold",
+      atxVersion: "ATX 3.1",
+      powerConnector: "12V-2x6",
+      specSource: "Corsair",
+      note: "Référence CP-9020302-EU : 650 W, entièrement modulaire, ATX 3.1 / PCIe 5.1, câble 12V-2x6 natif, mode Zero RPM et garantie constructeur de 7 ans.",
+      merchants: { ebay: "", fnac: "", amazon: "" }
+    };
+
+    const generic650Index = psuProducts.findIndex(item => item.id === 'psu-650-gold');
+    if (generic650Index >= 0) psuProducts.splice(generic650Index + 1, 0, product);
+    else psuProducts.push(product);
+  }
+
+  if (window.EPN_LINKS && !window.EPN_LINKS[rm650eId]) {
+    window.EPN_LINKS[rm650eId] = {
+      customId: 'umppsucorsairrm650e',
+      destination: 'https://www.ebay.fr/sch/i.html?_nkw=Corsair+RM650e+650W+ATX+3.1+CP-9020302-EU',
+      url: 'https://www.ebay.fr/sch/i.html?_nkw=Corsair+RM650e+650W+ATX+3.1+CP-9020302-EU&mkcid=1&mkrid=709-53476-19255-0&siteid=71&campid=5339214608&customid=umppsucorsairrm650e&toolid=10001&mkevt=1'
+    };
+    window.applyEpnLinks?.();
+  }
+
+  const rm850eId = 'corsair-rm850e-850w-atx31';
   if (Array.isArray(psuProducts) && !psuProducts.some(product => product.id === rm850eId)) {
     const product = {
       id: rm850eId,
