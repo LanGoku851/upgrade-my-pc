@@ -323,6 +323,14 @@ window.AFFILIATE_PRODUCTS = {
   ],
   psu: [
     {
+      id: "psu-650-gold",
+      name: "Alimentation 650 W 80+ Gold ATX 3.1",
+      tag: "650 W",
+      estimatePrice: 90,
+      note: "Option intermédiaire pour les cartes graphiques dont la recommandation se situe autour de 650 W.",
+      merchants: { ebay: "", fnac: "", amazon: "" }
+    },
+    {
       id: "psu-750-gold",
       name: "Alimentation 750 W 80+ Gold",
       tag: "750 W",
