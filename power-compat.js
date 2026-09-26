@@ -311,6 +311,37 @@
     window.applyEpnLinks?.();
   }
 
+  const ryzen9700xId = 'ryzen7-9700x';
+  if (Array.isArray(cpuProducts) && !cpuProducts.some(product => product.id === ryzen9700xId)) {
+    cpuProducts.push({
+      id: ryzen9700xId,
+      name: "AMD Ryzen 7 9700X",
+      brand: "AMD",
+      tag: "Gaming / polyvalent • AM5",
+      estimatePrice: 215,
+      socket: "AM5",
+      cores: 8,
+      threads: 16,
+      baseClockGHz: 3.8,
+      boostClockGHz: 5.5,
+      cacheL3Mb: 32,
+      tdpW: 65,
+      memoryType: "DDR5",
+      specSource: "AMD",
+      note: "Ryzen 9000 Zen 5 avec 8 cœurs / 16 threads, 3,8 GHz de base, jusqu’à 5,5 GHz, 32 Mo de cache L3 et TDP 65 W. Ventirad non fourni ; AMD recommande un refroidissement à air haut de gamme pour des performances optimales.",
+      merchants: { ebay: "", fnac: "", amazon: "" }
+    });
+  }
+
+  if (window.EPN_LINKS && !window.EPN_LINKS[ryzen9700xId]) {
+    window.EPN_LINKS[ryzen9700xId] = {
+      customId: 'umpcpu9700x',
+      destination: 'https://www.ebay.fr/sch/i.html?_nkw=AMD+Ryzen+7+9700X',
+      url: 'https://www.ebay.fr/sch/i.html?_nkw=AMD+Ryzen+7+9700X&mkcid=1&mkrid=709-53476-19255-0&siteid=71&campid=5339214600&customid=umpcpu9700x&toolid=10001&mkevt=1'
+    };
+    window.applyEpnLinks?.();
+  }
+
   const monitorProducts = window.AFFILIATE_PRODUCTS?.monitor;
   const lg27gs75qId = 'lg-ultragear-27gs75q-b';
   if (Array.isArray(monitorProducts) && !monitorProducts.some(product => product.id === lg27gs75qId)) {
