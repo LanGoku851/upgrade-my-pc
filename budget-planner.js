@@ -152,6 +152,7 @@
       row.classList.add('budget-fit');
       scenarios.push({
         name,
+        family: estimate.product?.family || '',
         total: estimate.total,
         title: cardTitleFor(row),
         addonLabel: estimate.addonLabel,
@@ -181,14 +182,14 @@
       recommendations.parentElement.insertBefore(panel, recommendations);
     }
 
-    const uniqueByProduct = new Map();
+    const uniqueByFamily = new Map();
     scenarios.forEach(item => {
-      const key = normalizeName(item.name);
-      const current = uniqueByProduct.get(key);
-      if (!current || item.total < current.total) uniqueByProduct.set(key, item);
+      const key = normalizeName(item.family || item.name);
+      const current = uniqueByFamily.get(key);
+      if (!current || item.total < current.total) uniqueByFamily.set(key, item);
     });
 
-    const choices = [...uniqueByProduct.values()]
+    const choices = [...uniqueByFamily.values()]
       .sort((a, b) => a.total - b.total)
       .slice(0, 3);
 
