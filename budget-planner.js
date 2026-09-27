@@ -29,7 +29,7 @@
     return allProducts().find(product => product.name === name);
   }
 
-  const psuUpgradeCost = (required) => required >= 850 ? 144 : required >= 750 ? 133 : 90;
+  const psuUpgradeCost = (required) => required >= 1000 ? 175 : required >= 850 ? 144 : required >= 750 ? 133 : 90;
 
   function formatEuro(value) {
     return new Intl.NumberFormat('fr-FR', {
