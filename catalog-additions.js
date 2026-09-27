@@ -296,8 +296,27 @@
     return allFound;
   }
 
+  const gpuTierOverrides = {
+    'asus-prime-rtx5080': 6,
+    'asus-tuf-rtx5090': 7
+  };
+
+  function applyGpuTierOverrides() {
+    const products = window.AFFILIATE_PRODUCTS?.gpuHigh;
+    if (!Array.isArray(products)) return false;
+
+    let allFound = true;
+    Object.entries(gpuTierOverrides).forEach(([id, tier]) => {
+      const product = products.find(item => item.id === id);
+      if (product) product.tier = tier;
+      else allFound = false;
+    });
+    return allFound;
+  }
+
   applyCpuPriceOverrides();
   applyPsuPriceOverrides();
+  applyGpuTierOverrides();
 
   window.addEventListener('load', () => {
     let attempts = 0;
@@ -305,7 +324,8 @@
       attempts += 1;
       const cpuReady = applyCpuPriceOverrides();
       const psuReady = applyPsuPriceOverrides();
-      if ((cpuReady && psuReady) || attempts >= 20) return;
+      const gpuReady = applyGpuTierOverrides();
+      if ((cpuReady && psuReady && gpuReady) || attempts >= 20) return;
       setTimeout(retry, 100);
     };
     setTimeout(retry, 0);
