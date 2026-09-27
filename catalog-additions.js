@@ -197,4 +197,23 @@
       }
     });
   });
+
+  const storagePriceOverrides = {
+    'sn850x-1to': 201,
+    'sn850x-1to-capacity': 201,
+    'crucial-t500-2to': 360,
+    'crucial-t500-2to-capacity': 360,
+    'crucial-p3plus-4to': 230,
+    'crucial-p3plus-4to-capacity': 230
+  };
+
+  ['nvme', 'storageCapacity'].forEach(group => {
+    const products = window.AFFILIATE_PRODUCTS?.[group];
+    if (!Array.isArray(products)) return;
+    products.forEach(product => {
+      if (Object.prototype.hasOwnProperty.call(storagePriceOverrides, product.id)) {
+        product.estimatePrice = storagePriceOverrides[product.id];
+      }
+    });
+  });
 })();
