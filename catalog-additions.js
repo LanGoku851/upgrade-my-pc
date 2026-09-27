@@ -144,7 +144,7 @@
     window.EPN_LINKS[coreI514400fId] = {
       customId: 'umpcpui514400f',
       destination: 'https://www.ebay.fr/sch/i.html?_nkw=Intel+Core+i5-14400F',
-      url: 'https://www.ebay.fr/sch/i.html?_nkw=Intel+Core+i5+14400F&mkcid=1&mkrid=709-53476-19255-0&siteid=71&campid=5339214600&customid=umpcpui514400f&toolid=10001&mkevt=1'
+      url: 'https://www.ebay.fr/sch/i.html?_nkw=Intel+Core+i5-14400F&mkcid=1&mkrid=709-53476-19255-0&siteid=71&campid=5339214600&customid=umpcpui514400f&toolid=10001&mkevt=1'
     };
     window.applyEpnLinks?.();
   }
