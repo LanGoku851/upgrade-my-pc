@@ -184,7 +184,7 @@
     'ram16-ddr4': 130,
     'ram16-ddr5': 290,
     'ram32-ddr4': 215,
-    'kingston-fury-beast-32-ddr4-3200-cl16': 290,
+    'kingston-fury-beast-32-ddr4-3200-cl16': 268,
     'ram32-ddr5': 500
   };
 
@@ -230,7 +230,8 @@
     'asus-prime-rtx5070': 807,
     'powercolor-reaper-rx9070xt': 812,
     'powercolor-hellhound-rx9070xt': 826,
-    'msi-rtx5070ti-ventus3x': 1242
+    'msi-rtx5070ti-ventus3x': 1242,
+    'asus-prime-rtx5070ti': 1271
   };
 
   ['gpuMid', 'gpuHigh'].forEach(group => {
