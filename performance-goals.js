@@ -138,6 +138,23 @@
       text = 'Tu as choisi les chargements comme objectif principal : le FPS visé reste informatif, mais le SSD doit rester prioritaire si le stockage actuel est lent.';
     }
 
+    if (cpuSelect.value === 'other' && gpuSelect.value === 'other') {
+      priority = 'balanced';
+      status = 'balanced';
+      title = 'CPU et GPU à identifier';
+      text = 'Le modèle exact du processeur et de la carte graphique est nécessaire pour classer correctement un upgrade CPU ou GPU. Le diagnostic conserve uniquement les recommandations qui ne dépendent pas de cette estimation.';
+    } else if (cpuSelect.value === 'other' && priority === 'cpu') {
+      priority = 'balanced';
+      status = 'balanced';
+      title = 'Processeur à identifier';
+      text = 'Le modèle exact du processeur est nécessaire avant de recommander un changement de CPU ou de plateforme.';
+    } else if (gpuSelect.value === 'other' && priority === 'gpu') {
+      priority = 'balanced';
+      status = 'balanced';
+      title = 'Carte graphique à identifier';
+      text = 'Le modèle exact de la carte graphique est nécessaire avant de recommander un remplacement GPU précis.';
+    }
+
     return { fps, type, resolution, cpu, gpu, priority, status, title, text };
   }
 
@@ -171,6 +188,22 @@
     renumberCards();
   }
 
+  function removeUnknownHardwareRecommendations() {
+    let changed = false;
+    [...recommendations.querySelectorAll('.recommendation')].forEach(card => {
+      const title = card.querySelector('h3')?.textContent || '';
+      const isGpu = /carte graphique|gpu/i.test(title);
+      const isCpu = /processeur|plateforme/i.test(title);
+
+      if ((gpuSelect.value === 'other' && isGpu) || (cpuSelect.value === 'other' && isCpu)) {
+        card.remove();
+        changed = true;
+      }
+    });
+
+    if (changed) renumberCards();
+  }
+
   function renderTarget() {
     const result = analyseTarget();
     const labels = {
@@ -193,6 +226,7 @@
 
     movePriorityCard(result.priority);
     dedupeGpuCards();
+    removeUnknownHardwareRecommendations();
 
     const currentSummary = summaryText.textContent;
     if (currentSummary && !currentSummary.includes(`${result.fps} FPS`)) {
