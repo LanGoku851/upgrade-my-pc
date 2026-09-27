@@ -83,4 +83,35 @@
     };
     window.applyEpnLinks?.();
   }
+
+  const ryzen77700Id = 'ryzen7-7700';
+  if (Array.isArray(cpuProducts) && !cpuProducts.some(product => product.id === ryzen77700Id)) {
+    cpuProducts.push({
+      id: ryzen77700Id,
+      name: "AMD Ryzen 7 7700",
+      brand: "AMD",
+      tag: "Gaming / polyvalent • AM5",
+      estimatePrice: 286,
+      socket: "AM5",
+      cores: 8,
+      threads: 16,
+      baseClockGHz: 3.8,
+      boostClockGHz: 5.3,
+      cacheL3Mb: 32,
+      tdpW: 65,
+      memoryType: "DDR5",
+      specSource: "AMD",
+      note: "Ryzen 7000 Zen 4 avec 8 cœurs / 16 threads, 3,8 GHz de base, jusqu’à 5,3 GHz, 32 Mo de cache L3 et TDP 65 W. La version Boxed inclut un refroidisseur AMD Wraith Prism.",
+      merchants: { ebay: "", fnac: "", amazon: "" }
+    });
+  }
+
+  if (window.EPN_LINKS && !window.EPN_LINKS[ryzen77700Id]) {
+    window.EPN_LINKS[ryzen77700Id] = {
+      customId: 'umpcpu7700',
+      destination: 'https://www.ebay.fr/sch/i.html?_nkw=AMD+Ryzen+7+7700',
+      url: 'https://www.ebay.fr/sch/i.html?_nkw=AMD+Ryzen+7+7700&mkcid=1&mkrid=709-53476-19255-0&siteid=71&campid=5339214600&customid=umpcpu7700&toolid=10001&mkevt=1'
+    };
+    window.applyEpnLinks?.();
+  }
 })();
