@@ -144,7 +144,7 @@
     window.EPN_LINKS[coreI514400fId] = {
       customId: 'umpcpui514400f',
       destination: 'https://www.ebay.fr/sch/i.html?_nkw=Intel+Core+i5-14400F',
-      url: 'https://www.ebay.fr/sch/i.html?_nkw=Intel+Core+i5-14400F&mkcid=1&mkrid=709-53476-19255-0&siteid=71&campid=5339214600&customid=umpcpui514400f&toolid=10001&mkevt=1'
+      url: 'https://www.ebay.fr/sch/i.html?_nkw=Intel+Core+i5+14400F&mkcid=1&mkrid=709-53476-19255-0&siteid=71&campid=5339214600&customid=umpcpui514400f&toolid=10001&mkevt=1'
     };
     window.applyEpnLinks?.();
   }
@@ -258,6 +258,25 @@
     });
   }
 
+  const cpuPriceOverrides = {
+    'ryzen9800x3d': 399,
+    'coreultra7-265k': 310,
+    'ryzen9950x3d': 525
+  };
+
+  function applyCpuPriceOverrides() {
+    const products = window.AFFILIATE_PRODUCTS?.cpu;
+    if (!Array.isArray(products)) return false;
+
+    let allFound = true;
+    Object.entries(cpuPriceOverrides).forEach(([id, price]) => {
+      const product = products.find(item => item.id === id);
+      if (product) product.estimatePrice = price;
+      else allFound = false;
+    });
+    return allFound;
+  }
+
   const psuPriceOverrides = {
     'corsair-rm750e-750w-atx31': 133,
     'corsair-rm850e-850w-atx31': 144
@@ -276,13 +295,16 @@
     return allFound;
   }
 
+  applyCpuPriceOverrides();
   applyPsuPriceOverrides();
 
   window.addEventListener('load', () => {
     let attempts = 0;
     const retry = () => {
       attempts += 1;
-      if (applyPsuPriceOverrides() || attempts >= 20) return;
+      const cpuReady = applyCpuPriceOverrides();
+      const psuReady = applyPsuPriceOverrides();
+      if ((cpuReady && psuReady) || attempts >= 20) return;
       setTimeout(retry, 100);
     };
     setTimeout(retry, 0);
