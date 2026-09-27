@@ -35,24 +35,89 @@
 
   const cpuProductsByPlatform = {
     am4: [
-      { id:'ryzen5700x3d', name:'AMD Ryzen 7 5700X3D', tag:'AM4', note:'À vérifier dans la liste CPU/BIOS de ta carte mère.', merchants:{ ebay:'', fnac:'', amazon:'' } },
-      { id:'ryzen5800x3d', name:'AMD Ryzen 7 5800X3D', tag:'AM4', note:'Option AM4 hautes performances si encore disponible et supportée.', merchants:{ ebay:'', fnac:'', amazon:'' } }
+      { id:'ryzen5700x3d', name:'AMD Ryzen 7 5700X3D', tag:'AM4', socket:'AM4', note:'À vérifier dans la liste CPU/BIOS de ta carte mère.', merchants:{ ebay:'', fnac:'', amazon:'' } },
+      { id:'ryzen5800x3d', name:'AMD Ryzen 7 5800X3D', tag:'AM4', socket:'AM4', note:'Option AM4 hautes performances si encore disponible et supportée.', merchants:{ ebay:'', fnac:'', amazon:'' } }
     ],
     am5: [
-      { id:'ryzen9800x3d', name:'AMD Ryzen 7 9800X3D', tag:'AM5', note:'Compatible avec la plateforme AM5 ; un BIOS récent peut être nécessaire selon la carte mère.', merchants:{ ebay:'', fnac:'', amazon:'' } }
+      { id:'ryzen9800x3d', name:'AMD Ryzen 7 9800X3D', tag:'AM5', socket:'AM5', note:'Compatible avec la plateforme AM5 ; un BIOS récent peut être nécessaire selon la carte mère.', merchants:{ ebay:'', fnac:'', amazon:'' } }
     ],
     lga1700: [
-      { id:'i5-14600k', name:'Intel Core i5-14600K', tag:'LGA1700', note:'Même socket, mais vérifie chipset, BIOS et type de RAM de la carte mère.', merchants:{ ebay:'', fnac:'', amazon:'' } },
-      { id:'i7-14700k', name:'Intel Core i7-14700K', tag:'LGA1700', note:'Même socket, avec compatibilité carte mère/BIOS à confirmer.', merchants:{ ebay:'', fnac:'', amazon:'' } }
+      { id:'i5-14600k', name:'Intel Core i5-14600K', tag:'LGA1700', socket:'LGA1700', note:'Même socket, mais vérifie chipset, BIOS et type de RAM de la carte mère.', merchants:{ ebay:'', fnac:'', amazon:'' } },
+      { id:'i7-14700k', name:'Intel Core i7-14700K', tag:'LGA1700', socket:'LGA1700', note:'Même socket, avec compatibilité carte mère/BIOS à confirmer.', merchants:{ ebay:'', fnac:'', amazon:'' } }
     ],
     lga1851: [
-      { id:'coreultra7-265k', name:'Intel Core Ultra 7 265K', tag:'LGA1851', note:'Pour carte mère LGA1851 compatible.', merchants:{ ebay:'', fnac:'', amazon:'' } }
+      { id:'coreultra7-265k', name:'Intel Core Ultra 7 265K', tag:'LGA1851', socket:'LGA1851', note:'Pour carte mère LGA1851 compatible.', merchants:{ ebay:'', fnac:'', amazon:'' } }
     ],
     modern: [
       { id:'ryzen9800x3d-platform', name:'AMD Ryzen 7 9800X3D + carte mère AM5', tag:'Nouvelle plateforme', note:'Implique une carte mère AM5 et de la DDR5.', merchants:{ ebay:'', fnac:'', amazon:'' } },
       { id:'coreultra7-265k-platform', name:'Intel Core Ultra 7 265K + carte mère LGA1851', tag:'Nouvelle plateforme', note:'Implique une carte mère LGA1851 et de la DDR5.', merchants:{ ebay:'', fnac:'', amazon:'' } }
     ]
   };
+
+  // Garde une copie vivante du catalogue CPU. Ainsi, les références ajoutées par
+  // d'autres modules ne disparaissent plus lorsqu'on filtre par plateforme.
+  const cpuCatalog = new Map();
+
+  function mergeProduct(existing, incoming) {
+    if (!existing) return incoming;
+    return {
+      ...existing,
+      ...incoming,
+      merchants: { ...(existing.merchants || {}), ...(incoming.merchants || {}) }
+    };
+  }
+
+  function rememberCpuProducts() {
+    const products = window.AFFILIATE_PRODUCTS?.cpu;
+    if (!Array.isArray(products)) return;
+    products.forEach(product => {
+      if (!product?.id) return;
+      cpuCatalog.set(product.id, mergeProduct(cpuCatalog.get(product.id), product));
+    });
+  }
+
+  Object.values(cpuProductsByPlatform).flat().forEach(product => {
+    cpuCatalog.set(product.id, mergeProduct(cpuCatalog.get(product.id), product));
+  });
+  rememberCpuProducts();
+
+  function platformForProduct(product) {
+    const socket = String(product?.socket || '').toUpperCase();
+    if (socket === 'AM4') return 'am4';
+    if (socket === 'AM5') return 'am5';
+    if (socket === 'LGA1700') return 'lga1700';
+    if (socket === 'LGA1851') return 'lga1851';
+
+    if (product?.id === 'ryzen9800x3d') return 'am5';
+    if (product?.id === 'coreultra7-265k') return 'lga1851';
+    return 'unknown';
+  }
+
+  function sortByPriceThenName(products) {
+    return [...products].sort((a, b) => {
+      const priceA = Number(a.estimatePrice || Number.POSITIVE_INFINITY);
+      const priceB = Number(b.estimatePrice || Number.POSITIVE_INFINITY);
+      if (priceA !== priceB) return priceA - priceB;
+      return String(a.name || '').localeCompare(String(b.name || ''), 'fr');
+    });
+  }
+
+  function productsForPlatform(platform) {
+    rememberCpuProducts();
+
+    if (platform === 'am4' || platform === 'lga1700') {
+      return cpuProductsByPlatform[platform].map(product => mergeProduct(product, cpuCatalog.get(product.id) || product));
+    }
+
+    if (platform === 'am5' || platform === 'lga1851') {
+      const compatible = [...cpuCatalog.values()].filter(product => platformForProduct(product) === platform);
+      return sortByPriceThenName(compatible);
+    }
+
+    // Si la plateforme est ancienne ou inconnue, évite de mélanger des CPU de
+    // sockets différents : on présente plutôt les deux scénarios de migration.
+    return cpuProductsByPlatform.modern.map(product => mergeProduct(product, cpuCatalog.get(product.id) || product));
+  }
 
   const cpuLabel = cpuSelect.closest('label');
   if (cpuLabel && !document.getElementById('chipset')) {
@@ -82,11 +147,8 @@
     platformHint.textContent = platform === 'unknown' ? 'Plateforme non détectée.' : `Plateforme détectée : ${data.label} • Mémoire : ${data.memory}`;
 
     if (window.AFFILIATE_PRODUCTS) {
-      if (platform === 'am4' || platform === 'am5' || platform === 'lga1700' || platform === 'lga1851') {
-        window.AFFILIATE_PRODUCTS.cpu = cpuProductsByPlatform[platform];
-      } else if (platform === 'lga1151v2' || platform === 'lga1200') {
-        window.AFFILIATE_PRODUCTS.cpu = cpuProductsByPlatform.modern;
-      }
+      window.AFFILIATE_PRODUCTS.cpu = productsForPlatform(platform);
+      window.applyEpnLinks?.();
     }
   }
 
