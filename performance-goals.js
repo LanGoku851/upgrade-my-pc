@@ -7,6 +7,7 @@
   const cpuSelect = document.getElementById('cpu');
   const gpuSelect = document.getElementById('gpu');
   const goalSelect = document.getElementById('goal');
+  const copyResult = document.getElementById('copyResult');
   if (!form || !recommendations || !summaryText || !resolutionSelect || !budgetSelect || !cpuSelect || !gpuSelect || !goalSelect) return;
 
   if (!document.querySelector('link[href="performance-goals.css"]')) {
@@ -140,6 +141,13 @@
     return { fps, type, resolution, cpu, gpu, priority, status, title, text };
   }
 
+  function renumberCards() {
+    [...recommendations.querySelectorAll('.recommendation')].forEach((card, index) => {
+      const rank = card.querySelector('.rank');
+      if (rank) rank.textContent = String(index + 1);
+    });
+  }
+
   function movePriorityCard(priority) {
     if (!['cpu','gpu'].includes(priority)) return;
     const cards = [...recommendations.querySelectorAll('.recommendation')];
@@ -151,10 +159,16 @@
 
     if (!target || target === cards[0]) return;
     recommendations.insertBefore(target, recommendations.firstElementChild);
-    [...recommendations.querySelectorAll('.recommendation')].forEach((card, index) => {
-      const rank = card.querySelector('.rank');
-      if (rank) rank.textContent = String(index + 1);
-    });
+    renumberCards();
+  }
+
+  function dedupeGpuCards() {
+    const gpuCards = [...recommendations.querySelectorAll('.recommendation')]
+      .filter(card => /carte graphique|gpu/i.test(card.querySelector('h3')?.textContent || ''));
+
+    if (gpuCards.length <= 1) return;
+    gpuCards.slice(1).forEach(card => card.remove());
+    renumberCards();
   }
 
   function renderTarget() {
@@ -178,6 +192,7 @@
     `;
 
     movePriorityCard(result.priority);
+    dedupeGpuCards();
 
     const currentSummary = summaryText.textContent;
     if (currentSummary && !currentSummary.includes(`${result.fps} FPS`)) {
@@ -188,6 +203,41 @@
     if (firstCard && !firstCard.querySelector('.performance-inline-note')) {
       firstCard.insertAdjacentHTML('beforeend', `<div class="performance-inline-note">Cible utilisateur : <strong>${result.fps} FPS</strong> en profil ${labels[result.type]}.</div>`);
     }
+  }
+
+  function visibleShareText() {
+    const cards = [...recommendations.querySelectorAll('.recommendation')];
+    if (!cards.length) return '';
+
+    const lines = cards.map((card, index) => {
+      const title = card.querySelector('h3')?.textContent?.trim() || 'Upgrade';
+      const products = [...card.querySelectorAll('.product-option strong')]
+        .map(el => el.textContent.trim())
+        .filter(Boolean)
+        .join(', ');
+      return `${index + 1}. ${title}${products ? ` — ${products}` : ''}`;
+    });
+
+    return `Mon diagnostic UpgradeMyPC — ${summaryText.textContent}\n${lines.join('\n')}`;
+  }
+
+  if (copyResult) {
+    copyResult.addEventListener('click', async (event) => {
+      const text = visibleShareText();
+      if (!text) return;
+
+      event.preventDefault();
+      event.stopImmediatePropagation();
+
+      try {
+        await navigator.clipboard.writeText(text);
+        const original = copyResult.textContent;
+        copyResult.textContent = 'Diagnostic copié ✓';
+        setTimeout(() => { copyResult.textContent = original; }, 1800);
+      } catch {
+        window.prompt('Copie ton diagnostic :', text);
+      }
+    }, true);
   }
 
   form.addEventListener('submit', () => setTimeout(renderTarget, 20));
