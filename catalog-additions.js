@@ -179,4 +179,22 @@
     };
     window.applyEpnLinks?.();
   }
+
+  const ramPriceOverrides = {
+    'ram16-ddr4': 130,
+    'ram16-ddr5': 290,
+    'ram32-ddr4': 215,
+    'kingston-fury-beast-32-ddr4-3200-cl16': 290,
+    'ram32-ddr5': 500
+  };
+
+  ['ram16', 'ram32'].forEach(group => {
+    const products = window.AFFILIATE_PRODUCTS?.[group];
+    if (!Array.isArray(products)) return;
+    products.forEach(product => {
+      if (Object.prototype.hasOwnProperty.call(ramPriceOverrides, product.id)) {
+        product.estimatePrice = ramPriceOverrides[product.id];
+      }
+    });
+  });
 })();
