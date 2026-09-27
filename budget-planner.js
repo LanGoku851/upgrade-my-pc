@@ -12,12 +12,12 @@
   }
 
   const fallbackEstimates = {
-    'AMD Ryzen 7 5700X3D': { price: 220 },
-    'AMD Ryzen 7 5800X3D': { price: 320 },
-    'AMD Ryzen 7 9800X3D': { price: 500 },
-    'Intel Core i5-14600K': { price: 270 },
-    'Intel Core i7-14700K': { price: 400 },
-    'Intel Core Ultra 7 265K': { price: 370 },
+    'AMD Ryzen 7 5700X3D': { price: 365 },
+    'AMD Ryzen 7 5800X3D': { price: 337 },
+    'AMD Ryzen 7 9800X3D': { price: 399 },
+    'Intel Core i5-14600K': { price: 244 },
+    'Intel Core i7-14700K': { price: 352 },
+    'Intel Core Ultra 7 265K': { price: 310 },
     'AMD Ryzen 7 9800X3D + carte mère AM5': { price: 780, bundle: 'CPU + carte mère + 32 Go DDR5' },
     'Intel Core Ultra 7 265K + carte mère LGA1851': { price: 700, bundle: 'CPU + carte mère + 32 Go DDR5' }
   };
@@ -29,7 +29,7 @@
     return allProducts().find(product => product.name === name);
   }
 
-  const psuUpgradeCost = (required) => required >= 850 ? 130 : required >= 750 ? 105 : 90;
+  const psuUpgradeCost = (required) => required >= 850 ? 144 : required >= 750 ? 133 : 90;
 
   function formatEuro(value) {
     return new Intl.NumberFormat('fr-FR', {
@@ -88,6 +88,51 @@
     };
   }
 
+  // app.js possède une catégorie GPU "haute" qui commence au-dessus de 500 €.
+  // Pour les budgets inférieurs à 700 €, on y injecte d'abord les upgrades
+  // milieu de gamme réellement achetables afin d'éviter un diagnostic sans
+  // aucune option dans le budget alors qu'une carte plus rapide existe.
+  const originalGpuHigh = Array.isArray(window.AFFILIATE_PRODUCTS?.gpuHigh)
+    ? [...window.AFFILIATE_PRODUCTS.gpuHigh]
+    : [];
+
+  function prepareGpuHighForBudget() {
+    if (!window.AFFILIATE_PRODUCTS) return;
+
+    const budget = budgetInfo();
+    const currentHigh = Array.isArray(window.AFFILIATE_PRODUCTS.gpuHigh)
+      ? window.AFFILIATE_PRODUCTS.gpuHigh
+      : [];
+
+    const lateHigh = currentHigh.filter(product => !originalGpuHigh.some(item => item.id === product.id));
+    const baseHigh = [...originalGpuHigh, ...lateHigh];
+
+    if (budget.openEnded || budget.value >= 700) {
+      window.AFFILIATE_PRODUCTS.gpuHigh = baseHigh;
+      window.applyEpnLinks?.();
+      return;
+    }
+
+    const mid = Array.isArray(window.AFFILIATE_PRODUCTS.gpuMid)
+      ? window.AFFILIATE_PRODUCTS.gpuMid
+      : [];
+    const affordableMid = mid.filter(product => {
+      const price = Number(product.estimatePrice || 0);
+      return price > 0 && price <= budget.value;
+    });
+
+    const merged = [];
+    const seen = new Set();
+    [...affordableMid, ...baseHigh].forEach(product => {
+      if (!product?.id || seen.has(product.id)) return;
+      seen.add(product.id);
+      merged.push(product);
+    });
+
+    window.AFFILIATE_PRODUCTS.gpuHigh = merged;
+    window.applyEpnLinks?.();
+  }
+
   function cleanPrevious() {
     document.querySelectorAll('.budget-meta, .budget-empty, .budget-warning').forEach(el => el.remove());
     document.querySelectorAll('.product-option').forEach(el => {
@@ -141,7 +186,7 @@
         ${estimate.bundle ? `<span>${estimate.bundle}</span>` : ''}
         ${estimate.addonLabel ? `<span>${estimate.addonLabel}</span>` : ''}
         ${estimate.psuUnknown ? '<span>Alimentation inconnue : éventuel remplacement non inclus.</span>' : ''}
-        ${reasons.length ? `<span>Non retenu dans le scénario : ${reasons.join(' • ')}.</span>` : '<span>Compatible avec les contraintes renseignées.</span>'}
+        ${reasons.length ? `<span>Non retenu dans le scénario : ${reasons.join(' • ')}.</span>` : '<span>Aucun conflit détecté avec les valeurs renseignées ; vérifie quand même le modèle exact avant achat.</span>'}
       `;
       row.appendChild(meta);
       row.dataset.budgetTotal = String(estimate.total);
@@ -224,6 +269,9 @@
       `}
     `;
   }
+
+  // Capture : prépare les candidats avant que app.js ne construise les cartes.
+  form.addEventListener('submit', prepareGpuHighForBudget, true);
 
   // Les fiches produits sont finalisées avant le calcul budget.
   form.addEventListener('submit', () => setTimeout(renderBudgetPlan, 140));
