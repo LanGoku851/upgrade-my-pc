@@ -243,6 +243,21 @@
     });
   });
 
+  const monitorPriceOverrides = {
+    'monitor-1080p-240': 120,
+    'monitor-1440p-180': 170,
+    'monitor-4k-144': 320
+  };
+
+  const monitorProducts = window.AFFILIATE_PRODUCTS?.monitor;
+  if (Array.isArray(monitorProducts)) {
+    monitorProducts.forEach(product => {
+      if (Object.prototype.hasOwnProperty.call(monitorPriceOverrides, product.id)) {
+        product.estimatePrice = monitorPriceOverrides[product.id];
+      }
+    });
+  }
+
   const psuPriceOverrides = {
     'corsair-rm750e-750w-atx31': 133,
     'corsair-rm850e-850w-atx31': 144
