@@ -88,51 +88,6 @@
     };
   }
 
-  // app.js possède une catégorie GPU "haute" qui commence au-dessus de 500 €.
-  // Pour les budgets inférieurs à 700 €, on y injecte d'abord les upgrades
-  // milieu de gamme réellement achetables afin d'éviter un diagnostic sans
-  // aucune option dans le budget alors qu'une carte plus rapide existe.
-  const originalGpuHigh = Array.isArray(window.AFFILIATE_PRODUCTS?.gpuHigh)
-    ? [...window.AFFILIATE_PRODUCTS.gpuHigh]
-    : [];
-
-  function prepareGpuHighForBudget() {
-    if (!window.AFFILIATE_PRODUCTS) return;
-
-    const budget = budgetInfo();
-    const currentHigh = Array.isArray(window.AFFILIATE_PRODUCTS.gpuHigh)
-      ? window.AFFILIATE_PRODUCTS.gpuHigh
-      : [];
-
-    const lateHigh = currentHigh.filter(product => !originalGpuHigh.some(item => item.id === product.id));
-    const baseHigh = [...originalGpuHigh, ...lateHigh];
-
-    if (budget.openEnded || budget.value >= 700) {
-      window.AFFILIATE_PRODUCTS.gpuHigh = baseHigh;
-      window.applyEpnLinks?.();
-      return;
-    }
-
-    const mid = Array.isArray(window.AFFILIATE_PRODUCTS.gpuMid)
-      ? window.AFFILIATE_PRODUCTS.gpuMid
-      : [];
-    const affordableMid = mid.filter(product => {
-      const price = Number(product.estimatePrice || 0);
-      return price > 0 && price <= budget.value;
-    });
-
-    const merged = [];
-    const seen = new Set();
-    [...affordableMid, ...baseHigh].forEach(product => {
-      if (!product?.id || seen.has(product.id)) return;
-      seen.add(product.id);
-      merged.push(product);
-    });
-
-    window.AFFILIATE_PRODUCTS.gpuHigh = merged;
-    window.applyEpnLinks?.();
-  }
-
   function cleanPrevious() {
     document.querySelectorAll('.budget-meta, .budget-empty, .budget-warning').forEach(el => el.remove());
     document.querySelectorAll('.product-option').forEach(el => {
@@ -269,9 +224,6 @@
       `}
     `;
   }
-
-  // Capture : prépare les candidats avant que app.js ne construise les cartes.
-  form.addEventListener('submit', prepareGpuHighForBudget, true);
 
   // Les fiches produits sont finalisées avant le calcul budget.
   form.addEventListener('submit', () => setTimeout(renderBudgetPlan, 140));
