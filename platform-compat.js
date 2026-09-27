@@ -183,9 +183,9 @@
     const ramType = ramTypeSelect ? ramTypeSelect.value : 'unknown';
 
     let mismatch = '';
-    if (platform === 'am5' && ramType === 'ddr4') mismatch = 'Attention : AM5 utilise de la DDR5, alors que tu as indiqué DDR4.';
-    if (platform === 'lga1851' && ramType === 'ddr4') mismatch = 'Attention : LGA1851 / Core Ultra 200S utilise de la DDR5.';
-    if ((platform === 'am4' || platform === 'lga1151v2' || platform === 'lga1200') && ramType === 'ddr5') mismatch = 'Attention : la plateforme indiquée utilise de la DDR4, pas de la DDR5.';
+    if (!ramTypeMatchesCpu(cpuSelect.value, ramType)) {
+      mismatch = `Attention : ${data.label} utilise ${data.memory}, alors que tu as indiqué ${ramType.toUpperCase()}. Vérifie le processeur et le type de RAM sélectionnés.`;
+    }
 
     panel.className = 'platform-panel';
     panel.innerHTML = `

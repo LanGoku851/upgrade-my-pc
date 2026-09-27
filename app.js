@@ -176,11 +176,21 @@ function inferRamType(cpu) {
 function syncRamTypeFromCpu() {
   if (ramTypeSelect.dataset.manual === '1') return;
   const inferred = inferRamType(cpuSelect.value);
-  if (inferred !== 'unknown') ramTypeSelect.value = inferred;
+  ramTypeSelect.value = inferred;
 }
 
-ramTypeSelect.addEventListener('change', () => { ramTypeSelect.dataset.manual = '1'; });
+ramTypeSelect.addEventListener('change', () => {
+  ramTypeSelect.dataset.manual = ramTypeSelect.value === 'unknown' ? '0' : '1';
+});
 cpuSelect.addEventListener('change', syncRamTypeFromCpu);
+
+function ramTypeMatchesCpu(cpu, ramType) {
+  if (!ramType || ramType === 'unknown') return true;
+  const inferred = inferRamType(cpu);
+  if (inferred !== 'unknown') return ramType === inferred;
+  if (/^i[579]-(12|13|14)/.test(cpu)) return ['ddr4', 'ddr5'].includes(ramType);
+  return true;
+}
 
 function pushUnique(arr, key, reason, score) {
   const existing = arr.find(x => x.key === key);
@@ -307,6 +317,9 @@ function renderProducts(key, budget, context) {
   const products = productListFor(key, budget, context);
   if (!products.length) {
     if (key === 'ram16' || key === 'ram32') {
+      if (context.ramMismatch) {
+        return '<div class="merchant-pending">Le type de RAM indiqué ne correspond pas au processeur sélectionné. Vérifie ces deux informations pour afficher des kits adaptés.</div>';
+      }
       return '<div class="merchant-pending">Indique le type de RAM compatible pour afficher des kits adaptés.</div>';
     }
     if (key === 'psu' && context.requiredPsu) {
@@ -356,7 +369,8 @@ form.addEventListener('submit', (e) => {
   const gameType = gameTypeSelect?.value || 'mixed';
   const cpuInfo = cpuProfiles[cpu] || cpuProfiles.other;
   const gpuInfo = gpuProfiles[gpu] || gpuProfiles.other;
-  const context = { ramType, storageCapacity, psu, gpuTier: gpuInfo.tier, requiredPsu: 0 };
+  const ramMismatch = !ramTypeMatchesCpu(cpu, ramType);
+  const context = { ramType: ramMismatch ? 'unknown' : ramType, ramMismatch, storageCapacity, psu, gpuTier: gpuInfo.tier, requiredPsu: 0 };
 
   let recs = [];
 
@@ -410,13 +424,21 @@ form.addEventListener('submit', (e) => {
     }
   }
 
-  if (cpuInfo.x3d && gpuInfo.tier <= 3) {
+  if (goal !== 'loading' && cpuInfo.x3d && gpuInfo.tier <= 3) {
     pushUnique(recs, 'gpuMid', `${cpuLabel()} est déjà très performant en jeu : avec ${gpuLabel()}, la carte graphique est nettement plus logique à améliorer en premier.`, 100);
-  } else if (cpuInfo.tier >= 4 && gpuInfo.tier <= 2) {
+  } else if (goal !== 'loading' && cpuInfo.tier >= 4 && gpuInfo.tier <= 2) {
     pushUnique(recs, 'gpuMid', `${cpuLabel()} est encore solide pour jouer : avec ${gpuLabel()}, le GPU est la priorité la plus logique.`, 98);
   }
 
+  // Filter before deriving PSU requirements or limiting the diagnostic to three cards.
+  recs = recs.filter(rec => {
+    if (rec.key === 'cpu') return cpu !== 'other' && Boolean(cpuProfiles[cpu]);
+    if (rec.key === 'gpuHigh' || rec.key === 'gpuMid') return gpu !== 'other' && Boolean(gpuProfiles[gpu]);
+    return true;
+  });
+  recs.sort((a, b) => b.score - a.score);
   const gpuRec = recs.find(rec => rec.key === 'gpuHigh' || rec.key === 'gpuMid');
+  recs = recs.filter(rec => !['gpuHigh', 'gpuMid'].includes(rec.key) || rec === gpuRec);
   if (gpuRec) {
     const displayedGpuProducts = productListFor(gpuRec.key, budget, context);
     const exactRequirements = displayedGpuProducts

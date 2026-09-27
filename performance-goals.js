@@ -245,7 +245,7 @@
 
     const lines = cards.map((card, index) => {
       const title = card.querySelector('h3')?.textContent?.trim() || 'Upgrade';
-      const products = [...card.querySelectorAll('.product-option strong')]
+      const products = [...card.querySelectorAll('.product-option-head > strong')]
         .map(el => el.textContent.trim())
         .filter(Boolean)
         .join(', ');

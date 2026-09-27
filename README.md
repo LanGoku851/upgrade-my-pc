@@ -5,6 +5,10 @@ Site statique prêt à être publié sur GitHub Pages ou Netlify.
 ## 1. Tester en local
 Ouvrir `index.html` dans un navigateur.
 
+Tests du diagnostic (Node.js 22.12+ ou 24+) : `npm ci`, puis `npm test`.
+Ils exécutent les scripts du site dans JSDOM, avec les modules de compatibilité,
+de budget et de copie. Aucun outil de compilation n’est nécessaire pour publier le site.
+
 ## 2. Publier gratuitement avec GitHub Pages
 1. Créer un compte GitHub si nécessaire.
 2. Créer un dépôt public, par exemple `upgrademypc`.
