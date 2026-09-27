@@ -114,4 +114,38 @@
     };
     window.applyEpnLinks?.();
   }
+
+  const coreI514400fId = 'core-i5-14400f';
+  if (Array.isArray(cpuProducts) && !cpuProducts.some(product => product.id === coreI514400fId)) {
+    cpuProducts.push({
+      id: coreI514400fId,
+      name: "Intel Core i5-14400F",
+      brand: "Intel",
+      tag: "Gaming • LGA1700",
+      estimatePrice: 152,
+      socket: "LGA1700",
+      cores: 10,
+      performanceCores: 6,
+      efficiencyCores: 4,
+      threads: 16,
+      baseClockGHz: 2.5,
+      boostClockGHz: 4.7,
+      cacheL3Mb: 20,
+      tdpW: 65,
+      maxTurboPowerW: 148,
+      memoryType: "DDR5-4800 / DDR4-3200",
+      specSource: "Intel",
+      note: "Core i5 de 14e génération avec 10 cœurs (6 P-cores + 4 E-cores), 16 threads, jusqu’à 4,7 GHz, 20 Mo de Smart Cache, puissance de base 65 W et puissance turbo maximale 148 W. Modèle F sans circuit graphique intégré.",
+      merchants: { ebay: "", fnac: "", amazon: "" }
+    });
+  }
+
+  if (window.EPN_LINKS && !window.EPN_LINKS[coreI514400fId]) {
+    window.EPN_LINKS[coreI514400fId] = {
+      customId: 'umpcpui514400f',
+      destination: 'https://www.ebay.fr/sch/i.html?_nkw=Intel+Core+i5-14400F',
+      url: 'https://www.ebay.fr/sch/i.html?_nkw=Intel+Core+i5-14400F&mkcid=1&mkrid=709-53476-19255-0&siteid=71&campid=5339214600&customid=umpcpui514400f&toolid=10001&mkevt=1'
+    };
+    window.applyEpnLinks?.();
+  }
 })();
