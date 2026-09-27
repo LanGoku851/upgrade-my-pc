@@ -207,9 +207,55 @@ function productListFor(key, budget, context = {}) {
     products = products.filter(product => !product.tier || product.tier > context.gpuTier);
   }
 
+  if (key === 'gpuHigh' && budget < 700) {
+    const affordableMid = Array.isArray(affiliateProducts.gpuMid)
+      ? affiliateProducts.gpuMid.filter(product => {
+          const price = Number(product.estimatePrice || 0);
+          const tierOk = !Number.isFinite(context.gpuTier) || !product.tier || product.tier > context.gpuTier;
+          return tierOk && price > 0 && price <= budget;
+        })
+      : [];
+
+    if (affordableMid.length) {
+      const seen = new Set();
+      products = [...affordableMid, ...products].filter(product => {
+        const id = product?.id || product?.name;
+        if (!id || seen.has(id)) return false;
+        seen.add(id);
+        return true;
+      });
+    }
+  }
+
+  const budgetRank = (product) => {
+    const price = Number(product?.estimatePrice || 0);
+    return price > 0 && budget > 0 && price <= budget ? 0 : 1;
+  };
+
   if (key === 'nvme' || key === 'storageCapacity') {
-    if (context.storageCapacity >= 1000) products.sort((a, b) => (b.capacityGb || 0) - (a.capacityGb || 0));
-    else products.sort((a, b) => (a.capacityGb || 0) - (b.capacityGb || 0));
+    const currentCapacity = Number(context.storageCapacity || 0);
+    const capacityRank = (product) => {
+      const capacity = Number(product?.capacityGb || 0);
+      if (!capacity) return Number.MAX_SAFE_INTEGER;
+      if (capacity >= currentCapacity) return capacity - currentCapacity;
+      return 1_000_000 + (currentCapacity - capacity);
+    };
+
+    products.sort((a, b) => {
+      const budgetDiff = budgetRank(a) - budgetRank(b);
+      if (budgetDiff) return budgetDiff;
+      const capacityDiff = capacityRank(a) - capacityRank(b);
+      if (capacityDiff) return capacityDiff;
+      return Number(a.estimatePrice || 0) - Number(b.estimatePrice || 0);
+    });
+  } else {
+    products = products
+      .map((product, index) => ({ product, index }))
+      .sort((a, b) => {
+        const budgetDiff = budgetRank(a.product) - budgetRank(b.product);
+        return budgetDiff || a.index - b.index;
+      })
+      .map(item => item.product);
   }
 
   if (key === 'gpuHigh') {
