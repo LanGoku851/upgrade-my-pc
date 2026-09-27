@@ -196,10 +196,18 @@ function isValidUrl(url) {
   return typeof url === 'string' && /^https?:\/\//i.test(url);
 }
 
+function productWattage(product) {
+  const direct = Number(product?.wattage || 0);
+  if (direct) return direct;
+  const match = String(product?.name || '').match(/\b(\d{3,4})\s*W\b/i);
+  return match ? Number(match[1]) : 0;
+}
+
 function productListFor(key, budget, context = {}) {
   let products = Array.isArray(affiliateProducts[key]) ? [...affiliateProducts[key]] : [];
 
-  if ((key === 'ram16' || key === 'ram32') && context.ramType && context.ramType !== 'unknown') {
+  if (key === 'ram16' || key === 'ram32') {
+    if (!context.ramType || context.ramType === 'unknown') return [];
     products = products.filter(product => product.ramType === context.ramType);
   }
 
@@ -227,6 +235,15 @@ function productListFor(key, budget, context = {}) {
     }
   }
 
+  if (key === 'psu' && Number(context.requiredPsu || 0) > 0) {
+    const required = Number(context.requiredPsu);
+    products = products.filter(product => {
+      const watts = productWattage(product);
+      return watts > 0 && watts >= required;
+    });
+    products.sort((a, b) => productWattage(a) - productWattage(b));
+  }
+
   const budgetRank = (product) => {
     const price = Number(product?.estimatePrice || 0);
     return price > 0 && budget > 0 && price <= budget ? 0 : 1;
@@ -248,12 +265,22 @@ function productListFor(key, budget, context = {}) {
       if (capacityDiff) return capacityDiff;
       return Number(a.estimatePrice || 0) - Number(b.estimatePrice || 0);
     });
-  } else {
+  } else if (key !== 'psu') {
     products = products
       .map((product, index) => ({ product, index }))
       .sort((a, b) => {
         const budgetDiff = budgetRank(a.product) - budgetRank(b.product);
         return budgetDiff || a.index - b.index;
+      })
+      .map(item => item.product);
+  } else {
+    products = products
+      .map((product, index) => ({ product, index }))
+      .sort((a, b) => {
+        const budgetDiff = budgetRank(a.product) - budgetRank(b.product);
+        if (budgetDiff) return budgetDiff;
+        const wattDiff = productWattage(a.product) - productWattage(b.product);
+        return wattDiff || a.index - b.index;
       })
       .map(item => item.product);
   }
@@ -281,6 +308,9 @@ function renderProducts(key, budget, context) {
   if (!products.length) {
     if (key === 'ram16' || key === 'ram32') {
       return '<div class="merchant-pending">Indique le type de RAM compatible pour afficher des kits adaptés.</div>';
+    }
+    if (key === 'psu' && context.requiredPsu) {
+      return `<div class="merchant-pending">Aucune alimentation du catalogue n’atteint actuellement le minimum de ${context.requiredPsu} W pour les cartes affichées.</div>`;
     }
     return '';
   }
@@ -326,7 +356,7 @@ form.addEventListener('submit', (e) => {
   const gameType = gameTypeSelect?.value || 'mixed';
   const cpuInfo = cpuProfiles[cpu] || cpuProfiles.other;
   const gpuInfo = gpuProfiles[gpu] || gpuProfiles.other;
-  const context = { ramType, storageCapacity, psu, gpuTier: gpuInfo.tier };
+  const context = { ramType, storageCapacity, psu, gpuTier: gpuInfo.tier, requiredPsu: 0 };
 
   let recs = [];
 
@@ -387,10 +417,17 @@ form.addEventListener('submit', (e) => {
   }
 
   const gpuRec = recs.find(rec => rec.key === 'gpuHigh' || rec.key === 'gpuMid');
-  if (gpuRec && psu > 0) {
-    const targetPsu = gpuRec.key === 'gpuHigh' ? 750 : 650;
-    if (psu < targetPsu) {
-      pushUnique(recs, 'psu', `Ton alimentation de ${psu} W peut manquer de marge avec certaines cartes proposées. Vérifie la puissance et les connecteurs exigés par le modèle choisi.`, gpuRec.key === 'gpuHigh' ? 94 : 88);
+  if (gpuRec) {
+    const displayedGpuProducts = productListFor(gpuRec.key, budget, context);
+    const exactRequirements = displayedGpuProducts
+      .map(product => Number(product.recommendedPsu || 0))
+      .filter(value => value > 0);
+    const fallbackTarget = gpuRec.key === 'gpuHigh' ? 750 : 650;
+    const targetPsu = exactRequirements.length ? Math.min(...exactRequirements) : fallbackTarget;
+    context.requiredPsu = targetPsu;
+
+    if (psu > 0 && psu < targetPsu) {
+      pushUnique(recs, 'psu', `Ton alimentation de ${psu} W est sous la recommandation minimale des cartes affichées (au moins ${targetPsu} W). Vérifie aussi les connecteurs exigés par le modèle choisi.`, gpuRec.key === 'gpuHigh' ? 94 : 88);
     }
   }
 
