@@ -29,6 +29,40 @@
     return (value || '').trim().toLocaleLowerCase('fr-FR');
   }
 
+  function clearanceRange() {
+    const select = document.getElementById('gpuClearance');
+    const option = select?.selectedOptions?.[0];
+    const kind = option?.dataset.kind || (Number(select?.value || 0) ? 'legacy' : 'unknown');
+    return {
+      kind,
+      min: option?.dataset.min ? Number(option.dataset.min) : null,
+      max: option?.dataset.max ? Number(option.dataset.max) : (kind === 'legacy' ? Number(select?.value || 0) : null),
+      label: option?.textContent?.trim() || 'Je ne sais pas'
+    };
+  }
+
+  function evaluateGpuLength(length, range) {
+    if (!length || range.kind === 'unknown') return { status: 'unknown' };
+
+    if (range.kind === 'upper' || range.kind === 'legacy') {
+      if (range.max && length > range.max) return { status: 'too-long' };
+      return { status: 'uncertain' };
+    }
+
+    if (range.kind === 'bounded') {
+      if (range.max && length > range.max) return { status: 'too-long' };
+      if (range.min && length <= range.min) return { status: 'fit' };
+      return { status: 'uncertain' };
+    }
+
+    if (range.kind === 'lower') {
+      if (range.min && length <= range.min) return { status: 'fit' };
+      return { status: 'uncertain' };
+    }
+
+    return { status: 'unknown' };
+  }
+
   function mergeDuplicateGpuRecommendations() {
     const gpuCards = [...recommendations.querySelectorAll('.recommendation')].filter(card =>
       /carte graphique|\bgpu\b/i.test(card.querySelector('h3')?.textContent || '')
@@ -65,7 +99,7 @@
     document.querySelectorAll('.exact-product-specs, .exact-product-warning').forEach(el => el.remove());
     document.querySelectorAll('.product-option').forEach(row => row.classList.remove('product-incompatible'));
 
-    const clearance = Number(document.getElementById('gpuClearance')?.value || 0);
+    const range = clearanceRange();
 
     [...recommendations.querySelectorAll('.product-option')].forEach(row => {
       const name = row.querySelector('strong')?.textContent?.trim();
@@ -88,11 +122,19 @@
         else row.appendChild(box);
       }
 
-      if (product.gpuLengthMm && clearance > 0 && product.gpuLengthMm > clearance) {
+      if (!product.gpuLengthMm) return;
+      const fit = evaluateGpuLength(Number(product.gpuLengthMm), range);
+
+      if (fit.status === 'too-long') {
         row.classList.add('product-incompatible');
         const warning = document.createElement('div');
         warning.className = 'exact-product-warning';
-        warning.textContent = `Ce modèle fait ${product.gpuLengthMm} mm et dépasse la longueur maximale que tu as indiquée (≈ ${clearance} mm). Il n’est pas retenu dans les scénarios compatibles.`;
+        warning.textContent = `Ce modèle fait ${product.gpuLengthMm} mm et dépasse la borne haute de la plage indiquée (« ${range.label} »). Il n’est pas retenu dans les scénarios compatibles.`;
+        row.appendChild(warning);
+      } else if (fit.status === 'uncertain') {
+        const warning = document.createElement('div');
+        warning.className = 'exact-product-warning';
+        warning.textContent = `Ce modèle fait ${product.gpuLengthMm} mm. Avec la plage « ${range.label} », la longueur n’est pas garantie : vérifie que la limite réelle du boîtier atteint au moins ${product.gpuLengthMm} mm.`;
         row.appendChild(warning);
       }
     });
