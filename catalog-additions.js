@@ -50,4 +50,37 @@
     };
     window.applyEpnLinks?.();
   }
+
+  const cpuProducts = window.AFFILIATE_PRODUCTS?.cpu;
+  const ryzen57600Id = 'ryzen5-7600';
+
+  if (Array.isArray(cpuProducts) && !cpuProducts.some(product => product.id === ryzen57600Id)) {
+    cpuProducts.push({
+      id: ryzen57600Id,
+      name: "AMD Ryzen 5 7600",
+      brand: "AMD",
+      tag: "Gaming • AM5",
+      estimatePrice: 161,
+      socket: "AM5",
+      cores: 6,
+      threads: 12,
+      baseClockGHz: 3.8,
+      boostClockGHz: 5.1,
+      cacheL3Mb: 32,
+      tdpW: 65,
+      memoryType: "DDR5",
+      specSource: "AMD",
+      note: "Ryzen 7000 Zen 4 avec 6 cœurs / 12 threads, 3,8 GHz de base, jusqu’à 5,1 GHz, 32 Mo de cache L3 et TDP 65 W. La version Boxed inclut un ventirad AMD Wraith Stealth.",
+      merchants: { ebay: "", fnac: "", amazon: "" }
+    });
+  }
+
+  if (window.EPN_LINKS && !window.EPN_LINKS[ryzen57600Id]) {
+    window.EPN_LINKS[ryzen57600Id] = {
+      customId: 'umpcpu7600',
+      destination: 'https://www.ebay.fr/sch/i.html?_nkw=AMD+Ryzen+5+7600',
+      url: 'https://www.ebay.fr/sch/i.html?_nkw=AMD+Ryzen+5+7600&mkcid=1&mkrid=709-53476-19255-0&siteid=71&campid=5339214600&customid=umpcpu7600&toolid=10001&mkevt=1'
+    };
+    window.applyEpnLinks?.();
+  }
 })();
