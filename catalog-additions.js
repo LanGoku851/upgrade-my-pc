@@ -217,6 +217,32 @@
     });
   });
 
+  const gpuPriceOverrides = {
+    'asus-dual-rtx5060-oc8': 399,
+    'sapphire-pulse-rx9060xt8': 434,
+    'asus-dual-rtx5060ti8-oc': 434,
+    'asrock-arc-b580-challenger12': 368,
+    'sapphire-pulse-rx9060xt16': 565,
+    'sapphire-pulse-rx9060xt16-high': 565,
+    'asus-dual-rtx5060ti16-oc': 730,
+    'sapphire-pure-rx9060xt16': 542,
+    'powercolor-reaper-rx9070': 705,
+    'asus-prime-rtx5070': 807,
+    'powercolor-reaper-rx9070xt': 812,
+    'powercolor-hellhound-rx9070xt': 826,
+    'msi-rtx5070ti-ventus3x': 1242
+  };
+
+  ['gpuMid', 'gpuHigh'].forEach(group => {
+    const products = window.AFFILIATE_PRODUCTS?.[group];
+    if (!Array.isArray(products)) return;
+    products.forEach(product => {
+      if (Object.prototype.hasOwnProperty.call(gpuPriceOverrides, product.id)) {
+        product.estimatePrice = gpuPriceOverrides[product.id];
+      }
+    });
+  });
+
   const psuPriceOverrides = {
     'corsair-rm750e-750w-atx31': 133,
     'corsair-rm850e-850w-atx31': 144
