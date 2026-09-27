@@ -216,4 +216,34 @@
       }
     });
   });
+
+  const psuPriceOverrides = {
+    'corsair-rm750e-750w-atx31': 133,
+    'corsair-rm850e-850w-atx31': 144
+  };
+
+  function applyPsuPriceOverrides() {
+    const products = window.AFFILIATE_PRODUCTS?.psu;
+    if (!Array.isArray(products)) return false;
+
+    let allFound = true;
+    Object.entries(psuPriceOverrides).forEach(([id, price]) => {
+      const product = products.find(item => item.id === id);
+      if (product) product.estimatePrice = price;
+      else allFound = false;
+    });
+    return allFound;
+  }
+
+  applyPsuPriceOverrides();
+
+  window.addEventListener('load', () => {
+    let attempts = 0;
+    const retry = () => {
+      attempts += 1;
+      if (applyPsuPriceOverrides() || attempts >= 20) return;
+      setTimeout(retry, 100);
+    };
+    setTimeout(retry, 0);
+  });
 })();
