@@ -148,4 +148,35 @@
     };
     window.applyEpnLinks?.();
   }
+
+  const ryzen57500fId = 'ryzen5-7500f';
+  if (Array.isArray(cpuProducts) && !cpuProducts.some(product => product.id === ryzen57500fId)) {
+    cpuProducts.push({
+      id: ryzen57500fId,
+      name: "AMD Ryzen 5 7500F",
+      brand: "AMD",
+      tag: "Budget gaming • AM5",
+      estimatePrice: 118,
+      socket: "AM5",
+      cores: 6,
+      threads: 12,
+      baseClockGHz: 3.7,
+      boostClockGHz: 5.0,
+      cacheL3Mb: 32,
+      tdpW: 65,
+      memoryType: "DDR5-5200",
+      specSource: "AMD",
+      note: "Ryzen 7000 Zen 4 avec 6 cœurs / 12 threads, 3,7 GHz de base, jusqu’à 5,0 GHz, 32 Mo de cache L3 et TDP 65 W. Carte graphique dédiée obligatoire ; la version MPK est associée à un refroidisseur AMD Wraith Stealth.",
+      merchants: { ebay: "", fnac: "", amazon: "" }
+    });
+  }
+
+  if (window.EPN_LINKS && !window.EPN_LINKS[ryzen57500fId]) {
+    window.EPN_LINKS[ryzen57500fId] = {
+      customId: 'umpcpu7500f',
+      destination: 'https://www.ebay.fr/sch/i.html?_nkw=AMD+Ryzen+5+7500F',
+      url: 'https://www.ebay.fr/sch/i.html?_nkw=AMD+Ryzen+5+7500F&mkcid=1&mkrid=709-53476-19255-0&siteid=71&campid=5339214600&customid=umpcpu7500f&toolid=10001&mkevt=1'
+    };
+    window.applyEpnLinks?.();
+  }
 })();
