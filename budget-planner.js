@@ -47,8 +47,16 @@
     return Number(document.getElementById('psu')?.value || 0);
   }
 
-  function currentClearance() {
-    return Number(document.getElementById('gpuClearance')?.value || 0);
+  function clearanceRange() {
+    const select = document.getElementById('gpuClearance');
+    const option = select?.selectedOptions?.[0];
+    const kind = option?.dataset.kind || (Number(select?.value || 0) ? 'legacy' : 'unknown');
+    return {
+      kind,
+      min: option?.dataset.min ? Number(option.dataset.min) : null,
+      max: option?.dataset.max ? Number(option.dataset.max) : (kind === 'legacy' ? Number(select?.value || 0) : null),
+      label: option?.textContent?.trim() || 'Je ne sais pas'
+    };
   }
 
   function budgetInfo() {
@@ -101,10 +109,30 @@
   }
 
   function directCompatibility(estimate) {
-    const clearance = currentClearance();
+    const range = clearanceRange();
     const length = Number(estimate?.product?.gpuLengthMm || 0);
-    const tooLong = Boolean(clearance > 0 && length > 0 && length > clearance);
-    return { tooLong, clearance, length };
+    if (!length || range.kind === 'unknown') return { tooLong: false, uncertain: false, length, range };
+
+    if (range.kind === 'upper' || range.kind === 'legacy') {
+      return {
+        tooLong: Boolean(range.max && length > range.max),
+        uncertain: Boolean(!range.max || length <= range.max),
+        length,
+        range
+      };
+    }
+
+    if (range.kind === 'bounded') {
+      if (range.max && length > range.max) return { tooLong: true, uncertain: false, length, range };
+      if (range.min && length <= range.min) return { tooLong: false, uncertain: false, length, range };
+      return { tooLong: false, uncertain: true, length, range };
+    }
+
+    if (range.kind === 'lower') {
+      return { tooLong: false, uncertain: Boolean(!range.min || length > range.min), length, range };
+    }
+
+    return { tooLong: false, uncertain: false, length, range };
   }
 
   function renderBudgetPlan() {
@@ -125,14 +153,15 @@
       const overBudget = !budget.openEnded && estimate.total > budget.value;
       const excluded = compatibility.tooLong || overBudget;
 
-      // Le budget recalcule lui-même la compatibilité longueur afin de ne pas dépendre
-      // d'un état intermédiaire laissé par un autre module.
+      // Seule une incompatibilité certaine par longueur exclut le modèle.
       if (compatibility.tooLong) row.classList.add('product-incompatible');
       else row.classList.remove('product-incompatible');
 
       const reasons = [];
+      const cautions = [];
       if (overBudget) reasons.push(`hors budget (${formatEuro(estimate.total)} pour un budget de ${budget.label})`);
-      if (compatibility.tooLong) reasons.push(`trop longue (${compatibility.length} mm pour ~${compatibility.clearance} mm indiqués)`);
+      if (compatibility.tooLong) reasons.push(`trop longue (${compatibility.length} mm pour la plage « ${compatibility.range.label} »)`);
+      if (compatibility.uncertain) cautions.push(`longueur à confirmer : ${compatibility.length} mm avec une limite déclarée « ${compatibility.range.label} »`);
 
       const meta = document.createElement('div');
       meta.className = 'budget-meta';
@@ -141,7 +170,11 @@
         ${estimate.bundle ? `<span>${estimate.bundle}</span>` : ''}
         ${estimate.addonLabel ? `<span>${estimate.addonLabel}</span>` : ''}
         ${estimate.psuUnknown ? '<span>Alimentation inconnue : éventuel remplacement non inclus.</span>' : ''}
-        ${reasons.length ? `<span>Non retenu dans le scénario : ${reasons.join(' • ')}.</span>` : '<span>Aucun conflit détecté avec les valeurs renseignées ; vérifie quand même le modèle exact avant achat.</span>'}
+        ${reasons.length
+          ? `<span>Non retenu dans le scénario : ${reasons.join(' • ')}.</span>`
+          : cautions.length
+            ? `<span>Scénario budgétairement possible, mais à confirmer : ${cautions.join(' • ')}.</span>`
+            : '<span>Aucun conflit détecté avec les valeurs renseignées ; vérifie quand même le modèle exact avant achat.</span>'}
       `;
       row.appendChild(meta);
       row.dataset.budgetTotal = String(estimate.total);
@@ -156,7 +189,8 @@
         total: estimate.total,
         title: cardTitleFor(row),
         addonLabel: estimate.addonLabel,
-        bundle: estimate.bundle || ''
+        bundle: estimate.bundle || '',
+        uncertain: compatibility.uncertain
       });
     });
 
@@ -196,6 +230,7 @@
     const remaining = choices.length && !budget.openEnded
       ? Math.max(0, budget.value - choices[0].total)
       : null;
+    const hasUncertainChoice = choices.some(item => item.uncertain);
 
     panel.innerHTML = `
       <div class="budget-plan-head">
@@ -203,10 +238,10 @@
           <p class="budget-kicker">Budget maximum</p>
           <h3>${budget.label}</h3>
         </div>
-        <span class="budget-status ${choices.length ? 'ok' : 'warn'}">${choices.length ? 'Options cohérentes' : 'Aucun modèle compatible dans cette sélection'}</span>
+        <span class="budget-status ${choices.length ? 'ok' : 'warn'}">${choices.length ? (hasUncertainChoice ? 'Options à vérifier' : 'Options cohérentes') : 'Aucun modèle compatible dans cette sélection'}</span>
       </div>
       ${choices.length ? `
-        <p class="budget-intro">Scénarios réalistes parmi les recommandations actuelles. Ils sont indépendants : tu n’as pas besoin d’acheter les trois.</p>
+        <p class="budget-intro">Scénarios réalistes parmi les recommandations actuelles. Ils sont indépendants : tu n’as pas besoin d’acheter les trois.${hasUncertainChoice ? ' Certaines dimensions restent à confirmer avec la fiche exacte du boîtier.' : ''}</p>
         <div class="budget-scenarios">
           ${choices.map((item, index) => `
             <div class="budget-scenario">
@@ -214,6 +249,7 @@
               <strong>${item.name}</strong>
               <small>${item.title}</small>
               ${item.bundle ? `<small>${item.bundle}</small>` : ''}
+              ${item.uncertain ? '<small>Longueur GPU à confirmer</small>' : ''}
               <b>≈ ${formatEuro(item.total)}</b>
             </div>
           `).join('')}
